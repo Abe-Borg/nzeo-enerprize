@@ -3,12 +3,46 @@
 
 {% block content %}
 <style type="text/css">
-	/* empty for now */
-
+	.button-container {
+        display: flex; /* Enables flexbox */
+        justify-content: center; /* Centers button horizontally */
+        align-items: center; /* Centers button vertically */
+        flex-direction: column; /* Stacks items vertically */
+    }
+    .big-button {
+        display: block; /* Make it a block element */
+        width: 200px; /* Width of the button */
+        height: 50px; /* Height of the button */
+        font-size: 20px; /* Font size */
+        text-align: center; /* Center text */
+        line-height: 50px; /* Align text vertically */
+        background-color: #007bff; /* Background color */
+        color: white; /* Text color */
+        border: none; /* No border */
+        border-radius: 5px; /* Rounded corners */
+        text-decoration: none; /* No underline */
+        margin-top: 20px; /* Margin on the top */
+        cursor: pointer; /* Changes the cursor on hover */
+    }
 </style>
 <div class="container">
 	<h1>Home Screen</h1>
-	<p>Home screen still in development</p>
+	<p style = "font-size: 30px;">
+		Home screen still in development. Nico, as you navigate this site,
+		think about what each webpage should look like and what options you'd
+		like your users to have. Then, we can work together to make it happen.
+		There will be many small details that will need to be worked out. At the 
+		same time, some things we can leave for later. For example, we can probably
+		leave the styling (colors, animations, etc.) for later. For now, let's focus
+		on the functionality of the site (which includes how the user navigates through it).
+		Also think about what is the first thing a user should see when they visit the site.
+	</p>
+	<!-- Big button link to site map -->
+	<div class="button-container">
+		<a href="#" class="big-button">Go to Site Map</a>
+	</div>
 </div>
+
+
 
 {% endblock content %}
