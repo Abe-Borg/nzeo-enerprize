@@ -52,19 +52,18 @@
         <label for="floatingPassword">Password</label>
 
         {% for field in login_form %}
-        <p>            
-            {% for error in field.errors %}
-                <p style = "color: red;">{{error}}</p>
-            {% endfor %}
-
-            {% if login_form.non_field_errors %}
-                {% for error in login_form.non_field_errors %}
+            <p>            
+                {% for error in field.errors %}
                     <p style = "color: red;">{{error}}</p>
                 {% endfor %}
-            {% endif %}
-
-        </p>
+            </p>
         {% endfor %}
+
+        {% if login_form.non_field_errors %}
+            {% for error in login_form.non_field_errors %}
+                <p style = "color: red;">{{error}}</p>
+            {% endfor %}
+        {% endif %}
       </div>
   
       <div class="form-check text-start my-3">
