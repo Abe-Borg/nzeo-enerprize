@@ -37,6 +37,7 @@ if DEBUG:
 INSTALLED_APPS = [
     'personal',
     'account',
+    'maps',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

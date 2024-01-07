@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<head>
+    <title>Interactive Map</title>
+    <!-- Include LeafletJS CSS from a CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+
+<!-- create a div element that I can use to embed a map using openmaptiles -->
+<div id='sanger_high_school_map' style='width: 100%; height: 100%;'>
+    <!-- create something that will show a map from open street map or something similar -->
+    <!-- write something that describes this page is still in development and also describe the intent of this page -->
+    <h1>Sample of Map View</h1>
+    <p>Page still in development.</p>
+    <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-119.0380859375%2C36.98500309285596%2C-118.980712890625%2C37.01907571607497&amp;layer=mapnik&amp;marker=37.00203947386811%2C-119.0093994140625" style="border: 1px solid black"></iframe><br/><small><a href="https://www.openstreetmap.org/#map=14/37.0020/-119.0094">View Larger Map</a></small>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    var mymap = L.map('sanger_high_school_map').setView([36.69991667, -119.57691667], 13); // Example coordinates
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(mymap);
+</script>
+
+
+{% endblock content %}
