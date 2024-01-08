@@ -17,6 +17,8 @@
 
 <button id="completeLine">Complete Line</button>
 <button id="completePolygon">Complete Polygon</button>
+<button id="clearAnnotations">Clear Annotations</button>
+
 
 <div id="annotationControls">
     <input type="radio" id="drawMarker" name="annotationType" value="marker" checked>
@@ -32,6 +34,8 @@
 
 <!-- Include LeafletJS from a CDN -->
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<!--logic for map and map interactivity -->
 <script>
     var mymap = L.map('sanger_high_school_map').setView([36.69991667, -119.57691667], 16); 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -48,6 +52,11 @@
     let currentAnnotation = 'marker'; //default
     let linePoints = [];
     let polyPoints = [];
+    let markerCount = 0;
+    const MAX_POINTS = 10;
+    const SNAP_DISTANCE = 10; // pixels
+    let annotations = []; // store all annotations
+
 
     document.getElementById('annotationControls').addEventListener('change', function(e) {
         currentAnnotation = e.target.value;
@@ -57,33 +66,104 @@
 
     mymap.on('click', function(e) {
         if (currentAnnotation === 'marker') {
-            L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap)
-            .bindPopup("Marker at " + e.latlng.toString())
-            .openPopup();
+            if (markerCount < MAX_POINTS) {
+                var newMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap)
+                .bindPopup("Marker at " + e.latlng.toString())
+                .openPopup();
+                markerCount++;
+                annotations.push(newMarker);
+            } else {
+                alert("Maximum of 10 markers reached.");
+            }
         } else if (currentAnnotation === 'line') {
-            linePoints.push([e.latlng.lat, e.latlng.lng]);
-            if (linePoints.length === 2) {
-                L.polyline(linePoints, { color: 'red' }).addTo(mymap);
-                linePoints = [];
+            if (linePoints.length < MAX_POINTS) {
+                linePoints.push([e.latlng.lat, e.latlng.lng]);
+        
+                // Remove the previous temporary line if it exists
+                if (this.tempLine) {
+                    mymap.removeLayer(this.tempLine);
+                    annotations = annotations.filter(function(annotation) { return annotation !== this.tempLine; });
+                }
+
+                // Create a new temporary line
+                this.tempLine = L.polyline(linePoints, { color: 'red' }).addTo(mymap);
+                annotations.push(this.tempLine); // Add the line to the annotations array
+            } else {
+                alert("Maximum of 10 points reached for a line.");
             }
         } else if (currentAnnotation === 'polygon') {
-            polyPoints.push([e.latlng.lat, e.latlng.lng]);
+            if (polyPoints.length < MAX_POINTS) {
+                let point = [e.latlng.lat, e.latlng.lng];
+                polyPoints.push(point);
+
+                // Update or create a polyline for the polygon points
+                if (polyPoints.length > 1) {
+                    if (this.tempPolyline) {
+                        mymap.removeLayer(this.tempPolyline);
+                        annotations = annotations.filter(function(annotation) { return annotation !== this.tempPolyline; });
+                    }
+                    this.tempPolyline = L.polyline(polyPoints, { color: 'green' }).addTo(mymap);
+                    annotations.push(this.tempPolyline); // Add the temporary polyline to the annotations array
+                }
+
+                // check for snapping
+                if (polyPoints.length > 2 && isPointCloseToFirst(polyPoints, point)) {
+                    var newPolygon = L.polygon([...polyPoints, polyPoints[0]], { color: 'blue' }).addTo(mymap);
+                    annotations.push(newPolygon); // Add the completed polygon to the annotations array
+                    alert("Polygon completed by snapping!");
+                    saveAnnotation('polygon', [...polyPoints, polyPoints[0]]);
+                    polyPoints = []; // reset after drawing the polygon
+                    if (this.tempPolyline) {
+                        mymap.removeLayer(this.tempPolyline);
+                        annotations = annotations.filter(function(annotation) { return annotation !== this.tempPolyline; });
+                        this.tempPolyline = null;
+                    } 
+                }
+            } else {
+                alert("Maximum of 10 points reached for a polygon.");
+            }
         }
     });
 
-    document.getElementById("completePolygon").addEventListener("click", function() {
-        if (polyPoints.length > 2) {
-            L.polygon(polyPoints, {color: 'blue'}).addTo(mymap);
-            polyPoints = []; // reset after drawing the polygon.
-            //save the polygon to the database
-            saveAnnotation('polygon', polyPoints);
-            polyPoints = []; // reset after drawing the polygon.
+
+    document.getElementById('completeLine').addEventListener('click', function() {
+        if (linePoints.length > 1) {
+            L.polyline(linePoints, { color: 'red' }).addTo(mymap);
+            saveAnnotation('line', linePoints);
+            linePoints = [];
+        } else {
+            alert("You need at least 2 points to make a line.");
         }
-        else {
+    });
+
+    document.getElementById('completePolygon').addEventListener('click', function() {
+        if (polyPoints.length > 2) {
+            L.polygon(polyPoints, { color: 'blue' }).addTo(mymap);
+            saveAnnotation('polygon', polyPoints);
+            polyPoints = [];
+            if (this.tempPolyline) {
+                mymap.removeLayer(this.tempPolyline);
+            }
+            this.tempPolyline = null;
+        } else {
             alert("You need at least 3 points to make a polygon.");
         }
     });
 
+    function isPointCloseToFirst(points, newPoint) {
+        if (points.length > 0) {
+            var firstPoint = mymap.latLngToLayerPoint(L.latLng(points[0]));
+            var newLayerPoint = mymap.latLngToLayerPoint(L.latLng(newPoint));
+            var distance = firstPoint.distanceTo(newLayerPoint);
+            return distance <= SNAP_DISTANCE;
+        }
+        return false;
+    }    
+
+    function saveAnnotation(type, points) {
+        // Implement AJAX call here to send the points to your Django backend
+    }
+    
 </script>
 
 {% endblock content %}
