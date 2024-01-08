@@ -48,7 +48,6 @@
 
 
     // -- Interactive features --
-    // let users select the type of annotation they want to add
     let currentAnnotation = 'marker'; //default
     let linePoints = [];
     let polyPoints = [];
@@ -56,6 +55,8 @@
     const MAX_POINTS = 10;
     const SNAP_DISTANCE = 10; // pixels
     let annotations = []; // store all annotations
+    var tempLine = null;
+    var tempPolyline = null;
 
 
     document.getElementById('annotationControls').addEventListener('change', function(e) {
@@ -64,12 +65,17 @@
         polyPoints = []; // Reset polygon points
     });
 
+    // let the users click on the map to add annotations.
     mymap.on('click', function(e) {
         if (currentAnnotation === 'marker') {
             if (markerCount < MAX_POINTS) {
-                var newMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap)
-                .bindPopup("Marker at " + e.latlng.toString())
-                .openPopup();
+                var newMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap);
+                var text = promt("Enter text for this marker:", "Marker description");
+                if (text != null && text != "" ) {
+                    newMarker.bindPopup(text).openPopup();
+                } else {
+                    newMarker.bindPopup("Marker at " + e.latlng.toString()).openPopup();
+                }
                 markerCount++;
                 annotations.push(newMarker);
             } else {
@@ -80,14 +86,20 @@
                 linePoints.push([e.latlng.lat, e.latlng.lng]);
         
                 // Remove the previous temporary line if it exists
-                if (this.tempLine) {
-                    mymap.removeLayer(this.tempLine);
-                    annotations = annotations.filter(function(annotation) { return annotation !== this.tempLine; });
+                if (tempLine) {
+                    mymap.removeLayer(tempLine);
+                    annotations = annotations.filter(function(annotation) { return annotation !== tempLine; });
                 }
 
                 // Create a new temporary line
-                this.tempLine = L.polyline(linePoints, { color: 'red' }).addTo(mymap);
-                annotations.push(this.tempLine); // Add the line to the annotations array
+                tempLine = L.polyline(linePoints, { color: 'red' }).addTo(mymap);
+                var lineText = prompt("Enter text for this line:", "Line description");
+                if (lineText != null && lineText != "" ) {
+                    tempLine.bindPopup(lineText);
+                } else {
+                    tempLine.bindPopup("Line at " + e.latlng.toString()).openPopup();
+                }
+                annotations.push(tempLine); // Add the line to the annotations array
             } else {
                 alert("Maximum of 10 points reached for a line.");
             }
@@ -98,25 +110,31 @@
 
                 // Update or create a polyline for the polygon points
                 if (polyPoints.length > 1) {
-                    if (this.tempPolyline) {
-                        mymap.removeLayer(this.tempPolyline);
-                        annotations = annotations.filter(function(annotation) { return annotation !== this.tempPolyline; });
+                    if (tempPolyline) {
+                        mymap.removeLayer(tempPolyline);
+                        annotations = annotations.filter(function(annotation) { return annotation !== tempPolyline; });
                     }
-                    this.tempPolyline = L.polyline(polyPoints, { color: 'green' }).addTo(mymap);
-                    annotations.push(this.tempPolyline); // Add the temporary polyline to the annotations array
+                    tempPolyline = L.polyline(polyPoints, { color: 'green' }).addTo(mymap);
+                    annotations.push(tempPolyline); // Add the temporary polyline to the annotations array
                 }
 
                 // check for snapping
                 if (polyPoints.length > 2 && isPointCloseToFirst(polyPoints, point)) {
                     var newPolygon = L.polygon([...polyPoints, polyPoints[0]], { color: 'blue' }).addTo(mymap);
+                    var polyText = prompt("Enter text for this polygon:", "Polygon description");
+                    if (polyText != null && polyText != "" ) {
+                        newPolygon.bindPopup(polyText);
+                    } else {
+                        newPolygon.bindPopup("Polygon at " + e.latlng.toString()).openPopup();
+                    }
                     annotations.push(newPolygon); // Add the completed polygon to the annotations array
                     alert("Polygon completed by snapping!");
                     saveAnnotation('polygon', [...polyPoints, polyPoints[0]]);
                     polyPoints = []; // reset after drawing the polygon
-                    if (this.tempPolyline) {
-                        mymap.removeLayer(this.tempPolyline);
-                        annotations = annotations.filter(function(annotation) { return annotation !== this.tempPolyline; });
-                        this.tempPolyline = null;
+                    if (tempPolyline) {
+                        mymap.removeLayer(tempPolyline);
+                        annotations = annotations.filter(function(annotation) { return annotation !== tempPolyline; });
+                        tempPolyline = null;
                     } 
                 }
             } else {
@@ -138,16 +156,36 @@
 
     document.getElementById('completePolygon').addEventListener('click', function() {
         if (polyPoints.length > 2) {
-            L.polygon(polyPoints, { color: 'blue' }).addTo(mymap);
+            var completedPolygon = L.polygon(polyPoints, { color: 'blue' }).addTo(mymap);
+            annotations.push(completedPolygon); // Add the completed polygon to the annotations array
             saveAnnotation('polygon', polyPoints);
-            polyPoints = [];
-            if (this.tempPolyline) {
-                mymap.removeLayer(this.tempPolyline);
+            polyPoints = []; // Reset after drawing the polygon
+            if (tempPolyline) {
+                mymap.removeLayer(tempPolyline);
+                annotations = annotations.filter(function(annotation) { return annotation !== tempPolyline; });
+                tempPolyline = null;
             }
-            this.tempPolyline = null;
         } else {
             alert("You need at least 3 points to make a polygon.");
         }
+    });
+
+    document.getElementById('clearAnnotations').addEventListener('click', function() {
+        annotations.forEach(function(annotation) {
+            mymap.removeLayer(annotation);
+        });
+        annotations = [];
+        linePoints = [];
+        polyPoints = [];
+        markerCount = 0;
+        if (tempLine) {
+            mymap.removeLayer(tempLine);
+        }
+        if (tempPolyline) {
+            mymap.removeLayer(tempPolyline);
+        }
+        tempLine = null;
+        tempPolyline = null;
     });
 
     function isPointCloseToFirst(points, newPoint) {
