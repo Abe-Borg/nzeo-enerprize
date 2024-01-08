@@ -37,3 +37,6 @@ from django.shortcuts import render
 # 10. Serving static files: Views can serve static files like images, CSS, and JavaScript.
 # 
 # 11. Streaming or Real-time data: views can stream data or handle real-time updates. 
+
+def index(request, *args, **kwargs):
+    return render(request, 'maps/index.html')
