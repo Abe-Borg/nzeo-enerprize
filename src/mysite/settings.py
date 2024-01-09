@@ -35,6 +35,7 @@ if DEBUG:
 # Application definition
 
 INSTALLED_APPS = [
+    'maps_webpages',
     'personal',
     'account',
     'maps',
