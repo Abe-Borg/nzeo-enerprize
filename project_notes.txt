@@ -1,0 +1,37 @@
+DABASE COMPONENTS
+-- Maps & Markups --
+    - each map needs to be uniquely identifiable with a unique ID for each map element (like a school campus)
+    - each markup needs a unique id and also needs to be linked to a user
+    - Define a model to store data about schools, including their names, and geographical coordinates.
+
+NAVIGATION
+-- Event Listerners --
+    - Clicks
+        - In the map interface, set up an even listener. when a user clicks on building or site, the event listener should capture the unique id of the clicked element.
+        - Once the click is detected and the ID is obtained, you'll use this ID to redirect the user to the relevant part of the application.This can be done in several ways:
+            - Direct link: if each school has a unique URL in the application ( like yoursite.com/school/{schoolID}) , you can simply redirect the user to this URL.
+            - AJAX request: If the information is loaded dynamically (without a page refres), you can make an AJAX request to your server using the unique ID to fetch the specific information and documents, and then display them on the current map.
+            - 
+    - Backend handling
+        - On the server-side, I will need an endpoint that handes the request. It should take the unique ID, retrieve the relevant information and documents from the database, and return them in a suitable format, like JSON.
+    - Frontend
+        - the frontend should handle the data received from the server. This might involve updating the DOM to show the new information, navigating to a new route in a single page application, or rendering a new page in a multi-page application.
+
+MAP INFORMATION DISPLAY
+-- Site/building information --
+    - create a view that retrieves school data from the database.
+    - format that data as JSON, including the geographical coordinates and any other information.
+    - create a django template. In the django tempate, include the mapping library's js and css files.
+    - create a div element where the mpa will be displayed.
+    - write JS to initialize the map in this div.
+    - Use AJAX to fetch the school data from the Django view.
+    - iterate over this data, adding markers to the map for each school. 
+    - for each marker on the map, add an event listener that triggers on click.
+        - in this listener, you can redirect the user to a different part of the application. This can be done by changing window.location.href to the URL associated with the school, which could be something like /school-detail/{schoolID}
+    - handle the redirect in Django: create a url pattern in django that captures the school-specific urls.
+    - create a view that renders the appropriate information based on the school id.
+    - create a way to find geographical location of an address.
+
+
+Deploying on DigitalOcean
+    
