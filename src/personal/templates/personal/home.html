@@ -61,41 +61,23 @@
             </p>
         </div>
 
-
-        <button type="button" class="btn btn-outline-primary">
+        <a href="maps" class="btn btn-outline-primary" role="button">
             <h1>Click to Overall Map</h1>
-        </button>
-        <hr class="my-4">
-        
-
+        </a>        
+        <hr class="my-4"> 
         <h1>My Projects</h1>
         <hr class="my-4">
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
             <div class="col">
                 <div class="card">
                     <h5 class="card-header">Project Name</h5>
-                    <img src="#" class="card-img-top" alt="small map view of project, clicking it takes you to map location" style="height: 150px"/>
                     <div class="card-body">
-                        <h5 class="card-title">Some Heading</h5>
                         <p class="card-text">
                             Some description of project
                         </p>
-                        <a href="#" class="btn btn-primary">Go to Project Home Page</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-            <div class="col">
-                <div class="card">
-                    <h5 class="card-header">Project Name</h5>
-                    <img src="#" class="card-img-top" alt="small map view of project, clicking it takes you to map location" style="height: 150px"/>
-                    <div class="card-body">
-                        <h5 class="card-title">Some Heading</h5>
-                        <p class="card-text">
-                            Some description of project
-                        </p>
-                        <a href="#" class="btn btn-primary">Go to Project Home Page</a>
+                        <a href="{% url 'maps_webpages:sanger_high_school' %}" class="btn btn-primary">Go to Project Home Page</a>
+
+                        <a href="maps?lat=36.69991667&lng=-119.57691667&zoom=16"class="btn btn-primary">Go to Location on Map</a>
                     </div>
                 </div>
             </div>

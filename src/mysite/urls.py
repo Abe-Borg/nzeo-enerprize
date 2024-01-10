@@ -26,6 +26,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('maps/', include("maps.urls")),
+    path('maps_webpages/', include("maps_webpages.urls")),
     path('', home_screen_view, name='home'),
     path('register/', registration_view, name='register'),
     path('logout/', logout_view, name='logout'),
