@@ -24,6 +24,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('nzeo_dashboard/', include('nzeo_dashboard.urls')),
     path('admin/', admin.site.urls),
     path('maps/', include("maps.urls")),
     path('maps_webpages/', include("maps_webpages.urls")),
