@@ -1,10 +1,5 @@
 @charset "UTF-8";
-/*!
- * Bootstrap v4.5.2 (https://getbootstrap.com/)
- * Copyright 2011-2020 The Bootstrap Authors
- * Copyright 2011-2020 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
- */
+
 :root {
   --blue: #007bff;
   --indigo: #6610f2;
@@ -9374,7 +9369,6 @@ i.material-icons.h1, i.material-icons.h2, i.material-icons.h3, i.material-icons.
 /**
  * prism.js default theme for JavaScript, CSS and HTML
  * Based on dabblet (http://dabblet.com)
- * @author Lea Verou
  */
 code[class*="language-"],
 pre[class*="language-"] {

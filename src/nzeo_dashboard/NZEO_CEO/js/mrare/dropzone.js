@@ -1,9 +1,4 @@
-//
-//
-// dropzone.js
-//
 // Initializes dropzone plugin on elements to facilitate drag/drop for uploads
-//
 
 import jQuery from 'jquery';
 // import Dropzone from 'dropzone';

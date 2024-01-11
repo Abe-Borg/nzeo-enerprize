@@ -1,10 +1,4 @@
-//
-//
-// chat.js
-//
 // Initializes the autosize library and scrolls chat list to bottom
-//
-
 import jQuery from 'jquery';
 import autosize from 'autosize';
 import mrUtil from './util';

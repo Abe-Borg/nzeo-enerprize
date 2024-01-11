@@ -1,9 +1,3 @@
-//
-//
-// Util
-//
-// Medium Rare utility functions
-// v 1.3.0
 
 import jQuery from 'jquery';
 

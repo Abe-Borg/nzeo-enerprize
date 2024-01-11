@@ -1,10 +1,5 @@
-//
-//
-// flatpickr.js
-//
 // an initializer for the flatpickr date/time picker plugin
 // https://flatpickr.js.org/
-//
 
 import jQuery from 'jquery';
 import flatpickr from 'flatpickr';
@@ -17,11 +12,6 @@ const mrFlatpickr = (($) => {
     throw new Error('mrFlatpickr requires flatpickr.js (https://github.com/flatpickr/flatpickr)');
   }
 
-  /**
-   * ------------------------------------------------------------------------
-   * Constants
-   * ------------------------------------------------------------------------
-   */
 
   const NAME = 'mrFlatpickr';
   const VERSION = '1.0.0';
@@ -38,11 +28,6 @@ const mrFlatpickr = (($) => {
     FLATPICKR: '[data-flatpickr]',
   };
 
-  /**
-   * ------------------------------------------------------------------------
-   * Class Definition
-   * ------------------------------------------------------------------------
-   */
 
   class Flatpickr {
     constructor(element) {
@@ -74,14 +59,8 @@ const mrFlatpickr = (($) => {
       });
     }
   }
-  // END Class definition
 
-  /**
-   * ------------------------------------------------------------------------
-   * Initialise by data attribute
-   * ------------------------------------------------------------------------
-   */
-
+  // Initialise by data attribute
   $(window).on(Event.LOAD_DATA_API, () => {
     const pickers = $.makeArray($(Selector.FLATPICKR));
 
@@ -92,11 +71,7 @@ const mrFlatpickr = (($) => {
     }
   });
 
-  /**
-   * ------------------------------------------------------------------------
-   * jQuery
-   * ------------------------------------------------------------------------
-   */
+  // jQuery
   /* eslint-disable no-param-reassign */
   $.fn[NAME] = Flatpickr.jQueryInterface;
   $.fn[NAME].Constructor = Flatpickr;

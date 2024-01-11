@@ -1,9 +1,4 @@
-//
-//
-// kanban.js
-//
 // Initializes the kanban plugin .
-//
 
 import Draggable from '@shopify/draggable/lib/draggable';
 import SwapAnimation from '@shopify/draggable/lib/plugins';

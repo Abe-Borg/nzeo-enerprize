@@ -1,9 +1,4 @@
-//
-//
-// filter.js
-//
 // Initialises the List.js plugin and provides interface to list objects
-//
 
 import jQuery from 'jquery';
 import List from 'list.js';
@@ -18,11 +13,6 @@ const mrFilterList = (($) => {
     throw new Error('mrFilterList requires list.js (http://listjs.com)');
   }
 
-  /**
-   * ------------------------------------------------------------------------
-   * Constants
-   * ------------------------------------------------------------------------
-   */
 
   const NAME = 'mrFilterList';
   const VERSION = '1.0.0';
@@ -45,12 +35,7 @@ const mrFilterList = (($) => {
     FILTER_TEXT: 'filter-by-text',
   };
 
-  /**
-   * ------------------------------------------------------------------------
-   * Class Definition
-   * ------------------------------------------------------------------------
-   */
-
+ 
   class FilterList {
     constructor(element) {
       // The current data-filter-list element
@@ -190,14 +175,8 @@ const mrFilterList = (($) => {
       });
     }
   }
-  // END Class definition
 
-  /**
-   * ------------------------------------------------------------------------
-   * Initialise by data attribute
-   * ------------------------------------------------------------------------
-   */
-
+  // Initialise by data attribute
   $(window).on(Event.LOAD_DATA_API, () => {
     const filterLists = $.makeArray($(Selector.FILTER));
 
@@ -208,11 +187,7 @@ const mrFilterList = (($) => {
     }
   });
 
-  /**
-   * ------------------------------------------------------------------------
-   * jQuery
-   * ------------------------------------------------------------------------
-   */
+  // jQuery
   /* eslint-disable no-param-reassign */
   $.fn[NAME] = FilterList.jQueryInterface;
   $.fn[NAME].Constructor = FilterList;
