@@ -85,13 +85,6 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 import os
 
-# check if env variables are set correctly
-print("Database Name:", os.getenv('DJANGO_DB_NAME'))
-print("Database User:", os.getenv('DJANGO_DB_USER'))
-print("Database Password:", os.getenv('DJANGO_DB_PASSWORD'))
-print("Database Host:", os.getenv('DJANGO_DB_HOST'))
-print("Database Port:", os.getenv('DJANGO_DB_PORT'))
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
