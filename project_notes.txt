@@ -33,5 +33,10 @@ MAP INFORMATION DISPLAY
     - create a way to find geographical location of an address.
 
 
-Deploying on DigitalOcean
-    
+
+Learn about pg_dump for backups.
+Set up a cron job for regular backups.
+Familiarize yourself with basic maintenance tasks like VACUUM and ANALYZE.
+
+
+
