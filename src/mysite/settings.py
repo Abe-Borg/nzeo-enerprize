@@ -35,7 +35,6 @@ if DEBUG:
 # Application definition
 
 INSTALLED_APPS = [
-    'nzeo_dashboard',
     'maps_webpages',
     'personal',
     'account',
