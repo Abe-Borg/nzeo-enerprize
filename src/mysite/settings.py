@@ -85,6 +85,13 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 import os
 
+# check if env variables are set correctly
+print("Database Name:", os.getenv('DJANGO_DB_NAME'))
+print("Database User:", os.getenv('DJANGO_DB_USER'))
+print("Database Password:", os.getenv('DJANGO_DB_PASSWORD'))
+print("Database Host:", os.getenv('DJANGO_DB_HOST'))
+print("Database Port:", os.getenv('DJANGO_DB_PORT'))
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -121,13 +128,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
