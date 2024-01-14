@@ -85,8 +85,6 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 import os
 
-print(os.getenv('DJANGO_DB_PASSWORD'))
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
