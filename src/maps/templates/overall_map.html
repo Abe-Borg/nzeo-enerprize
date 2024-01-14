@@ -9,7 +9,7 @@
 </head>
 
 <!-- create a div element that I can use to embed a map using openmaptiles -->
-<div id='sanger_high_school_map' style='width: 100%; height: 800px;'>
+<div id='fresno_map' style='width: 100%; height: 800px;'>
     <h1>Sample of Map View</h1>
     <p>Page still in development.</p>
     <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-119.0380859375%2C36.98500309285596%2C-118.980712890625%2C37.01907571607497&amp;layer=mapnik&amp;marker=37.00203947386811%2C-119.0093994140625" style="border: 1px solid black"></iframe><br/><small><a href="https://www.openstreetmap.org/#map=14/37.0020/-119.0094">View Larger Map</a></small>
@@ -37,14 +37,14 @@
 
 <!--logic for map and map interactivity -->
 <script>
-    var mymap = L.map('sanger_high_school_map').setView([36.73825, -119.7915], 12); 
+    var mymap = L.map('fresno_map').setView([36.73825, -119.7915], 12); 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© OpenStreetMap contributors'
     }).addTo(mymap);
 
     var marker = L.marker([36.69991667, -119.57691667]).addTo(mymap);
-    marker.bindPopup("<b>Sanger High School</b><br>Home of the Apaches.").openPopup();
+    marker.bindPopup("<b>Fresno</b>").openPopup();
 
 
     // -- Interactive features --

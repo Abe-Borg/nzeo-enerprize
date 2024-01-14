@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from personal.views import home_screen_view
+from nzeo_management.views import home_screen_view
 from maps.views import index
 from account.views import registration_view, logout_view, login_view, account_view, must_authenticate_view
 from django.contrib.auth import views as auth_views
