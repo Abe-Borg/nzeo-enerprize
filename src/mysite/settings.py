@@ -35,8 +35,6 @@ if DEBUG:
 # Application definition
 
 INSTALLED_APPS = [
-    'maps_locations',
-    'personal',
     'account',
     'maps',
     'django.contrib.admin',
@@ -45,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
