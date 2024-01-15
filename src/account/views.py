@@ -3,7 +3,6 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from account.forms import AccountUpdateForm, RegistrationForm, AccountAuthenticationForm
 
-# Create your views here.
 def registration_view(request):
     context = {}
     if request.POST:

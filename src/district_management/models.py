@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 class District_Admin(models.Model):
     # user = models.OneToOneField(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=20, default="District Admin")
