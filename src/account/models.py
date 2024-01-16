@@ -42,6 +42,7 @@ class Account(AbstractUser):
     is_district_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'job_title', 'phone_number', 'assigned_district', 'assigned_school']

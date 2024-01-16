@@ -36,7 +36,12 @@ if DEBUG:
 
 INSTALLED_APPS = [
     'account',
+    'api',
+    'district_management',
+    'documents',
     'maps',
+    'nzeo_management',
+    'school_management',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -74,6 +79,7 @@ TEMPLATES = [
     },
 ]
 
+# this is for custom user model
 AUTH_USER_MODEL = "account.Account"
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
