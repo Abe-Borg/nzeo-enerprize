@@ -1,21 +1,23 @@
+# school_management/models.py
 from django.db import models
+from district_management.models import SchoolDistrict
 
-# Create your models here.
+# district level staff can choose to create site staff, even though the site staff may not be registered with NZEO 
 class SiteStaff(models.Model):
-    first_name = models.CharField(max_length=20, default="Site Staff first name")
-    last_name = models.CharField(max_length=20, default="Site Staff last name")
-    job_title = models.CharField(max_length=20, default="Site Staff")
-    email = models.EmailField(max_length=50, default="Site Staff email")
-    phone = models.CharField(max_length=20, default="Site Staff phone number")
-    assigned_district = models.CharField(max_length=20, default="Site Staff district")
-    assigned_school = models.CharField(max_length=20, default="Site Staff site")
-    school_id = models.IntegerField()
+    staff_id = models.AutoField(primary_key=True)
+    first_name = models.CharField(max_length=20)
+    last_name = models.CharField(max_length=20)
+    job_title = models.CharField(max_length=20)
+    email = models.EmailField(verbose_name = "email", max_length = 60, unique=True)
+    phone = models.CharField(max_length=20)
+    district_id = models.ForeignKey(SchoolDistrict, on_delete=models.CASCADE)
+    school_id = models.ForeignKey('school_management.School', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Site Staff: {self.first_name} {self.last_name}, Job Title: {self.job_title}, Email: {self.email}, Phone: {self.phone}, District: {self.assigned_district}, School: {self.assigned_school}"
+        return f"Staff ID: {self.staff_id}, Name: {self.first_name} {self.last_name}, Job Title: {self.job_title}, Email: {self.email}, Phone: {self.phone}, District: {self.district_id}, School: {self.school_id}"
 
 class School(models.Model):
-    school_id = models.IntegerField()
+    school_id = models.AutoField(primary_key=True)
     school_name = models.CharField(max_length=50)
     school_district = models.CharField(max_length=50)
     school_area_sqft = models.IntegerField()
@@ -25,7 +27,8 @@ class School(models.Model):
     school_phone = models.CharField(max_length=50)
     school_email = models.CharField(max_length=50)
     student_population = models.IntegerField()
-    student_percent_disenfrachised = models.IntegerField()
+    student_percent_disenfrachised = models.IntegerField()    
+    district_id = models.ForeignKey(SchoolDistrict, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"School: {self.school_name}, District: {self.school_district}, Address: {self.school_address}, Phone: {self.school_phone}, Email: {self.school_email}, Student Population: {self.student_population}, Percent Disenfranchised: {self.student_percent_disenfrachised}"
