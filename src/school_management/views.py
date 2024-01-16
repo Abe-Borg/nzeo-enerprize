@@ -1,5 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
-def sanger_high_school(request, *args, **kwargs):
-    return render(request, 'sanger_high_school.html')
+def site_staff_home(request):
+    context = {}
+    return render(request, 'templates/site_staff_home.html', context)

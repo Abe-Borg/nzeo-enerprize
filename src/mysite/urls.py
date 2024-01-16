@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from nzeo_management.views import home_screen_view
 from maps.views import index
 from account.views import registration_view, logout_view, login_view, account_view, must_authenticate_view
 from django.contrib.auth import views as auth_views
@@ -26,8 +25,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('maps/', include("maps.urls")),
-    path('maps_webpages/', include("maps_webpages.urls")),
-    path('', home_screen_view, name='home'),
     path('register/', registration_view, name='register'),
     path('logout/', logout_view, name='logout'),
     path('login/', login_view, name='login'),

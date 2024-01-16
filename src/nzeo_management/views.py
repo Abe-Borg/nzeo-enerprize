@@ -6,11 +6,3 @@ from account.models import Account
 def nzeo_admin_home(request):
     context = {}
     return render(request, 'templates/nzeo_admin_home.html', context)
-
-def district_admin_home(request):
-    context = {}
-    return render(request, 'templates/district_admin_home.html', context)
-
-def site_staff_home(request):
-    context = {}
-    return render(request, 'templates/site_staff_home.html', context)
