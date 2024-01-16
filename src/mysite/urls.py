@@ -1,3 +1,5 @@
+# mysite/urls.py
+
 """
 URL configuration for mysite project.
 
@@ -18,8 +20,10 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from . import views
 
 urlpatterns = [
+    path('', views.enerprize_home, name = 'enerprize_home'),
     path('admin/', admin.site.urls), # for the default django amdin page
     path('account/', include("account.urls")),
     path('api/', include("api.urls")),

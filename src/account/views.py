@@ -1,7 +1,12 @@
+# account/views.py
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.contrib import messages
 from account.forms import AccountUpdateForm, RegistrationForm, AccountAuthenticationForm
+
 
 def registration_view(request):
     context = {}
@@ -13,24 +18,25 @@ def registration_view(request):
             raw_password = form.cleaned_data.get('password1')
             account = authenticate(username=email, password=raw_password)
             login(request, account)
-            return redirect('home')
+            return HttpResponseRedirect(reverse('enerprize_home'))
         else:
             context['registration_form'] = form
     else:
         form = RegistrationForm()
         context['registration_form'] = form
-
     return render(request, 'account/register.html', context)
+
 
 def logout_view(request):
     logout(request)
-    return redirect('home')
+    return HttpResponseRedirect(reverse('enerprize_home'))
+
 
 def login_view(request):
     context = {}
     user = request.user
     if user.is_authenticated:
-        return redirect('home')
+        return HttpResponseRedirect(reverse('enerprize_home'))
     
     if request.POST:
         form = AccountAuthenticationForm(request.POST)
@@ -41,12 +47,13 @@ def login_view(request):
             
             if user:
                 login(request, user)
-                return redirect('home')
+                return HttpResponseRedirect(reverse('enerprize_home'))
     else:
         form = AccountAuthenticationForm()
     
     context['login_form'] = form
     return render(request, 'account/login.html', context)
+
 
 def account_view(request):
     if not request.user.is_authenticated:
@@ -67,9 +74,9 @@ def account_view(request):
                 'email': request.user.email,
                 'username': request.user.username,
             }
-        )
-    
+        )    
     return render(request, 'account/account.html', {'account_form': form})
+
 
 def must_authenticate_view(request):
     return render(request, 'account/must_authenticate.html', {})
