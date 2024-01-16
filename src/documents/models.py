@@ -15,7 +15,7 @@ class Document(models.Model):
     document_school = models.CharField(max_length=255)
     document_tags = models.CharField(max_length=255)
     document_is_public = models.BooleanField(default=False)
-    document_is_active = models.BooleanField(default=True)
+    document_is_active = models.BooleanField(default=True) 
     document_is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
