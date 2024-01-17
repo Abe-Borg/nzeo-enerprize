@@ -7,7 +7,7 @@ from datetime import timedelta
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
-from account.forms import AccountUpdateForm, RegistrationForm, AccountAuthenticationForm
+from .forms import AccountUpdateForm, RegistrationForm, AccountAuthenticationForm
 
 
 def registration_view(request):
@@ -80,17 +80,20 @@ def must_authenticate_view(request):
 class CustomLoginView(LoginView):
     """
     Custom Login View that extends the built-in LoginView class.
-    This view handles the login form submission and sets the session expiry based on the 'remember_me' field value.
-    If 'remember_me' is checked, the session will expire after 2 weeks. Otherwise, the session will expire at browser close.
+    Handles the login form submission and sets the session expiry.
     """
+    # Use the custom authentication form
+    form_class = AccountAuthenticationForm  
+    template_name = 'account/templates/registration/login.html'
+
     def form_valid(self, form):
         remember_me = form.cleaned_data.get('remember_me')
 
         if remember_me:
-            # Set session to expire after 2 weeks
             self.request.session.set_expiry(1209600)  # 2 weeks in seconds
         else:
-            # Session expires at browser close
             self.request.session.set_expiry(0)
 
-        return super(CustomLoginView, self).form_valid(form)
+        # Call super to handle the login process
+        super(CustomLoginView, self).form_valid(form)
+        return HttpResponseRedirect(reverse('enerprize_home'))
