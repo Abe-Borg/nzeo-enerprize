@@ -1,7 +1,9 @@
 # account/views.py
-
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.views import LoginView
+from django.utils import timezone
+from datetime import timedelta
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
@@ -32,30 +34,23 @@ def logout_view(request):
     return HttpResponseRedirect(reverse('enerprize_home'))
 
 
-def login_view(request):
-    context = {}
-    user = request.user
-    if user.is_authenticated:
-        return HttpResponseRedirect(reverse('enerprize_home'))
-    
-    if request.POST:
-        form = AccountAuthenticationForm(request.POST)
-        if form.is_valid():
-            email = request.POST['email']
-            password = request.POST['password']
-            user = authenticate(email=email, password=password)
-            
-            if user:
-                login(request, user)
-                return HttpResponseRedirect(reverse('enerprize_home'))
-    else:
-        form = AccountAuthenticationForm()
-    
-    context['login_form'] = form
-    return render(request, 'account/login.html', context)
-
-
 def account_view(request):
+    """
+    Handles the account view for a user. 
+    - If the user is not authenticated, they are redirected to the login page. 
+    - If the request method is POST, it attempts to update the user's account 
+    with the submitted form data. If the form is valid and has changes, it 
+    saves the changes and displays a success message. If the form is valid 
+    but has no changes, it displays an info message. 
+    - If the request method is not POST, it initializes the form with the 
+    current user's email and username.
+    - Finally, it renders the 'account/account.html' template with the form.
+
+    Parameters:
+    request (HttpRequest): The HTTP request object.
+    Returns:
+    HttpResponse: The HTTP response object.
+    """
     if not request.user.is_authenticated:
         return redirect('login')
     
@@ -80,3 +75,22 @@ def account_view(request):
 
 def must_authenticate_view(request):
     return render(request, 'account/must_authenticate.html', {})
+
+
+class CustomLoginView(LoginView):
+    """
+    Custom Login View that extends the built-in LoginView class.
+    This view handles the login form submission and sets the session expiry based on the 'remember_me' field value.
+    If 'remember_me' is checked, the session will expire after 2 weeks. Otherwise, the session will expire at browser close.
+    """
+    def form_valid(self, form):
+        remember_me = form.cleaned_data.get('remember_me')
+
+        if remember_me:
+            # Set session to expire after 2 weeks
+            self.request.session.set_expiry(1209600)  # 2 weeks in seconds
+        else:
+            # Session expires at browser close
+            self.request.session.set_expiry(0)
+
+        return super(CustomLoginView, self).form_valid(form)

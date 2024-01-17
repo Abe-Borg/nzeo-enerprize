@@ -12,11 +12,12 @@ from django.contrib.auth.views import (
     PasswordChangeDoneView 
 )
 from . import views
+from .views import CustomLoginView
 
 urlpatterns = [
     path('registration/', include('registration.backends.default.urls')),
     # path('register/', views.registration_view, name='register'),
-    path('login/', LoginView.as_view(), name='login'),
+    path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(next_page='enerprize_home'), name='logout'),
     
     path('must_authenticate/', views.must_authenticate_view, name='must_authenticate'),
