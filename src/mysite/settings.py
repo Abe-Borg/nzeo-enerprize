@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django-allauth',
+    'registration',
 ]
 
 MIDDLEWARE = [
@@ -170,3 +171,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ]
 }
+
+ACCOUNT_ACTIVATION_DAYS = 7  # Number of days for account activation
+REGISTRATION_AUTO_LOGIN = True  # Automatically log the user in.
