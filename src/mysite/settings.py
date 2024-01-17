@@ -174,3 +174,13 @@ REST_FRAMEWORK = {
 
 ACCOUNT_ACTIVATION_DAYS = 7  # Number of days for account activation
 REGISTRATION_AUTO_LOGIN = True  # Automatically log the user in.
+
+
+# required for email confirmation during registration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'your.smtp.host'                                         ### placeholder
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'your-email@example.com'                            ### placeholder
+EMAIL_HOST_PASSWORD = 'your-email-password'                           ### placeholder
+
