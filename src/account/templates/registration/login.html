@@ -8,52 +8,49 @@
     body {
         height: 100%;
     }
-
     .form-signin {
         max-width: 330px;
         padding: 1rem;
     }
-
     .form-signin .form-floating:focus-within {
         z-index: 2;
     }
-
     .form-signin input[type="email"] {
         margin-bottom: -1px;
         border-bottom-right-radius: 0;
         border-bottom-left-radius: 0;
     }
-
     .form-signin input[type="password"] {
         margin-bottom: 10px;
         border-top-left-radius: 0;
         border-top-right-radius: 0;
     }
-
     .h3 {
         text-align: center;
     }
-
 </style>
 
 <main class="form-signin w-100 m-auto">
     <form method = "post">{% csrf_token %}
       <h1 class="h3 mb-3 fw-normal">Login</h1>
-  
+      
       <div class="form-floating">
-        <input name = "email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-        <label for="floatingInput">Email address</label>
+        <!-- <input name = "email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+        <label for="floatingInput">Email address</label> -->
+        {{ login_form.email }}
+        <label for="{{ login_form.email.id_for_label }}">Email address</label>
       </div>
       <div class="form-floating">
-        <input name = "password" type="password" class="form-control" id="floatingPassword" placeholder="Password" required>
-        <label for="floatingPassword">Password</label>
+        <!-- <input name = "password" type="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+        <label for="floatingPassword">Password</label> -->
+        {{ login_form.password }}
+        <label for="{{ login_form.password.id_for_label }}">Password</label>
+      </div>
 
-        {% for field in login_form %}
-            <p>            
-                {% for error in field.errors %}
-                    <p style = "color: red;">{{error}}</p>
-                {% endfor %}
-            </p>
+        {% for field in login_form %}     
+            {% for error in field.errors %}
+                <p style = "color: red;">{{error}}</p>
+            {% endfor %}
         {% endfor %}
 
         {% if login_form.non_field_errors %}
@@ -61,7 +58,6 @@
                 <p style = "color: red;">{{error}}</p>
             {% endfor %}
         {% endif %}
-      </div>
   
       <div class="form-check text-start my-3">
         <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
@@ -78,4 +74,4 @@
     </div>
   </main>
  
-{% endblock content %}
+{% endblock content %} 

@@ -1,0 +1,9 @@
+Hello,
+
+Thank you for registering at NZEO-Enerprize. Please click the link below to activate your account:
+
+{{ activation_link }}
+
+If the above link doesn't work, please copy and paste the URL into your web browser.
+
+Thank you for joining us!

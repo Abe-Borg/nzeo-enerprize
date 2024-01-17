@@ -1,5 +1,8 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-def index(request, *args, **kwargs):
-    return render(request, 'maps/index.html')
+@login_required(login_url = 'login')
+def overall_map(request, *args, **kwargs):
+    return render(request, 'templates/overall_map.html')

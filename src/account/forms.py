@@ -10,21 +10,16 @@ class RegistrationForm(UserCreationForm):
     job_title = forms.CharField(required = True, max_length=60, help_text='Required. Add a valid job title')
     company = forms.CharField(required = True, max_length=60, help_text='Required. Add a valid company')
     phone_number = forms.CharField(required = True, max_length=60, help_text='Required. Add a valid phone number')
-    password1 = forms.CharField(required = True, label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(required = True, label='Confirm Password', widget=forms.PasswordInput)
     
     class Meta:
         model = Account
         fields = ('email', 'first_name', 'last_name', 'job_title', 'company', 'phone_number', 'password1', 'password2')
 
     def clean_email(self):
-        if self.is_valid():
-            email = self.cleaned_data['email']
-            try:
-                account = Account.objects.get(email=email)
-            except Account.DoesNotExist:
-                return email
-            raise forms.ValidationError('Email "%s" is already in use.' % account.email)
+        email = self.cleaned_data.get('email')
+        if Account.objects.filter(email = email).exists():
+            raise forms.ValidationError('Email "%s" is already in use.' % email)
+        return email
     
     def save(self, commit=True):
         account = super(RegistrationForm, self).save(commit=False)

@@ -1,8 +1,11 @@
 import os
 from django.http import FileResponse
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-# Create view for download file request
+
+@login_required(login_url = 'login')
 def download_file(request):
     # get the file path from the request
     file_path = request.GET.get('file_path')
@@ -11,7 +14,7 @@ def download_file(request):
     # return the file
     return FileResponse(file)
 
-# Create view for upload file request
+@login_required(login_url = 'login')
 def upload_file(request):
     # get the file from the request
     file = request.FILES['file']
@@ -24,7 +27,7 @@ def upload_file(request):
     # return the file
     return render(request, 'documents/upload.html')
 
-# Create view for delete file request
+@login_required(login_url = 'login')
 def delete_file(request):
     # get the file path from the request
     file_path = request.GET.get('file_path')

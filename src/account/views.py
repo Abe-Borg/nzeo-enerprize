@@ -16,7 +16,6 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('enerprize_home'))
 
-
 def account_view(request):
     """
     Handles the account view for a user. 
@@ -36,7 +35,6 @@ def account_view(request):
     """
     if not request.user.is_authenticated:
         return redirect('login')
-    
     if request.method == 'POST':
         form = AccountUpdateForm(request.POST, instance=request.user)
         if form.is_valid():
@@ -54,7 +52,6 @@ def account_view(request):
             }
         )    
     return render(request, 'account/account.html', {'account_form': form})
-
 
 def must_authenticate_view(request):
     return render(request, 'account/must_authenticate.html', {})

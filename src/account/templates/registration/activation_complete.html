@@ -1,1 +1,11 @@
 <!-- Shown after the user has activated their account via email. -->
+{% extends 'base_minimal.html' %}
+
+{% block content %}
+
+<body>
+    <h1>Account Activation Complete</h1>
+    <p>Your account has been successfully activated. You can now <a href="{% url 'login' %}">login</a>.</p>
+</body>
+
+{% endblock %}

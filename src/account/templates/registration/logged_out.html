@@ -1,0 +1,11 @@
+{% extends 'base_minimal.html' %}
+
+{% block content %}
+
+<body>
+    <h1>You have been logged out</h1>
+    <p>Thank you for visiting. You have successfully logged out of your account.</p>
+    <p><a href="{% url 'login' %}">Click here</a> to log in again.</p>
+</body>
+
+{% endblock %}
