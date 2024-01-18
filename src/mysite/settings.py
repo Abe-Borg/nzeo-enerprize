@@ -37,12 +37,12 @@ if DEBUG:
 
 INSTALLED_APPS = [
     'account',
-    'api',
-    'district_management',
-    'documents',
-    'maps',
-    'nzeo_management',
-    'school_management',
+    # 'api',
+    # 'district_management',
+    # 'documents',
+    # 'maps',
+    # 'nzeo_management',
+    # 'school_management',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'django-allauth',
+    # 'django-allauth', # causing problems, fix later
     'registration',
 ]
 
@@ -124,7 +124,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
+    # 'django.contrib.auth.backends.ModelBackend',
+    # 'allauth.account.auth_backends.AuthenticationBackend'
     # 'account.authentication.EmailAuthBackend',
 ]
 

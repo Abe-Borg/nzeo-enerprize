@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-from district_management.models import SchoolDistrict
+# from district_management.models import SchoolDistrict
 
 
 class MyAccountManager(BaseUserManager):
@@ -43,8 +43,8 @@ class Account(AbstractUser):
     is_district_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    district_id = models.ForeignKey(SchoolDistrict, on_delete=models.CASCADE)
-    school_id = models.ForeignKey('school_management.School', on_delete=models.CASCADE)
+    # district_id = models.ForeignKey(SchoolDistrict, on_delete=models.CASCADE)
+    # school_id = models.ForeignKey('school_management.School', on_delete=models.CASCADE)
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'job_title', 'phone_number']

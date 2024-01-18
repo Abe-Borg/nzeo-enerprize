@@ -24,15 +24,15 @@ from . import views
 
 urlpatterns = [
     path('', views.enerprize_home, name = 'enerprize_home'),
-    path('admin/', admin.site.urls), # for the default django amdin page
+    path('admin/', admin.site.urls),
     path('account/', include("account.urls")),
-    path('api/', include("api.urls")),
-    path('district_management/', include("district_management.urls")),
-    path('documents/', include("documents.urls")),
-    path('maps/', include("maps.urls")),
-    path('nzeo_management/', include("nzeo_management.urls")),
-    path('school_management/', include("school_management.urls")),
-    path('api/auth/', include('rest_framework.urls')),
+    # path('api/', include("api.urls")),
+    # path('district_management/', include("district_management.urls")),
+    # path('documents/', include("documents.urls")),
+    # path('maps/', include("maps.urls")),
+    # path('nzeo_management/', include("nzeo_management.urls")),
+    # path('school_management/', include("school_management.urls")),
+    # path('api/auth/', include('rest_framework.urls')),
 ]
 
 if settings.DEBUG:
