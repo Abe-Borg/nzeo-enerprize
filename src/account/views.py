@@ -53,6 +53,7 @@ def account_view(request):
         )    
     return render(request, 'account/account.html', {'account_form': form})
 
+
 def must_authenticate_view(request):
     return render(request, 'account/must_authenticate.html', {})
 

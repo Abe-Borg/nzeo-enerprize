@@ -24,6 +24,7 @@ from . import views
 
 urlpatterns = [
     path('', views.enerprize_home, name = 'enerprize_home'),
+    path('enerprize-home/', views.enerprize_home, name = 'enerprize_home'),
     path('admin/', admin.site.urls),
     path('account/', include("account.urls")),
     # path('api/', include("api.urls")),

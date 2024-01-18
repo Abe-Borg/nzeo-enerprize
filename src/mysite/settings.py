@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    # 'django-allauth', # causing problems, fix later
+    # 'django-allauth', 
     'registration',
 ]
 
@@ -96,7 +96,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DJANGO_DB_NAME'),
         'USER': os.getenv('DJANGO_DB_USER'),
-        'PASSWORD': os.getenv('P+aqv&6%4GG+'),
+        'PASSWORD': 'P+aqv&6%4GG+',
         'HOST': os.getenv('DJANGO_DB_HOST', 'localhost'),
         'PORT': os.getenv('DJANGO_DB_PORT', '5432'),
     }

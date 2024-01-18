@@ -4,4 +4,4 @@ from . import settings
 
 
 def enerprize_home(request):
-    return render(request, f"{settings.BASE_DIR}/templates/enterprize-homepage.html")
+    return render(request, f"{settings.BASE_DIR}/templates/enerprize_home_page.html")
