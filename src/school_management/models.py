@@ -33,7 +33,7 @@ class School(models.Model):
     def __str__(self):
         return f"School: {self.school_name}, District: {self.school_district}, Address: {self.school_address}, Phone: {self.school_phone}, Email: {self.school_email}, Student Population: {self.student_population}, Percent Disenfranchised: {self.student_percent_disenfrachised}"
 
-class SchoolBuilding(models.Model):
+class Building(models.Model):
     school_id = models.IntegerField()
     building_id = models.IntegerField()
     building_name = models.CharField(max_length=20, default="Building name")
@@ -47,11 +47,11 @@ class SchoolBuilding(models.Model):
         return f"Building ID: {self.building_id}, Name: {self.building_name}, Type: {self.building_type}, Area: {self.building_area_sqft}, Address: {self.building_address}, Phone: {self.building_phone}, Email: {self.building_email}, Photo: {self.building_photo}"
 
 # school equipment represents, hvac, electrical, plumbing, etc.
-class SchoolEquipment(models.Model):
+class Equipment(models.Model):
     school_id = models.IntegerField()
     equipment_id = models.IntegerField()
     assigned_school = models.CharField(max_length=20, default="Equipment assigned school")
-    assigned_district = models.CharField(max_length=20, default="Equipment assigned district")
+    assigned_building = models.CharField(max_length=20, default="Equipment assigned building")
     equipment_name = models.CharField(max_length=20, default="Equipment name")
     equipment_type = models.CharField(max_length=20, default="Equipment type")
     equipment_manufacturer = models.CharField(max_length=20, default="Equipment manufacturer")
@@ -71,7 +71,7 @@ class SchoolEquipment(models.Model):
         return f"Equipment ID: {self.equipment_id}, School: {self.assigned_school}, District: {self.assigned_district}, Name: {self.equipment_name}, Type: {self.equipment_type}, Manufacturer: {self.equipment_manufacturer}, Model: {self.equipment_model}, Serial Number: {self.equipment_serial_number}, Install Date: {self.equipment_install_date}, Warranty Expiration: {self.equipment_warranty_expiration}, Location: {self.equipment_location}, Notes: {self.equipment_notes}, Photo: {self.equipment_photo}"
 
 
-class SchoolPerformanceMetrics(models.Model):
+class PerformanceMetrics(models.Model):
     school_id = models.IntegerField()
     emmissions_co2 = models.IntegerField()
     CUI_co2_sqft = models.IntegerField()
