@@ -36,7 +36,7 @@ if DEBUG:
 # Application definition
 
 INSTALLED_APPS = [
-    'account',
+    # 'account',
     # 'api',
     # 'district_management',
     # 'documents',
