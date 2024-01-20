@@ -49,9 +49,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
+    # 'rest_framework',
     # 'django-allauth', 
-    'registration',
+    # 'registration',
 ]
 
 MIDDLEWARE = [
@@ -101,7 +101,6 @@ DATABASES = {
         'PORT': os.getenv('DJANGO_DB_PORT', '5432'),
     }
 }
-
 
 
 # Password validation
