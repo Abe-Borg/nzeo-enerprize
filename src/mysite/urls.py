@@ -28,4 +28,5 @@ urlpatterns = [
     path('documents/', include('documents.urls')),
     path('maps/', include('maps.urls')),
     path('nzeo-management/', include('nzeo_management.urls')),
+    path('school-management/', include('school_management.urls')),
 ]

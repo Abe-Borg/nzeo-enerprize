@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'documents',
     'maps',
     'nzeo_management',
-    # 'school_management',
+    'school_management',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
