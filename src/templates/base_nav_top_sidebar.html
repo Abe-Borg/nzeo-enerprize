@@ -1,13 +1,22 @@
 <!-- use this for district admin pages-->
 {% extends "base_minimal.html" %}
 {% load static %}
-
-
 {% block main_body %}
+
+<style>
+  .navbar-nav .nav-item:not(.d-lg-none) .nav-link:hover {
+    background-color: #007bff; 
+    border-color: #007bff;
+    border-radius: 5px; 
+  }
+</style>
+
+
 <div class="layout layout-nav-top layout-sidebar">
   <div class="navbar navbar-expand-lg bg-dark navbar-dark sticky-top">
-    <a class="navbar-brand" href="index.html">
-      <img alt="Pipeline" src="assets/img/logo.svg" />
+    <!-- logo -->
+    <a class="navbar-brand" href="#">
+      <img alt="NZEO" src="{% static 'assets/img/logo.svg' %}" />
     </a>
     <div class="d-flex align-items-center">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,7 +25,7 @@
       <div class="d-block d-lg-none ml-2">
         <div class="dropdown">
           <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img alt="Image" src="assets/img/avatar-male-4.jpg" class="avatar" />
+            <img alt="Image" src="{% static 'assets/img/avatar-male-4.jpg' %}" class="avatar" />
           </a>
           <div class="dropdown-menu dropdown-menu-right">
             <a href="nav-side-user.html" class="dropdown-item">Profile</a>
@@ -26,61 +35,35 @@
         </div>
       </div>
     </div>
+    
+    <!-- top menu -->
     <div class="collapse navbar-collapse justify-content-between" id="navbar-collapse">
       <ul class="navbar-nav">
-
         <li class="nav-item">
-
-          <a class="nav-link" href="index.html">Overview</a>
-
+          <a class="nav-link" href="#">Overview</a>
         </li>
-
+        <!-- data analysis dropdown-->
         <li class="nav-item">
-
           <div class="dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true" id="nav-dropdown-2">Pages</a>
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true" id="nav-dropdown-2">Data Analysis</a>
             <div class="dropdown-menu">
-
-              <a class="dropdown-item" href="pages-app.html">App Pages</a>
-
-              <a class="dropdown-item" href="pages-utility.html">Utility Pages</a>
-
-              <a class="dropdown-item" href="pages-layouts.html">Layouts</a>
-
+              <a class="dropdown-item" href="#">District Level</a>
+              <a class="dropdown-item" href="#">School Level</a>
             </div>
           </div>
-
         </li>
 
         <li class="nav-item">
-
-          <div class="dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true" id="nav-dropdown-3">Components</a>
-            <div class="dropdown-menu">
-
-              <a class="dropdown-item" href="components-bootstrap.html">Bootstrap</a>
-
-              <a class="dropdown-item" href="components-pipeline.html">Pipeline</a>
-
-            </div>
-          </div>
-
+          <a class="nav-link" href="#">District Leaderboards</a>
         </li>
-
         <li class="nav-item">
-
-          <a class="nav-link" href="documentation/index.html">Documentation</a>
-
+          <a class="nav-link" href="#">ChatNZEO</a>
         </li>
-
-        <li class="nav-item">
-
-          <a class="nav-link" href="documentation/changelog.html">Changelog</a>
-
-        </li>
-
       </ul>
+
+      <!-- top right content -->
       <div class="d-lg-flex align-items-center">
+        <!-- search bar -->
         <form class="form-inline my-lg-0 my-2">
           <div class="input-group input-group-dark input-group-round">
             <div class="input-group-prepend">
@@ -91,20 +74,22 @@
             <input type="search" class="form-control form-control-dark" placeholder="Search" aria-label="Search app">
           </div>
         </form>
+        <!-- top right dropdown -->
         <div class="dropdown mx-lg-2">
           <button class="btn btn-primary btn-block dropdown-toggle" type="button" id="newContentButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Add New
+            Actions
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Team</a>
-            <a class="dropdown-item" href="#">Project</a>
-            <a class="dropdown-item" href="#">Task</a>
+            <a class="dropdown-item" href="#"><i class="fa-regular fa-cloud-arrow-down"></i> Download</a>
+            <a class="dropdown-item" href="#"><i class="fa-regular fa-cloud-arrow-up"></i> Upload</a>
+            <a class="dropdown-item" href="#"><i class="fa-sharp fa-regular fa-user-plus"></i> Add User</a>
           </div>
         </div>
+        <!-- top right profile pic and options -->
         <div class="d-none d-lg-block">
           <div class="dropdown">
             <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img alt="Image" src="assets/img/avatar-male-4.jpg" class="avatar" />
+              <img alt="profile-image" src="{% static 'assets/img/avatar-male-4.jpg' %}" class="avatar" />
             </a>
             <div class="dropdown-menu dropdown-menu-right">
               <a href="nav-side-user.html" class="dropdown-item">Profile</a>
@@ -113,40 +98,61 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </div> <!-- end of top right content -->
+    </div> <!-- end of top menu -->
   </div>
+
   <div class="main-container">
+    <!-- sidebar -->
     <div class="sidebar-container">
       <button class="btn btn-primary btn-round btn-floating btn-lg d-lg-none" type="button" data-toggle="collapse" data-target="#sidebar-collapse" aria-expanded="false">
         <i class="material-icons">more_horiz</i>
         <i class="material-icons">close</i>
       </button>
+      <!-- sidebar content-->
       <div class="sidebar collapse" id="sidebar-collapse">
         <div class="sidebar-content">
-
-          <div class="p-5 text-center">
-            <small>Sidebar Content Here</small>
+          <div class="p-2">
+            {% block sidebar-content %}
+              <div class="row">
+                <div class="col-6">
+                  <p>Grid Item 1</p>
+                </div>
+                <div class="col-6">
+                  <p>Grid Item 2</p>
+                </div>
+                <div class="col-6">
+                  <p>Grid Item 3</p>
+                </div>
+                <div class="col-6">
+                  <p>Grid Item 4</p>
+                </div>
+                <div class="col-6">
+                  <p>Grid Item 5</p>
+                </div>
+                <div class="col-6">
+                  <p>Grid Item 6</p>
+                </div>
+                <div class="col-6">
+                  <p>Grid Item 7</p>
+                </div>
+                <div class="col-6">
+                  <p>Grid Item 8</p>
+                </div>
+              </div>
+            {% endblock%}
           </div>
-
         </div>
       </div>
-    </div>
+    </div> <!-- end of sidebar -->
+
+    <!-- center panel content -->
     <div class="content-container">
-
-      <div class="text-center d-flex align-items-center justify-content-center pt-5">
-        <div>
-          <img alt="Empty State" src="assets/img/empty-state.svg" class="w-50" style="opacity:.8" />
-          <span class="h3 d-block mt-3">Content Here</span>
-          <p>
-            Add your page content here
-          </p>
-          <a class="btn btn-primary btn-sm" href="pages-layouts.html">Back to Page Layouts</a>
-        </div>
-      </div>
-
+      {% block center-panel-content %}
+      {% endblock %}
     </div>
-  </div>
+  </div> <!-- end of center panel -->
 </div>
+
 {% endblock %}
 

@@ -1,7 +1,8 @@
 # # define url patterns for api app
-# from django.urls import path, include
+from django.urls import path, include
 # from django.contrib.auth.models import User
 # from rest_framework import routers, serializers, viewsets
+from . import views
 
 # # Serializers define the API representation.
 # class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -21,6 +22,7 @@
 # # Wire up our API using automatic URL routing.
 # # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
+    path('chatnzeo', views.chatnzeo, name = 'chatnzeo'),
     # path('', include(router.urls)),
     # path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

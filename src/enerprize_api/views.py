@@ -1,7 +1,5 @@
-# # api/views.py
-# # in views.py we can include functions and even classes.
-
-# from django.shortcuts import render
+# api/views.py
+from django.shortcuts import render
 # from rest_framework import viewsets, permissions
 # from .serializers import UserSerializer, GroupSerializer, AccountSerializer
 # from django.http import HttpResponse
@@ -45,3 +43,6 @@
 
 # def delete_user(request, user_id):
 #     return 'placeholder'
+
+def chatnzeo(request):
+    return render(request, 'chatnzeo.html')
