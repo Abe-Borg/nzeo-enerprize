@@ -24,4 +24,5 @@ urlpatterns = [
     path('', views.enerprize_home, name = 'enerprize_home'),
     path('admin/', admin.site.urls),
     path('district_management/', include('district_management.urls')),
+    path('enerprize_api/', include('enerprize_api.urls')),
 ]

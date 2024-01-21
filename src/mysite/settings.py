@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1',  '161.35.239.38', 'nzeo-enerprize.com
 # Application definition
 
 INSTALLED_APPS = [
-    # 'enerprize_api',
+    'enerprize_api',
     'district_management',
     # 'documents',
     # 'maps',
