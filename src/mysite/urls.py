@@ -26,4 +26,5 @@ urlpatterns = [
     path('district-management/', include('district_management.urls')),
     path('enerprize-api/', include('enerprize_api.urls')),
     path('documents/', include('documents.urls')),
+    path('maps/', include('maps.urls')),
 ]

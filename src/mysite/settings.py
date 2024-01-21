@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'enerprize_api',
     'district_management',
     'documents',
-    # 'maps',
+    'maps',
     # 'nzeo_management',
     # 'school_management',
     'django.contrib.admin',
