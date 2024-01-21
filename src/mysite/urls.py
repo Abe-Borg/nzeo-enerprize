@@ -25,4 +25,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('district-management/', include('district_management.urls')),
     path('enerprize-api/', include('enerprize_api.urls')),
+    path('documents/', include('documents.urls')),
 ]

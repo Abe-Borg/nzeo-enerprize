@@ -35,7 +35,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1',  '161.35.239.38', 'nzeo-enerprize.com
 INSTALLED_APPS = [
     'enerprize_api',
     'district_management',
-    # 'documents',
+    'documents',
     # 'maps',
     # 'nzeo_management',
     # 'school_management',

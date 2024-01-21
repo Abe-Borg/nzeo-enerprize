@@ -14,7 +14,7 @@ def download_file(request):
     # return the file
     # return FileResponse(file)
     context = {}
-    return render(request, 'download_file.html', context)
+    return render(request, 'documents/download_file.html', context)
 
 # @login_required
 def upload_file(request):
@@ -28,7 +28,7 @@ def upload_file(request):
     #         destination.write(chunk)
     # return the file
     context = {}
-    return render(request, 'upload_file.html', context)
+    return render(request, 'documents/upload_file.html', context)
 
 # @login_required
 def delete_file(request):
@@ -39,5 +39,5 @@ def delete_file(request):
     # # return the file
     # return render(request, 'documents/delete.html')
     context = {}
-    return render(request, 'delete_file.html', context)
+    return render(request, 'documents/delete_file.html', context)
 
