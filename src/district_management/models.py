@@ -1,3 +1,11 @@
-from django.db import models
+# from django.db import models
 
-# Create your models here.
+# class SchoolDistrict(models.Model):
+#     district_id = models.IntegerField()
+#     district_name = models.CharField(max_length=20, default="District")
+#     district_num_schools = models.IntegerField()
+#     district_geo_lat = models.FloatField()
+#     district_geo_long = models.FloatField()
+
+#     def __str__(self):
+#         return f"District: {self.district_name}, Number of Schools: {self.district_num_schools}" 
