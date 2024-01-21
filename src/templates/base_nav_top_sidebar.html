@@ -1,6 +1,7 @@
 <!-- use this for district admin pages-->
 {% extends "base_minimal.html" %}
 {% load static %}
+
 {% block main_body %}
 
 <style>
@@ -9,10 +10,25 @@
     border-color: #007bff;
     border-radius: 5px; 
   }
+  .icon-button {
+    background: none;
+    border: none;
+    color: inherit; 
+    padding: 10px; 
+    cursor: pointer;
+  }
+  .icon-button:hover {
+    background-color: #007bff; 
+    border-color: #007bff;
+    border-radius: 5px;
+  }
+  .icon-button:focus {
+    outline: none; /* To remove the default focus outline */
+  }
 </style>
 
-
 <div class="layout layout-nav-top layout-sidebar">
+  <!-- navbar top -->
   <div class="navbar navbar-expand-lg bg-dark navbar-dark sticky-top">
     <!-- logo -->
     <a class="navbar-brand" href="#">
@@ -25,7 +41,7 @@
       <div class="d-block d-lg-none ml-2">
         <div class="dropdown">
           <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img alt="Image" src="{% static 'assets/img/avatar-male-4.jpg' %}" class="avatar" />
+            <img alt="Profile Picture" src="{% static 'assets/img/avatar-male-4.jpg' %}" class="avatar" />
           </a>
           <div class="dropdown-menu dropdown-menu-right">
             <a href="nav-side-user.html" class="dropdown-item">Profile</a>
@@ -85,6 +101,7 @@
             <a class="dropdown-item" href="#"><i class="fa-sharp fa-regular fa-user-plus"></i> Add User</a>
           </div>
         </div>
+
         <!-- top right profile pic and options -->
         <div class="d-none d-lg-block">
           <div class="dropdown">
@@ -97,62 +114,75 @@
               <a href="#" class="dropdown-item">Log Out</a>
             </div>
           </div>
-        </div>
+        </div> <!-- end of profile pic and options -->
       </div> <!-- end of top right content -->
     </div> <!-- end of top menu -->
-  </div>
+  </div> <!-- end of navbar top -->
 
   <div class="main-container">
     <!-- sidebar -->
-    <div class="sidebar-container">
+    <div class = "sidebar-container">
       <button class="btn btn-primary btn-round btn-floating btn-lg d-lg-none" type="button" data-toggle="collapse" data-target="#sidebar-collapse" aria-expanded="false">
         <i class="material-icons">more_horiz</i>
         <i class="material-icons">close</i>
       </button>
+
       <!-- sidebar content-->
       <div class="sidebar collapse" id="sidebar-collapse">
-        <div class="sidebar-content">
-          <div class="p-2">
-            {% block sidebar-content %}
-              <div class="row">
-                <div class="col-6">
-                  <p>Grid Item 1</p>
-                </div>
-                <div class="col-6">
-                  <p>Grid Item 2</p>
-                </div>
-                <div class="col-6">
-                  <p>Grid Item 3</p>
-                </div>
-                <div class="col-6">
-                  <p>Grid Item 4</p>
-                </div>
-                <div class="col-6">
-                  <p>Grid Item 5</p>
-                </div>
-                <div class="col-6">
-                  <p>Grid Item 6</p>
-                </div>
-                <div class="col-6">
-                  <p>Grid Item 7</p>
-                </div>
-                <div class="col-6">
-                  <p>Grid Item 8</p>
-                </div>
-              </div>
-            {% endblock%}
-          </div>
-        </div>
-      </div>
-    </div> <!-- end of sidebar -->
+        <div class = "sidebar-content">
+          <div class = "row" style = "padding-right: 0; padding-left: 0;">
+            <div class="col-6 unique-grid-cell">
+              <button type = "button" class = "icon-button" title = "HVAC Markup">
+                <i class="fa-solid fa-air-conditioner" style="color: #74C0FC;"></i>
+              </button>
+            </div>
+            <div class="col-6 unique-grid-cell">
+              <button type = "button" class = "icon-button" title = "Electrical Markup">
+                <i class="fa-solid fa-plug" style="color: #bcdc18;"></i>
+              </button>
+            </div>
+            <div class="col-6 unique-grid-cell">
+              <button type = "button" class = "icon-button" title = "Plumbing Markup">
+                <i class="fa-solid fa-pipe-valve" style="color: #3e2c14;"></i>
+              </button>
+            </div>
+            <div class="col-6 unique-grid-cell">
+              <button type = "button" class = "icon-button" title = "Draw Line">
+                <i class="fa-regular fa-pen-line" style="color: #63E6BE;"></i>
+              </button>
+            </div>
+            <div class="col-6 unique-grid-cell">
+              <button type = "button" class = "icon-button" title = "Draw Polygon">
+                <i class="fa-regular fa-draw-polygon" style="color: #FFD43B;"></i>
+              </button>
+            </div>
+            <div class="col-6 unique-grid-cell">
+              <button type = "button" class = "icon-button" title = "Place Marker">
+                <i class="fa-solid fa-location-dot"></i>
+              </button>
+            </div>
+            <div class="col-6 unique-grid-cell">
+              <button type = "button" class = "icon-button" title = "Place Label">
+                <i class="fa-solid fa-tag" style="color: #af0e74;"></i>
+              </button>
+            </div>
+            <div class="col-6 unique-grid-cell">
+              <button type = "button" class = "icon-button" title = "Place Sticky Note">
+                <i class="fa-solid fa-notes" style="color: #FFD43B;"></i>
+              </button>
+            </div>
+          </div> <!-- end of row div -->
+        </div> <!-- end of sidebar content -->
+      </div> 
+    </div> <!-- end of sidebar container-->
 
     <!-- center panel content -->
     <div class="content-container">
       {% block center-panel-content %}
       {% endblock %}
-    </div>
-  </div> <!-- end of center panel -->
-</div>
+    </div> <!-- end of center panel -->
+  </div> <!-- end of main container -->
+</div> <!-- end of layout -->
 
 {% endblock %}
 
