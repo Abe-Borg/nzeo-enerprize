@@ -27,4 +27,5 @@ urlpatterns = [
     path('enerprize-api/', include('enerprize_api.urls')),
     path('documents/', include('documents.urls')),
     path('maps/', include('maps.urls')),
+    path('nzeo-management/', include('nzeo_management.urls')),
 ]
