@@ -4,77 +4,12 @@
 
 {% block main_body %}
 
-<style>
-
-  .navbar-nav .nav-item {
-    margin-right: 15px; /* Adjust this value to increase space between nav items */
-  }
-
-  /* Adjusting the .nav-link class */
-  .navbar-nav .nav-link {
-    padding: 10px 15px; /* Adjust padding to increase the clickable area and spacing */
-  }
-  .navbar-nav .nav-item:not(.d-lg-none) .nav-link:hover {
-    background-color: #007bff; 
-    border-color: #007bff;
-    border-radius: 5px; 
-  }
-  .icon-button {
-    position: relative;
-    background: none;
-    border: none;
-    color: inherit; 
-    padding: 15px; 
-    font-size: 20px;
-    cursor: pointer;
-  }
-  .icon-button:hover {
-    background-color: #007bff; 
-    border-color: #007bff;
-    border-radius: 5px;
-  }
-  .icon-button:hover .custom-tooltip {
-    visibility: visible;
-  }
-  .icon-button:focus {
-    outline: none;
-  }
-  .unique-grid-cell {
-    padding: 20px; 
-  }
-  .custom-tooltip {
-    visibility: hidden;
-    max-width: 200px;
-    color: black;
-    background-color: transparent;
-    text-align: center;
-    border-radius: 6px;
-    padding: 8px 0;
-    position: absolute;
-    z-index: 1;
-    top: 100%; 
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 10px;
-    white-space: normal; 
-    word-wrap: break-word;
-  }
-  @media screen and (max-width: 768px) {
-    .custom-tooltip {
-        left: 100%;
-        margin-left: 0;
-        transform: translateX(0);
-    }
-  }
-  
-</style>
-
 <div class="layout layout-nav-top layout-sidebar">
   <!-- navbar top -->
   <div class="navbar navbar-expand-lg bg-dark navbar-dark sticky-top">
     <!-- logo -->
     <a class="navbar-brand" href="#">
-      <img alt="NZEO" src="{% static 'assets/img/logo.svg' %}" />
+      <img alt="NZEO" src="{% static 'NZEO-small-logo.png' %}" />
     </a>
     <div class="d-flex align-items-center">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">

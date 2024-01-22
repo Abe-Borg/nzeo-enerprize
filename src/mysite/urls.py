@@ -22,7 +22,6 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
     path('', views.enerprize_home, name = 'enerprize_home'),
     path('test-base-minimal/', views.test_base_minimal, name = 'test_base_minimal'),
     path('test-base-nav-top-sidebar/', views.test_base_nav_top_sidebar, name = 'test_base_nav_top_sidebar'),
@@ -30,8 +29,8 @@ urlpatterns = [
     path('test-base-top-navbar/', views.test_base_top_navbar, name = 'test_base_top_navbar'),
 
     path('district-management/', include('district_management.urls')),
-    path('enerprize-api/', include('enerprize_api.urls')),
     path('documents/', include('documents.urls')),
+    path('enerprize-api/', include('enerprize_api.urls')),
     path('maps/', include('maps.urls')),
     path('nzeo-management/', include('nzeo_management.urls')),
     path('school-management/', include('school_management.urls')),
