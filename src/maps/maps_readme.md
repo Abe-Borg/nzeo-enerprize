@@ -9,3 +9,9 @@ for the different web pages.
 manages the annotations for all schools and all buildings. as well as any 
 operations by/on the markups.
 - In summary: this app serves the map to different users, tracks all metadata for all markups, and implements all interactivity features.
+
+- handles saving, retrieving, and processing annotion data
+- even though the visual map is rendered in the html templates, the maps app acts as the backend service provider for all map-related data.
+
+- the maps app provides api endpoints to save and retrieve annotations. wen a user adds an annotation, js/ajax is used to 
+  send the annotation deaitls to those endpoints.

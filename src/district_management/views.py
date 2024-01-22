@@ -19,9 +19,9 @@ def district_admin_home(request):
     # }
 
     context = {
-        'district_geo_lat': 37.00203947386811,
-        'district_geo_long': -119.0093994140625,
-        'map_zoom_level': 16
+        'district_geo_lat': 36.746841,
+        'district_geo_long': -119.772591,
+        'map_zoom_level': 13
     }
 
 

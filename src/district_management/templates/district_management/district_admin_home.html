@@ -4,27 +4,27 @@
 {% block center-panel-content %}
 
 <!-- Map Container -->
-<div id = "district-map" style = "height: 500px;"></div>
+<div id = "district-map" style = "height: 700px;"></div>
 
 <!-- LeafletJS Scripts -->
-<script src = "{% static 'maps/annotations.js' %}"></script>
-<link href = "{% static 'maps/annotations.css' %}" rel = "stylesheet">
+<!-- <script src = "{% static 'maps/annotations.js' %}"></script> -->
+<!-- <link href = "{% static 'maps/annotations.css' %}" rel = "stylesheet"> -->
 
 <script>
     // Initialize the map
     var latitude = parseFloat("{{ district_geo_lat }}");
     var longitude = parseFloat("{{ district_geo_long }}");
     var zoomLevel = parseInt("{{ map_zoom_level }}");
+
     var map = L.map('district-map').setView([latitude, longitude], zoomLevel);
+    var marker = L.marker([latitude, longitude]).addTo(map);
+    marker.bindPopup("<b>Fresno, CA</b>").openPopup();
 
     // use default tiles from openstreemap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
     }).addTo(map);
-
-    // Additional LeafletJS code for adding annotations and other functionalities goes here
-
 </script>
 
 {% endblock %}

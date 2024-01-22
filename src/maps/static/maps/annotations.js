@@ -1,15 +1,5 @@
-var mymap = L.map('fresno_map').setView([36.73825, -119.7915], 12); 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '© OpenStreetMap contributors'
-}).addTo(mymap);
-
-var marker = L.marker([36.69991667, -119.57691667]).addTo(mymap);
-marker.bindPopup("<b>Fresno</b>").openPopup();
-
-
 // -- Interactive features --
-let currentAnnotation = 'marker'; //default
+let currentAnnotation = 'marker';
 let linePoints = [];
 let polyPoints = [];
 let markerCount = 0;
@@ -18,13 +8,20 @@ const SNAP_DISTANCE = 10; // pixels
 let annotations = []; // store all annotations
 var tempLine = null;
 var tempPolyline = null;
+var annotationMode = false;
 
+// func to start annotation placement
+function startAnnotation() {
+    annotationMode = true;
+}
 
+// 
 document.getElementById('annotationControls').addEventListener('change', function(e) {
     currentAnnotation = e.target.value;
     linePoints = []; // Reset line points
     polyPoints = []; // Reset polygon points
 });
+
 
 // let the users click on the map to add annotations.
 mymap.on('click', function(e) {
