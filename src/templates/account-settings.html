@@ -1,0 +1,95 @@
+{% extends "base_minimal.html" %}
+{% load static %}
+
+{% block main_body %}
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    <div class="col-lg-3 mb-3">
+      <ul class="nav nav-tabs flex-lg-column" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">Your Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="password-tab" data-toggle="tab" href="#password" role="tab" aria-controls="password" aria-selected="false">Password</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-xl-6 col-lg-8">
+      <div class="card">
+        <div class="card-body">
+          <div class="tab-content">
+            <div class="tab-pane fade show active" role="tabpanel" id="profile">
+              <div class="media mb-4">
+                <img alt="Image" src = "{% static 'assets/img/avatar-male-4.jpg' %}" class="avatar avatar-lg" />
+                <div class="media-body ml-3">
+                  <div class="custom-file custom-file-naked d-block mb-1">
+                    <input type="file" class="custom-file-input d-none" id="avatar-file">
+                    <label class="custom-file-label position-relative" for="avatar-file">
+                      <span class="btn btn-primary">
+                        Upload avatar
+                      </span>
+                    </label>
+                  </div>
+                  <small>For best results, use an image at least 256px by 256px in either .jpg or .png format</small>
+                </div>
+              </div>
+              <!--end of avatar-->
+              <form>
+                <div class="form-group row align-items-center">
+                  <label class="col-3">First Name</label>
+                  <div class="col">
+                    <input type="text" placeholder="First name" value="David" name="profile-first-name" class="form-control" required />
+                  </div>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-3">Last Name</label>
+                  <div class="col">
+                    <input type="text" placeholder="First name" value="Whittaker" name="profile-last-name" class="form-control" />
+                  </div>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-3">Email</label>
+                  <div class="col">
+                    <input type="email" placeholder="Enter your email address" name="profile-email" class="form-control" required />
+                  </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </form>
+            </div>
+            <div class="tab-pane fade" role="tabpanel" id="password">
+              <form>
+                <div class="form-group row align-items-center">
+                  <label class="col-3">Current Password</label>
+                  <div class="col">
+                    <input type="password" placeholder="Enter your current password" name="password-current" class="form-control" />
+                  </div>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-3">New Password</label>
+                  <div class="col">
+                    <input type="password" placeholder="Enter a new password" name="password-new" class="form-control" />
+                    <small>Password must be at least 8 characters long</small>
+                  </div>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-3">Confirm Password</label>
+                  <div class="col">
+                    <input type="password" placeholder="Confirm your new password" name="password-new-confirm" class="form-control" />
+                  </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                  <button type="submit" class="btn btn-primary">Change Password</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

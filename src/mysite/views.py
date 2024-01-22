@@ -16,3 +16,12 @@ def test_base_side_navbar(request):
 
 def test_base_top_navbar(request):
     return render(request, f"{settings.BASE_DIR}/templates/base_top_navbar.html")
+
+def test_account_settings(request):
+    return render(request, f"{settings.BASE_DIR}/templates/account-settings.html")
+
+def test_create_account(request):
+    return render(request, f"{settings.BASE_DIR}/templates/create-account.html")
+
+def test_forgot_password(request):
+    return render(request, f"{settings.BASE_DIR}/templates/forgot-password.html")
