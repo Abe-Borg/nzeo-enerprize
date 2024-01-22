@@ -2,7 +2,7 @@
 
 # class SchoolDistrict(models.Model):
 #     district_id = models.IntegerField()
-#     district_name = models.CharField(max_length=20, default="District")
+#     district_name = models.CharField(max_length=100, default="District")
 #     district_num_schools = models.IntegerField()
 #     district_geo_lat = models.FloatField()
 #     district_geo_long = models.FloatField()
