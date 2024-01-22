@@ -1,3 +1,4 @@
 djangoprojectenv/
 src/django_error.log
+src/dbsqlite3
 'ystemd[1]: Started gunicorn.service - gunicorn daemon.'
