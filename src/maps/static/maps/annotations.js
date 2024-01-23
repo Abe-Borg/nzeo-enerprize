@@ -176,6 +176,18 @@ function isPointCloseToFirst(points, newPoint) {
     return false;
 }    
 
-function saveAnnotation(type, points) {
-    // Implement AJAX call here to send the points to your Django backend
+function saveAnnotation(type, coordinates, metadata) {
+    var data = {
+        annotation_type: type,
+        coordinates: coordinates,
+        metadata: metadata
+    };
+    // AJAX call to Django POST endpoint
+    // Handle response and errors
 }
+
+// On map load
+map.on('load', function() {
+    // AJAX call to Django GET endpoint
+    // Iterate over the response data and add each annotation to the map
+});

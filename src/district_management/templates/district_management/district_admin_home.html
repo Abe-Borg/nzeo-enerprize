@@ -2,30 +2,60 @@
 {% load static %}
 
 {% block center-panel-content %}
+<div id="district-map" style="height: 700px;"></div>
 
-<!-- Map Container -->
-<div id = "district-map" style = "height: 700px;">
-
-<script src = "{% static 'maps/annotations.js' %}"></script>
-<link href = "{% static 'maps/annotations.css' %}" rel = "stylesheet">
+<script src="{% static 'maps/annotations.js' %}"></script>
+<link href="{% static 'maps/annotations.css' %}" rel="stylesheet">
 
 <script>
-    // Initialize the map
-    var latitude = parseFloat("{{ district_geo_lat }}");
-    var longitude = parseFloat("{{ district_geo_long }}");
-    var zoomLevel = parseInt("{{ map_zoom_level }}");
+    // Define the southwest and northeast corners of your district
+    var corner1 = L.latLng(southwest_lat, southwest_lng);
+    var corner2 = L.latLng(northeast_lat, northeast_lng);
+    var bounds = L.latLngBounds(corner1, corner2);
+
+    // Initialize the map with dynamic or fixed coordinates
+    var latitude = parseFloat("{{ district_geo_lat }}") || corner1.lat;
+    var longitude = parseFloat("{{ district_geo_long }}") || corner1.lng;
+    var zoomLevel = parseInt("{{ map_zoom_level }}") || map.getBoundsZoom(bounds);
 
     var map = L.map('district-map').setView([latitude, longitude], zoomLevel);
-    var marker = L.marker([latitude, longitude]).addTo(map);
-    marker.bindPopup("<b>Fresno, CA</b>").openPopup();
-
-    // use default tiles from openstreemap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
     }).addTo(map);
+    map.setMaxBounds(bounds);
+
+    // Annotation Placement Logic
+    var annotationMode = false;
+    var currentAnnotation;
+
+    // Function to start annotation placement
+    function startAnnotation() {
+        annotationMode = true;
+    }
+
+    // Click event on the map for placing annotations
+    map.on('click', function(e) {
+        if (annotationMode) {
+            currentAnnotation = L.marker(e.latlng).addTo(map);
+        }
+    });
+
+    // Keyboard event listener for confirming or canceling annotations
+    document.addEventListener('keydown', function(event) {
+        if (annotationMode) {
+            if (event.key === "Enter") {
+                // Confirm and save the annotation
+                annotationMode = false;
+            } else if (event.key === "Escape") {
+                // Cancel the annotation
+                map.removeLayer(currentAnnotation);
+                annotationMode = false;
+            }
+        }
+    });
+
+    // Example: Attach startAnnotation to an icon or button click
+    document.getElementById('your-icon-id').addEventListener('click', startAnnotation);
 </script>
-
-</div>
-
 {% endblock %}
