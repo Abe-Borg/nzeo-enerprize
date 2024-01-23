@@ -2,10 +2,15 @@
 {% load static %}
 
 {% block center-panel-content %} 
-<div id="district-map" style="height: 700px;"></div>
 
 <script src="{% static 'maps/annotations.js' %}"></script>
 <link href="{% static 'maps/annotations.css' %}" rel="stylesheet">
+
+<h1>District Map</h1>
+<p>Click on the map to place an annotation. Press enter to confirm the annotation or escape to cancel.</p>
+<br>
+
+<div id="district-map" style="height: 700px;"></div>
 
 <script>
     var map;

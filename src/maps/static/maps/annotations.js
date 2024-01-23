@@ -1,4 +1,6 @@
 // -- Interactive features --
+
+
 let currentAnnotation = 'marker';
 let linePoints = [];
 let polyPoints = [];
@@ -9,6 +11,17 @@ let annotations = []; // store all annotations
 var tempLine = null;
 var tempPolyline = null;
 var annotationMode = false;
+
+// custom annotations
+var mechanicalIcon = "{% static 'maps/icons/gear-complex-solid.svg' %}";
+var electricalIcon = "{% static 'maps/icons/plug-solid.svg' %}";
+var plumbingIcon = "{% static 'maps/icons/pipe-valve-solid.svg' %}";
+var lineIcon = "{% static 'maps/icons/pen-line-regular.svg' %}";
+var polygonIcon = "{% static 'maps/icons/draw-polygon-regular.svg' %}";
+var markerIcon = "{% static 'maps/icons/location-dot-solid.svg' %}";
+var tagIcon = "{% static 'maps/icons/tag-solid.svg' %}";
+var stickyNoteIcon = "{% static 'maps/icons/notes-solid.svg' %}";
+
 
 // func to start annotation placement
 function startAnnotation() {
