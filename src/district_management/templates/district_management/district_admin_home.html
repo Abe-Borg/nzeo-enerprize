@@ -15,15 +15,15 @@
 <script>
     var map;
     // Define the southwest and northeast corners of your district
-    var corner1 = { lat: "{{southwest_lat}}", lng: "{{southwest_lng}}" };
-    var corner2 = { lat: "{{northeast_lat}}", lng: "{{northeast_lng}}"};
+    var corner1 = { lat: 36.620203, lng: -119.721710 };
+    var corner2 = { lat: 36.879697, lng: -119.295908};
     console.log(corner1, corner2);
     var bounds = new google.maps.LatLngBounds(corner1, corner2);
 
     // Initialize the map with dynamic coordiantes and zoom level
-    var latitude = parseFloat("{{ district_geo_lat }}");
-    var longitude = parseFloat("{{ district_geo_long }}");
-    var zoomLevel = parseInt("{{ map_zoom_level }}");
+    var latitude = 36.746841;
+    var longitude = -119.772591;
+    var zoomLevel = 13;
     console.log(latitude, longitude, zoomLevel);
 
     var annotationMode = false;
