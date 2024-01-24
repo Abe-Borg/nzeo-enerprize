@@ -1,0 +1,22 @@
+/* Set the size of the div element that contains the map */
+#map {
+    height: 800px; /* The height is 800 pixels */
+    width: 90%;    /* The width is 90% of the web page */
+    margin: auto;  /* Center the map div horizontally */
+    border: 2px solid #add8e6; /* Light blue border */
+}   
+/* Style for the search box */
+#search-input {
+    box-sizing: border-box;
+    border: 1px solid #d9d9d9;
+    width: 170px;
+    height: 40px;
+    padding: 0 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    font-size: 14px;
+    outline: none;
+    position: absolute;
+    top: 10px;
+    margin-left: 10px;
+}

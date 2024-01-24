@@ -4,26 +4,58 @@
 {% block center-panel-content %} 
 
 <!-- <script src="{% static 'maps/annotations.js' %}"></script> -->
-<!-- <link href="{% static 'maps/annotations.css' %}" rel="stylesheet"> -->
+<link href="{% static 'district_management/district_maps_styles.css' %}" rel="stylesheet">
+
+
+
 <br>
 <h1>District Map</h1>
 <p>Click on the map to place an annotation. Press enter to confirm the annotation or escape to cancel.</p>
 
 <!-- Map goes here -->
-<div id = "district-map" style = "height: 700px;"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div id = "district-map"></div>
 
 <script>
     var map;
     // Define the southwest and northeast corners of your district
-    var corner1 = { lat: 36.620203, lng: -119.721710 };
-    var corner2 = { lat: 36.879697, lng: -119.295908};
+    var corner1 = { lat: "{{southwest_lat}}", lng: "{{southwest_lng}}" };
+    var corner2 = { lat: "{{northeast_lat}}", lng: "{{northeast_lng}}"};
     console.log(corner1, corner2);
     var bounds = new google.maps.LatLngBounds(corner1, corner2);
 
     // Initialize the map with dynamic coordiantes and zoom level
-    var latitude = 36.746841;
-    var longitude = -119.772591;
-    var zoomLevel = 13;
+    var latitude = parseFloat("{{ district_geo_lat }}");
+    var longitude = parseFloat("{{ district_geo_long }}");
+    var zoomLevel = parseInt("{{ map_zoom_level }}");
     console.log(latitude, longitude, zoomLevel);
 
     var annotationMode = false;
@@ -169,10 +201,10 @@
     document.getElementById('sticky-note-icon-button').addEventListener('click', function() {
         startAnnotation('stickyNote');
     });
-</script>
+</script> -->
 
-<script async defer
+<!-- <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANW4JtLihHDKEiBkkknOHOn6CCX-WwthA&callback=initMap">
-</script>
+</script> -->
 
 {% endblock %}
