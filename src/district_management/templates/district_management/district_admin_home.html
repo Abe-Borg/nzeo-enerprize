@@ -15,14 +15,16 @@
 <script>
     var map;
     // Define the southwest and northeast corners of your district
-    var corner1 = { lat: '{{southwest_lat}}', lng: '{{southwest_lng}}' };
-    var corner2 = { lat: '{{northeast_lat}}', lng: '{{northeast_lng}}' };
+    var corner1 = { lat: "{{southwest_lat}}", lng: "{{southwest_lng}}" };
+    var corner2 = { lat: "{{northeast_lat}}", lng: "{{northeast_lng}}"};
+    console.log(corner1, corner2);
     var bounds = new google.maps.LatLngBounds(corner1, corner2);
 
     // Initialize the map with dynamic coordiantes and zoom level
     var latitude = parseFloat("{{ district_geo_lat }}");
     var longitude = parseFloat("{{ district_geo_long }}");
     var zoomLevel = parseInt("{{ map_zoom_level }}");
+    console.log(latitude, longitude, zoomLevel);
 
     var annotationMode = false;
     var currentAnnotation;
@@ -57,8 +59,6 @@
             map.setCenter(new google.maps.LatLng(y, x));
         });
     }
-
-    initMap();
 
     // custom annotations
     var mechanicalIcon = "{% static 'maps/icons/gear-complex-solid.svg' %}";
@@ -130,7 +130,6 @@
         
     }
 
-
     // Keyboard event listener for confirming or canceling annotations
     document.addEventListener('keydown', function(event) {
         if (annotationMode) {
@@ -172,5 +171,8 @@
     });
 </script>
 
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANW4JtLihHDKEiBkkknOHOn6CCX-WwthA&callback=initMap">
+</script>
 
 {% endblock %}
