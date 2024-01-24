@@ -20,6 +20,9 @@
 <button id="reset-map">Recenter map</button>
 <button id="clear-search">Clear search</button>
 
+<!-- district school locations on the map -->
+{{ district_schools_coordinates|json_script:"marker-data"}}
+
 <script>
     district_southwest_lat = parseFloat("{{southwest_lat}}");
     district_southwest_lng = parseFloat("{{southwest_lng}}");
@@ -31,6 +34,7 @@
     district_name = "{{ district_name }}";
 
     function initMap() {
+    
         // The bounds of the area
         var allowedBounds = new google.maps.LatLngBounds(
             new google.maps.LatLng(district_southwest_lat, district_southwest_lng),
@@ -45,12 +49,31 @@
             restriction: {
                 latLngBounds: allowedBounds,
                 strictBounds: false,
-            }, 
-            minZoom: map_zoom_level - 1,
+            }
         };
 
         // Creating the map
         var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        var school_markers = JSON.parse(document.getElementById('marker-data').textContent);
+
+        // Create markers for each school location
+        school_markers.forEach(function(markerData) {
+            var marker = new google.maps.Marker({
+                position: {lat: markerData.lat, lng: markerData.lng},
+                map: map,
+                title: markerData.name
+            });
+
+            // add an info window for each marker
+            var infowindow = new google.maps.InfoWindow({
+                content: '<div>' + markerData.name + '</div>'
+            });
+
+            marker.addListener('click', function() {
+                infowindow.open(map, marker);
+            });
+        });
         
         // ========== CODE FOR SEARCH BOX ==========
         // Create the search box and link it to the UI element.

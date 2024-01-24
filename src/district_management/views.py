@@ -23,7 +23,7 @@ def district_admin_home(request):
     context = {
         'district_geo_lat': 36.746841,
         'district_geo_long': -119.772591,
-        'map_zoom_level': 13,
+        'map_zoom_level': 12,
         'southwest_lat': 36.620203,
         'southwest_lng': -119.721710,
         'northeast_lat': 36.879697,
