@@ -25,7 +25,8 @@ def district_admin_home(request):
         'southwest_lat': 36.620203,
         'southwest_lng': -119.721710,
         'northeast_lat': 36.879697,
-        'northeast_lng': -119.295908
+        'northeast_lng': -119.295908,
+        'district_name': 'Sanger Unified School District'
     }
 
     return render(request, 'district_management/district_admin_home.html', context)

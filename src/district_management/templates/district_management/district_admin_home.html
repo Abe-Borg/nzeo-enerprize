@@ -6,205 +6,128 @@
 <!-- <script src="{% static 'maps/annotations.js' %}"></script> -->
 <link href="{% static 'district_management/district_maps_styles.css' %}" rel="stylesheet">
 
-
-
 <br>
 <h1>District Map</h1>
-<p>Click on the map to place an annotation. Press enter to confirm the annotation or escape to cancel.</p>
+<h2>{{ district_name }}</h2>
+<p>
+    Click on the map to place an annotation. Press enter to confirm the annotation or escape to cancel.<br>
+    Navigation is limited to district boundaries.
+</p>
 
 <!-- Map goes here -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <div id = "district-map"></div>
+<div id="map"></div>
+<input id="search-input" class="controls" type="text" placeholder="Search Map">
+<button id="reset-map">Recenter map</button>
+<button id="clear-search">Clear search</button>
 
 <script>
-    var map;
-    // Define the southwest and northeast corners of your district
-    var corner1 = { lat: "{{southwest_lat}}", lng: "{{southwest_lng}}" };
-    var corner2 = { lat: "{{northeast_lat}}", lng: "{{northeast_lng}}"};
-    console.log(corner1, corner2);
-    var bounds = new google.maps.LatLngBounds(corner1, corner2);
-
-    // Initialize the map with dynamic coordiantes and zoom level
-    var latitude = parseFloat("{{ district_geo_lat }}");
-    var longitude = parseFloat("{{ district_geo_long }}");
-    var zoomLevel = parseInt("{{ map_zoom_level }}");
-    console.log(latitude, longitude, zoomLevel);
-
-    var annotationMode = false;
-    var currentAnnotation;
+    district_southwest_lat = parseFloat("{{southwest_lat}}");
+    district_southwest_lng = parseFloat("{{southwest_lng}}");
+    district_northeast_lat = parseFloat("{{northeast_lat}}");
+    district_northeast_lng = parseFloat("{{northeast_lng}}");
+    district_geo_lat = parseFloat("{{ district_geo_lat }}");
+    district_geo_long = parseFloat("{{ district_geo_long }}");
+    map_zoom_level = parseInt("{{ map_zoom_level }}");
+    district_name = "{{ district_name }}";
 
     function initMap() {
-        map = new google.maps.Map(document.getElementById('district-map'), {
-            center: { lat: latitude, lng: longitude },
-            zoom: zoomLevel
-        });
+        // The bounds of the area
+        var allowedBounds = new google.maps.LatLngBounds(
+            new google.maps.LatLng(district_southwest_lat, district_southwest_lng),
+            new google.maps.LatLng(district_northeast_lat, district_northeast_lng)
+        );
 
-        //Set the bounds of the map
-        map.fitBounds(bounds);
+        // Map options
+        var mapOptions = {
+            zoom: map_zoom_level,
+            center: { lat: district_geo_lat, lng: district_geo_long },
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            restriction: {
+                latLngBounds: allowedBounds,
+                strictBounds: false,
+            }, 
+            minZoom: map_zoom_level - 1,
+        };
 
-        // Listen for the center_changed event and restrict the map bounds
-        map.addListener('center_changed', function() {
-            if (bounds.contains(map.getCenter())) return;
-
-            // We're out of bounds - Move the map back within the bounds
-            var c = map.getCenter(),
-                x = c.lng(),
-                y = c.lat(),
-                maxX = bounds.getNorthEast().lng(),
-                maxY = bounds.getNorthEast().lat(),
-                minX = bounds.getSouthWest().lng(),
-                minY = bounds.getSouthWest().lat();
-
-            if (x < minX) x = minX;
-            if (x > maxX) x = maxX;
-            if (y < minY) y = minY;
-            if (y > maxY) y = maxY;
-
-            map.setCenter(new google.maps.LatLng(y, x));
-        });
-    }
-
-    // custom annotations
-    var mechanicalIcon = "{% static 'maps/icons/gear-complex-solid.svg' %}";
-    var electricalIcon = "{% static 'maps/icons/plug-solid.svg' %}";
-    var plumbingIcon = "{% static 'maps/icons/pipe-valve-solid.svg' %}";
-    var lineIcon = "{% static 'maps/icons/pen-line-regular.svg' %}";
-    var polygonIcon = "{% static 'maps/icons/draw-polygon-regular.svg' %}";
-    var customMarkerIcon = "{% static 'maps/icons/location-dot-solid.svg' %}";
-    var tagIcon = "{% static 'maps/icons/tag-solid.svg' %}";
-    var stickyNoteIcon = "{% static 'maps/icons/notes-solid.svg' %}";
-
-
-    
-    // Function to start placing a specific type of annotation
-    var clickListener;
-    function startAnnotation(markerType) {
-        annotationMode = true;
-
-        // Remove existing listener if any
-        if (clickListener) {
-            google.maps.event.removeListener(clickListener);
-        }
-
-        // add a new listener
-        clickListener = map.addListener('click', function(e) {
-            if (annotationMode) {
-                placeCustomMarker(e.latLng, markerType);
-                annotationMode = false;
-            }
-        });
-    }
-
-    // Function to place a custom marker
-    function placeCustomMarker(location, markerType) {
-        var markerIcon;
-
-        switch(markerType) {
-        case 'mechanical':
-            markerIcon = mechanicalIcon;
-            break;
-        case 'electrical':
-            markerIcon = electricalIcon;
-            break;
-        case 'plumbing':
-            markerIcon = plumbingIcon;
-            break;
-        case 'line':
-            markerIcon = lineIcon;
-            break;
-        case 'polygon':
-            markerIcon = polygonIcon;
-            break;
-        case 'marker':
-            markerIcon = customMarkerIcon;
-            break;
-        case 'tag':
-            markerIcon = tagIcon;
-            break;
-        case 'stickyNote':
-            markerIcon = stickyNoteIcon;
-            break;
-        }
-
-        new google.maps.Marker({
-            position: location,
-            map: map,
-            icon: markerIcon
-        });
+        // Creating the map
+        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
         
-    }
+        // ========== CODE FOR SEARCH BOX ==========
+        // Create the search box and link it to the UI element.
+        var input = document.getElementById('search-input');
+        var clear_search = document.getElementById('clear-search');
+        var reset_map = document.getElementById('reset-map');
+        var searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.LEFT].push(input);
+        map.controls[google.maps.ControlPosition.LEFT].push(clear_search);
+        map.controls[google.maps.ControlPosition.LEFT].push(reset_map);
 
-    // Keyboard event listener for confirming or canceling annotations
-    document.addEventListener('keydown', function(event) {
-        if (annotationMode) {
-            if (event.key === "Enter") {
-                // Confirm and save the annotation
-                annotationMode = false;
-            } else if (event.key === "Escape") {
-                // Cancel the annotation
-                currentAnnotation.setMap(null);
-                annotationMode = false;
+        // Bias the SearchBox results towards current map's viewport.
+        map.addListener('bounds_changed', function() {
+            searchBox.setBounds(map.getBounds());
+        });
+
+        var markers = [];
+        // Listen for the event fired when the user selects a prediction and retrieve more details for that place.
+        searchBox.addListener('places_changed', function() {
+            var places = searchBox.getPlaces();
+
+            if (places.length == 0) {
+                return;
             }
-        }
-    });
 
-    // Attach listeners to your icons or buttons
-    document.getElementById('mechanical-icon-button').addEventListener('click', function() {
-        startAnnotation('mechanical');
-    });
-    document.getElementById('electrical-icon-button').addEventListener('click', function() {
-    startAnnotation('electrical');
-    });
-    document.getElementById('plumbing-icon-button').addEventListener('click', function() {
-        startAnnotation('plumbing');
-    });
-    document.getElementById('line-icon-button').addEventListener('click', function() {
-        startAnnotation('line');
-    });
-    document.getElementById('polygon-icon-button').addEventListener('click', function() {
-        startAnnotation('polygon');
-    });
-    document.getElementById('marker-icon-button').addEventListener('click', function() {
-        startAnnotation('marker');
-    });
-    document.getElementById('tag-icon-button').addEventListener('click', function() {
-        startAnnotation('tag');
-    });
-    document.getElementById('sticky-note-icon-button').addEventListener('click', function() {
-        startAnnotation('stickyNote');
-    });
-</script> -->
+            // Clear out the old markers.
+            markers.forEach(function(marker) {
+                marker.setMap(null);
+            });
+            markers = [];
 
-<!-- <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANW4JtLihHDKEiBkkknOHOn6CCX-WwthA&callback=initMap">
-</script> -->
+            // For each place, get the icon, name and location.
+            var bounds = new google.maps.LatLngBounds();
+            places.forEach(function(place) {
+                if (!place.geometry) {
+                    console.log("Returned place contains no geometry");
+                    return;
+                }
+
+                // Create a marker for each place.
+                markers.push(new google.maps.Marker({
+                    map: map,
+                    title: place.name,
+                    position: place.geometry.location
+                }));                
+            });
+            map.fitBounds(bounds);
+        }); 
+
+        // Clear the search input
+        document.getElementById('clear-search').addEventListener('click', function() {
+            document.getElementById('search-input').value = '';
+            // Clear markers and reset map view
+            markers.forEach(function(marker) {
+                marker.setMap(null);
+            });
+            markers = [];
+            document.getElementById('search-input').value = '';
+
+        });
+
+        // Reset the map to its initial state
+        document.getElementById('reset-map').addEventListener('click', function() {
+            map.setCenter({lat: district_geo_lat, lng: district_geo_long});
+            map.setZoom(map_zoom_level);
+            markers.forEach(function(marker) {
+                marker.setMap(null);
+            });
+            markers = [];
+            document.getElementById('search-input').value = '';
+        });
+    } // end of initMap()
+
+</script>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANW4JtLihHDKEiBkkknOHOn6CCX-WwthA&libraries=places&callback=initMap">
+</script>
 
 {% endblock %}
