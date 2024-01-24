@@ -3,26 +3,30 @@
 
 {% block center-panel-content %} 
 
-<script src="{% static 'maps/annotations.js' %}"></script>
-<link href="{% static 'maps/annotations.css' %}" rel="stylesheet">
+<!-- <script src="{% static 'maps/annotations.js' %}"></script> -->
+<!-- <link href="{% static 'maps/annotations.css' %}" rel="stylesheet"> -->
 
 <h1>District Map</h1>
 <p>Click on the map to place an annotation. Press enter to confirm the annotation or escape to cancel.</p>
 <br>
 
+<!-- Map goes here -->
 <div id="district-map" style="height: 700px;"></div>
 
 <script>
     var map;
     // Define the southwest and northeast corners of your district
-    var corner1 = L.latLng('{{southwest_lat}}', '{{southwest_lng}}');
-    var corner2 = L.latLng('{{northeast_lat}}', '{{northeast_lng}}');
-    var bounds = L.latLngBounds(corner1, corner2);
+    var corner1 = { lat: '{{southwest_lat}}', lng: '{{southwest_lng}}' };
+    var corner2 = { lat: '{{northeast_lat}}', lng: '{{northeast_lng}}' };
+    var bounds = new google.maps.LatLngBounds(corner1, corner2);
 
     // Initialize the map with dynamic coordiantes and zoom level
     var latitude = parseFloat("{{ district_geo_lat }}");
     var longitude = parseFloat("{{ district_geo_long }}");
     var zoomLevel = parseInt("{{ map_zoom_level }}");
+
+    var annotationMode = false;
+    var currentAnnotation;
 
     function initMap() {
         map = new google.maps.Map(document.getElementById('district-map'), {
@@ -30,27 +34,89 @@
             zoom: zoomLevel
         });
 
-        // Rest of the annotation logic goes here
-    }
-    
-    // Annotation Placement Logic
-    var annotationMode = false;
-    var currentAnnotation;
+        //Set the bounds of the map
+        map.fitBounds(bounds);
 
-    // Function to start annotation placement
-    function startAnnotation() {
-        annotationMode = true;
+        // Listen for the center_changed event and restrict the map bounds
+        map.addListener('center_changed', function() {
+            if (bounds.contains(map.getCenter())) return;
+
+            // We're out of bounds - Move the map back within the bounds
+            var c = map.getCenter(),
+                x = c.lng(),
+                y = c.lat(),
+                maxX = bounds.getNorthEast().lng(),
+                maxY = bounds.getNorthEast().lat(),
+                minX = bounds.getSouthWest().lng(),
+                minY = bounds.getSouthWest().lat();
+
+            if (x < minX) x = minX;
+            if (x > maxX) x = maxX;
+            if (y < minY) y = minY;
+            if (y > maxY) y = maxY;
+
+            map.setCenter(new google.maps.LatLng(y, x));
+        });
     }
 
-     // Click event on the map for placing annotations
-    map.addListener('click', function(e) {
-        if (annotationMode) {
-                currentAnnotation = new google.maps.Marker({
-                    position: e.latLng,
-                    map: map
-                });
+    initMap();
+
+    // custom annotations
+    var mechanicalIcon = "{% static 'maps/icons/gear-complex-solid.svg' %}";
+    var electricalIcon = "{% static 'maps/icons/plug-solid.svg' %}";
+    var plumbingIcon = "{% static 'maps/icons/pipe-valve-solid.svg' %}";
+    var lineIcon = "{% static 'maps/icons/pen-line-regular.svg' %}";
+    var polygonIcon = "{% static 'maps/icons/draw-polygon-regular.svg' %}";
+    var customMarkerIcon = "{% static 'maps/icons/location-dot-solid.svg' %}";
+    var tagIcon = "{% static 'maps/icons/tag-solid.svg' %}";
+    var stickyNoteIcon = "{% static 'maps/icons/notes-solid.svg' %}";
+
+    // Function to start placing a specific type of annotation
+    function startAnnotation(markerType) {
+        map.addListener('click', function(e) {
+            placeCustomMarker(e.latLng, markerType);
+        });
+    }
+
+    // Function to place a custom marker
+    function placeCustomMarker(location, markerType) {
+        var markerIcon;
+
+        switch(markerType) {
+        case 'mechanical':
+            markerIcon = mechanicalIcon;
+            break;
+        case 'electrical':
+            markerIcon = electricalIcon;
+            break;
+        case 'plumbing':
+            markerIcon = plumbingIcon;
+            break;
+        case 'line':
+            markerIcon = lineIcon;
+            break;
+        case 'polygon':
+            markerIcon = polygonIcon;
+            break;
+        case 'marker':
+            markerIcon = customMarkerIcon;
+            break;
+        case 'tag':
+            markerIcon = tagIcon;
+            break;
+        case 'stickyNote':
+            markerIcon = stickyNoteIcon;
+            break;
         }
-    });
+
+        new google.maps.Marker({
+            position: location,
+            map: map,
+            icon: markerIcon
+        });
+        
+    }
+
 
     // Keyboard event listener for confirming or canceling annotations
     document.addEventListener('keydown', function(event) {
@@ -66,8 +132,31 @@
         }
     });
 
-    // Example: Attach startAnnotation to an icon or button click
-    document.getElementById('your-icon-id').addEventListener('click', startAnnotation);
+    // Attach listeners to your icons or buttons
+    document.getElementById('mechanical-icon-button').addEventListener('click', function() {
+        startAnnotation('mechanical');
+    });
+    document.getElementById('electrical-icon-button').addEventListener('click', function() {
+    startAnnotation('electrical');
+    });
+    document.getElementById('plumbing-icon-button').addEventListener('click', function() {
+        startAnnotation('plumbing');
+    });
+    document.getElementById('line-icon-button').addEventListener('click', function() {
+        startAnnotation('line');
+    });
+    document.getElementById('polygon-icon-button').addEventListener('click', function() {
+        startAnnotation('polygon');
+    });
+    document.getElementById('marker-icon-button').addEventListener('click', function() {
+        startAnnotation('marker');
+    });
+    document.getElementById('tag-icon-button').addEventListener('click', function() {
+        startAnnotation('tag');
+    });
+    document.getElementById('sticky-note-icon-button').addEventListener('click', function() {
+        startAnnotation('stickyNote');
+    });
 </script>
 
 
