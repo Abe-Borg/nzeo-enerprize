@@ -21,8 +21,11 @@ def district_admin_home(request):
     context = {
         'district_geo_lat': 36.746841,
         'district_geo_long': -119.772591,
-        'map_zoom_level': 13
+        'map_zoom_level': 13,
+        'southwest_lat': 36.620203,
+        'southwest_lng': -119.721710,
+        'northeast_lat': 36.879697,
+        'northeast_lng': -119.295908
     }
-
 
     return render(request, 'district_management/district_admin_home.html', context)

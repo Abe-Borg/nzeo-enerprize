@@ -71,10 +71,24 @@
     var tagIcon = "{% static 'maps/icons/tag-solid.svg' %}";
     var stickyNoteIcon = "{% static 'maps/icons/notes-solid.svg' %}";
 
+
+    
     // Function to start placing a specific type of annotation
+    var clickListener;
     function startAnnotation(markerType) {
-        map.addListener('click', function(e) {
-            placeCustomMarker(e.latLng, markerType);
+        annotationMode = true;
+
+        // Remove existing listener if any
+        if (clickListener) {
+            google.maps.event.removeListener(clickListener);
+        }
+
+        // add a new listener
+        clickListener = map.addListener('click', function(e) {
+            if (annotationMode) {
+                placeCustomMarker(e.latLng, markerType);
+                annotationMode = false;
+            }
         });
     }
 
