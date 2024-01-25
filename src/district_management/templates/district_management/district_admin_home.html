@@ -16,6 +16,14 @@
 
 <!-- Map goes here -->
 <div id="map"></div>
+
+<div id="legend">
+    <h3>Legend</h3>
+    <div>
+        <span style="height: 10px; width: 10px; background-color: red; display: inline-block;"></span>School Locations
+    </div> 
+</div>
+
 <input id="search-input" class="controls" type="text" placeholder="Search Map">
 <button id="reset-map">Recenter map</button>
 <button id="clear-search">Clear search</button>
@@ -58,19 +66,30 @@
         var school_markers = JSON.parse(document.getElementById('marker-data').textContent);
 
         // Create markers for each school location
-        school_markers.forEach(function(markerData) {
+        school_markers.forEach(function(school) {
             var marker = new google.maps.Marker({
-                position: {lat: markerData.lat, lng: markerData.lng},
+                position: {lat: school.lat, lng: school.lng},
                 map: map,
-                title: markerData.name
+                title: school.name
             });
 
             // add an info window for each marker
+            // Add an info window for each marker
+            var infowindowContent = 
+            '<div>' +
+                '<h6>' + school.name + '</h6>' +
+                '<p>' + school.description + '</p>' + // Additional description
+                '<a href="' + school.url + 
+                '" target="_blank">Visit School Page</a>' + // Link
+            '</div>';
+
             var infowindow = new google.maps.InfoWindow({
-                content: '<div>' + markerData.name + '</div>'
+                content: infowindowContent
             });
 
             marker.addListener('click', function() {
+                map.setZoom(16); // You can adjust the zoom level as needed
+                map.setCenter(marker.getPosition());
                 infowindow.open(map, marker);
             });
         });
@@ -145,11 +164,71 @@
             markers = [];
             document.getElementById('search-input').value = '';
         });
+
+
+        // ========== CODE FOR DRAWING TOOLS ==========
+        const drawingManager = new google.maps.drawing.DrawingManager({
+            drawingMode: google.maps.drawing.OverlayType.MARKER,
+            drawingControl: true,
+            drawingControlOptions: {
+            position: google.maps.ControlPosition.TOP_CENTER,
+            drawingModes: [
+                google.maps.drawing.OverlayType.MARKER,
+                google.maps.drawing.OverlayType.CIRCLE,
+                google.maps.drawing.OverlayType.POLYGON,
+                google.maps.drawing.OverlayType.POLYLINE,
+                google.maps.drawing.OverlayType.RECTANGLE,
+            ],
+            },
+            markerOptions: {
+                icon: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
+                dragable: true
+            },
+            circleOptions: {
+                fillColor: "cyan",
+                fillOpacity: 0.5,
+                strokeWeight: 2,
+                clickable: true,
+                editable: true,
+                draggable: true,
+                zIndex: 1,
+            },
+            polygonOptions: {
+                fillColor: "light-blue",
+                fillOpacity: 0.5,
+                strokeWeight: 2,
+                clickable: true,
+                editable: true,
+                draggable: true,
+                zIndex: 1,
+            },
+            polylineOptions: {
+                fillColor: "red",
+                fillOpacity: 0.5,
+                strokeWeight: 2,
+                clickable: true,
+                editable: true,
+                draggable: true,
+                zIndex: 1,
+            },
+            rectangleOptions: {
+                fillColor: "purple",
+                fillOpacity: 0.5,
+                strokeWeight: 2,
+                clickable: true,
+                editable: true,
+                draggable: true,
+                zIndex: 1,
+            },
+        });
+
+        drawingManager.setMap(map);
     } // end of initMap()
+
 </script>
 
 <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&libraries=places&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&libraries=places,drawing&callback=initMap">
 </script>
 
 {% endblock %}

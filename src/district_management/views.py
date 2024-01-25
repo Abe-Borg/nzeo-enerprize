@@ -47,8 +47,17 @@ def district_admin_home(request):
         {'name': 'Quail Lake Environmental Charter S chool', 'address': "4087 N Quail Lake Dr, Clovis, CA 93619"},
         {'name': 'Sequoia', 'address': "1820 S Armstrong Ave, Fresno, CA 93727"},
         {'name': 'Sanger Academy Charter School', 'address': "2207 9th St, Sanger, CA 93657"},
-        {'name': 'Wilson Elementary', 'address': "610 Faller Ave, Sanger, CA 93657"}
+        {'name': 'Wilson Elementary', 'address': "610 Faller Ave, Sanger, CA 93657"},
+        {'name': 'Centerville Middle', 'address': '48 S Smith Ave, Sanger, CA 93657' },
+        {'name': 'Community Day School', 'address': '818 L St, Sanger, CA 93657'},
+        {'name': 'Washington Academic', 'address': '1705 10th St, Sanger, CA 93657'},
+        {'name': 'Kings River High School', 'address': '1801 7th St, Sanger, CA 93657'},
+        {'name': 'Sanger High School', 'address': '1045 Bethel Ave, Sanger, CA 93657'},
+        {'name': 'Sanger West High School', 'address': '1850 S Fowler Ave, Fresno, CA 93727'},
+        {'name': 'Sanger Adult School', 'address': '1020 N St, Sanger, CA 93657'}
     ]
+
+    
 
     district_schools_coordinates = get_coordinates_for_named_locations(district_schools_list)
     context['district_schools_coordinates'] = district_schools_coordinates

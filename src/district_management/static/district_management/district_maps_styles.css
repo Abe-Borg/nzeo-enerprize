@@ -42,3 +42,22 @@
 #clear-search {
     margin-left: 10px; /* Adjust as per your layout */
 }
+
+#legend {
+    width: 98%; 
+    margin: 10px;
+    background: white;
+    padding: 10px;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    border: 1px solid #add8e6;
+}
+#legend h3 {
+    margin: 10px;
+    
+    margin-top: 0;
+}
+#legend span {
+    margin: 10px;
+    vertical-align: middle;
+}
