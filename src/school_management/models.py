@@ -1,93 +1,155 @@
-# from django.db import models
+from django.db import models
+from district_management.models import SchoolDistrict
 
-# # school_management/models.py
-# from django.db import models
-# from district_management.models import SchoolDistrict
 
-# # district level staff can choose to create site staff, even though the site staff may not be registered with NZEO 
-# class SiteStaff(models.Model):
-#     staff_id = models.AutoField(primary_key=True)
-#     first_name = models.CharField(max_length=20)
-#     last_name = models.CharField(max_length=20)
-#     job_title = models.CharField(max_length=20)
-#     email = models.EmailField(verbose_name = "email", max_length = 60, unique=True)
-#     phone = models.CharField(max_length=20)
-#     district_id = models.ForeignKey(SchoolDistrict, on_delete=models.CASCADE)
-#     school_id = models.ForeignKey('school_management.School', on_delete=models.CASCADE)
+class School(models.Model):
+    school_district = models.ForeignKey(SchoolDistrict, on_delete=models.CASCADE)
+    school_name = models.CharField(max_length=100)
+    school_area_sqft = models.IntegerField()
+    # school_geo_lat = models.FloatField() this will be dynamicall calculated
+    # school_geo_long = models.FloatField()
+    school_address = models.CharField(max_length=50) # geo coordinates are calculated form address.
+    school_student_population = models.IntegerField()
+    school_student_percent_disenfrachised = models.IntegerField()    
 
-#     def __str__(self):
-#         return f"Staff ID: {self.staff_id}, Name: {self.first_name} {self.last_name}, Job Title: {self.job_title}, Email: {self.email}, Phone: {self.phone}, District: {self.district_id}, School: {self.school_id}"
 
-# class School(models.Model):
-#     school_id = models.AutoField(primary_key=True)
-#     school_name = models.CharField(max_length=50)
-#     school_district = models.CharField(max_length=50)
-#     school_area_sqft = models.IntegerField()
-#     school_geo_lat = models.FloatField()
-#     school_geo_long = models.FloatField()
-#     school_address = models.CharField(max_length=50)
-#     school_phone = models.CharField(max_length=50)
-#     school_email = models.CharField(max_length=50)
-#     student_population = models.IntegerField()
-#     student_percent_disenfrachised = models.IntegerField()    
-#     district_id = models.ForeignKey(SchoolDistrict, on_delete=models.CASCADE)
 
-#     def __str__(self):
-#         return f"School: {self.school_name}, District: {self.school_district}, Address: {self.school_address}, Phone: {self.school_phone}, Email: {self.school_email}, Student Population: {self.student_population}, Percent Disenfranchised: {self.student_percent_disenfrachised}"
 
-# class Building(models.Model):
-#     school_id = models.IntegerField()
-#     building_id = models.IntegerField()
-#     building_name = models.CharField(max_length=20, default="Building name")
-#     building_type = models.CharField(max_length=20, default="Building type")
-#     building_area_sqft = models.IntegerField()
-#     building_geo_lat = models.FloatField()
-#     building_geo_long = models.FloatField()
-#     building_photo = models.ImageField(upload_to='images/', default='images/None/no-img.jpg')
+class Building(models.Model):
+    BUILDING_TYPES = (
+        ('classroom', 'Classroom Building'),
+        ('laboratory', 'Laboratory'),
+        ('library', 'Library'),
+        ('restrooms', 'Restrooms'),
+        ('cafeteria', 'Cafeteria'),
+        ('gymnasium', 'Gymnasium'),
+        ('auditorium', 'Auditorium'),
+        ('administrative', 'Administrative'),
+        ('maintenance', 'Maintenance'),
+        ('storage', 'Storage'),
+        ('parking', 'Parking'),
+        ('sports', 'Sports'),
+        ('playground', 'Playground'),
+        ('outdoor', 'Outdoor'),
+        ('other', 'Other'),
+        ('arts', 'Arts'),
+        ('music', 'Music'),
+        ('theater', 'Theater'),
+        ('workshop', 'Workshop'),
+        ('kitchen', 'Kitchen'),
+        ('health', 'Health'),
+        ('counseling', 'Counseling'),
+        ('security', 'Security'),
+        ('energy_plant', 'Energy Plant'),
+        ('commons', 'Student Commons/Common Area'),
+    )
 
-#     def __str__(self):
-#         return f"Building ID: {self.building_id}, Name: {self.building_name}, Type: {self.building_type}, Area: {self.building_area_sqft}, Address: {self.building_address}, Phone: {self.building_phone}, Email: {self.building_email}, Photo: {self.building_photo}"
+    building_school = models.ForeignKey(School, on_delete=models.CASCADE)
+    building_name = models.CharField(max_length=100)
+    building_type = models.CharField(max_length=100, choices=BUILDING_TYPES)
+    building_area_sqft = models.IntegerField()
+    building_geo_lat = models.FloatField()
+    building_geo_long = models.FloatField()
+    building_photo = models.ImageField(upload_to='images/', default='images/None/no-img.jpg')
+
 
 # # school equipment represents, hvac, electrical, plumbing, etc.
-# class Equipment(models.Model):
-#     school_id = models.IntegerField()
-#     equipment_id = models.IntegerField()
-#     assigned_school = models.CharField(max_length=20, default="Equipment assigned school")
-#     assigned_building = models.CharField(max_length=20, default="Equipment assigned building")
-#     equipment_name = models.CharField(max_length=20, default="Equipment name")
-#     equipment_type = models.CharField(max_length=20, default="Equipment type")
-#     equipment_manufacturer = models.CharField(max_length=20, default="Equipment manufacturer")
-#     equipment_model = models.CharField(max_length=20, default="Equipment model")
-#     equipment_serial_number = models.CharField(max_length=20, default="Equipment serial number")
-#     equipment_install_date = models.DateField(auto_now=False, auto_now_add=False)
-#     equipment_warranty_expiration = models.DateField(auto_now=False, auto_now_add=False)
-#     equipment_location = models.CharField(max_length=20, default="Equipment location")
-#     equipment_notes = models.CharField(max_length=20, default="Equipment notes")
-#     equipment_elec_kw_demand = models.IntegerField()
-#     equipment_gas_btuh_demand = models.IntegerField()
-#     equipment_generates_elec_kw = models.IntegerField()
-#     equipment_storage_btu_kwh = models.IntegerField()
-#     equipment_photo = models.ImageField(upload_to='images/', default='images/None/no-img.jpg')
+class Equipment(models.Model):
+    ELECTRICAL_EQUIPMENT_TYPES = (
+        ('circuit_breaker', 'Circuit Breaker'),
+        ('transformer', 'Transformer'),
+        ('voltage_regulator', 'Voltage Regulator'),
+        ('electric_meter', 'Electric Meter'),
+        ('solar_panel', 'Solar Panel'),
+        ('generator', 'Generator'),
+        ('surge_protector', 'Surge Protector'),
+        ('ups', 'UPS (Uninterruptible Power Supply)'),
+        ('conduit_fittings', 'Conduit Fittings'),
+        ('junction_box', 'Junction Box'),
+    )
 
-#     def __str__(self):
-#         return f"Equipment ID: {self.equipment_id}, School: {self.assigned_school}, District: {self.assigned_district}, Name: {self.equipment_name}, Type: {self.equipment_type}, Manufacturer: {self.equipment_manufacturer}, Model: {self.equipment_model}, Serial Number: {self.equipment_serial_number}, Install Date: {self.equipment_install_date}, Warranty Expiration: {self.equipment_warranty_expiration}, Location: {self.equipment_location}, Notes: {self.equipment_notes}, Photo: {self.equipment_photo}"
+    MECHANICAL_EQUIPMENT_TYPES = (
+        ('hvac_unit', 'HVAC Unit'),
+        ('boiler', 'Boiler'),
+        ('compressor', 'Compressor'),
+        ('heat_exchanger', 'Heat Exchanger'),
+        ('pump', 'Pump'),
+        ('fan_coil_unit', 'Fan Coil Unit'),
+        ('air_handling_unit', 'Air Handling Unit'),
+        ('chiller', 'Chiller'),
+        ('ductwork_components', 'Ductwork Components'),
+        ('cooling_tower', 'Cooling Tower'),
+    )
+
+    PLUMBING_EQUIPMENT_TYPES = (
+        ('water_heater', 'Water Heater'),
+        ('pump', 'Pump'),
+        ('valve', 'Valve'),
+        ('pipe_fittings', 'Pipe Fittings'),
+        ('pressure_reducing_valve', 'Pressure Reducing Valve'),
+        ('backflow_preventer', 'Backflow Preventer'),
+        ('water_softener', 'Water Softener'),
+        ('drainage_system', 'Drainage System'),
+        ('faucet', 'Faucet'),
+        ('toilet', 'Toilet'),
+    )
+
+    MANUFACTURERS = (
+        ('siemens', 'Siemens'),
+        ('general_electric', 'General Electric'),
+        ('honeywell', 'Honeywell'),
+        ('trane', 'Trane'),
+        ('carrier', 'Carrier'),
+        ('bosch', 'Bosch'),
+        ('abb', 'ABB'),
+        ('schneider_electric', 'Schneider Electric'),
+        ('mitsubishi_electric', 'Mitsubishi Electric'),
+        ('johnson_controls', 'Johnson Controls'),
+        ('daikin', 'Daikin'),
+        ('emerson', 'Emerson'),
+        ('hitachi', 'Hitachi'),
+        ('toshiba', 'Toshiba'),
+        ('rheem', 'Rheem'),
+        ('kohler', 'Kohler'),
+        ('moen', 'Moen'),
+        ('delta', 'Delta'),
+        ('grohe', 'Grohe'),
+        ('american_standard', 'American Standard'),
+    )
+
+    equipment_school = models.ForeignKey(School, on_delete=models.CASCADE)
+    equipment_building = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True, blank=True)
+    equipment_tag = models.CharField(max_length=50)
+    equipment_type = models.CharField(max_length=50, choices = ELECTRICAL_EQUIPMENT_TYPES + MECHANICAL_EQUIPMENT_TYPES + PLUMBING_EQUIPMENT_TYPES)
+    equipment_manufacturer = models.CharField(max_length=50, choices = MANUFACTURERS)
+    equipment_model = models.CharField(max_length=50)
+    equipment_serial_number = models.CharField(max_length=50)
+    equipment_install_date = models.DateField()
+    equipment_warranty_expiration = models.DateField(auto_now=False, auto_now_add=False)
+    equipment_location = models.CharField(max_length=100)
+    equipment_notes = equipment_notes = models.TextField(max_length=300, blank=True)
+    equipment_elec_kw_demand = models.IntegerField()
+    equipment_gas_btuh_demand = models.IntegerField()
+    equipment_generates_elec_kw = models.IntegerField()
+    equipment_storage_btu_kwh = models.IntegerField()
+    equipment_photo = models.ImageField(upload_to='images/', default='images/None/no-img.jpg')
 
 
-# class PerformanceMetrics(models.Model):
-#     school_id = models.IntegerField()
-#     emmissions_co2 = models.IntegerField()
-#     CUI_co2_sqft = models.IntegerField()
-#     EUI_kbtu_sqft = models.IntegerField()
-#     EUI_kbtu_student = models.IntegerField()
-#     renewables_kwh = models.IntegerField()
-#     peak_demand_kw = models.IntegerField()
-#     elec_consumption_kwh = models.IntegerField()
-#     gas_consumption_mmbtu = models.IntegerField()
-#     total_consumption_mmbtu = models.IntegerField()
-#     ECI_dollar_sqft = models.IntegerField()
-#     ECI_dollar_student = models.IntegerField()
-#     total_cost_dollar = models.IntegerField()
-#     year_to_date_kbtu_savings = models.IntegerField()
-#     year_to_date_co2_savings = models.IntegerField()
+class PerformanceMetrics(models.Model):
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    emmissions_co2 = models.IntegerField()
+    CUI_co2_sqft = models.IntegerField()
+    EUI_kbtu_sqft = models.IntegerField()
+    EUI_kbtu_student = models.IntegerField()
+    renewables_kwh = models.IntegerField()
+    peak_demand_kw = models.IntegerField()
+    elec_consumption_kwh = models.IntegerField()
+    gas_consumption_mmbtu = models.IntegerField()
+    total_consumption_mmbtu = models.IntegerField()
+    ECI_dollar_sqft = models.IntegerField()
+    ECI_dollar_student = models.IntegerField()
+    total_cost_dollar = models.IntegerField()
+    year_to_date_kbtu_savings = models.IntegerField()
+    year_to_date_co2_savings = models.IntegerField()
 
 
