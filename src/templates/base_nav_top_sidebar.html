@@ -100,59 +100,59 @@
     <!-- sidebar -->
     <div class = "sidebar-container">
       <div class="col-6 unique-grid-cell">
-        <button type = "button" class = "icon-button" >
-          <i class="fa-solid fa-gear-complex" style="color: #1679c5;"></i>
+        <button type = "button" class = "icon-button" id = "mechanical-icon-button">
+          <i class="fa-solid fa-gear-complex" style="color: #1679c5;" ></i>
           <span class="custom-tooltip">Mechanical Markup</span>
         </button>
       </div>
       <div class="col-6 unique-grid-cell">
-        <button type = "button" class = "icon-button">
-          <i class="fa-solid fa-plug" style="color: #bcdc18;"></i>
+        <button type = "button" class = "icon-button" id = "electrical-icon-button">
+          <i class="fa-solid fa-plug" style="color: #bcdc18;" ></i>
           <span class="custom-tooltip">Electrical Markup</span>
         </button>
       </div>
       <div class="col-6 unique-grid-cell">
-        <button type = "button" class = "icon-button">
-          <i class="fa-solid fa-pipe-valve" style="color: #3e2c14;"></i>
+        <button type = "button" class = "icon-button" id = "plumbing-icon-button">
+          <i class="fa-solid fa-pipe-valve" style="color: #3e2c14;" ></i>
           <span class="custom-tooltip">Plumbing Markup</span>
         </button>
       </div>
       <div class="col-6 unique-grid-cell">
-        <button type = "button" class = "icon-button">
-          <i class="fa-regular fa-pen-line" style="color: #63E6BE;"></i>
+        <button type = "button" class = "icon-button" id = "line-icon-button">
+          <i class="fa-regular fa-pen-line" style="color: #63E6BE;" ></i>
           <span class="custom-tooltip">Draw Line</span>
         </button>
       </div>
       <div class="col-6 unique-grid-cell">
-        <button type = "button" class = "icon-button">
-          <i class="fa-regular fa-draw-polygon" style="color: #FFD43B;"></i>
+        <button type = "button" class = "icon-button" id = "polygon-icon-button">
+          <i class="fa-regular fa-draw-polygon" style="color: #FFD43B;" ></i>
           <span class="custom-tooltip">Draw Polygon</span>
         </button>
       </div>
       <div class="col-6 unique-grid-cell">
-        <button type = "button" class = "icon-button">
+        <button type = "button" class = "icon-button" id = "marker-icon-button">
           <i class="fa-solid fa-location-dot"></i>
           <span class="custom-tooltip">Place Marker</span>
         </button>
       </div>
       <div class="col-6 unique-grid-cell">
-        <button type = "button" class = "icon-button">
+        <button type = "button" class = "icon-button" id = "tag-icon-button">
           <i class="fa-solid fa-tag" style="color: #af0e74;"></i>
           <span class="custom-tooltip">Place Label</span>
         </button>
       </div>
       <div class="col-6 unique-grid-cell">
-        <button type = "button" class = "icon-button">
+        <button type = "button" class = "icon-button" id = sticky-note-icon-button>
           <i class="fa-solid fa-notes" style="color: #FFD43B;"></i>
           <span class="custom-tooltip">Place Sticky Note</span>
         </button>
       </div>
     </div> <!-- end of sidebar container-->
 
+
     <!-- center panel content -->
     <div class="content-container">
       {% block center-panel-content %}
-      
       {% endblock %}
     </div> <!-- end of center panel -->
   </div> <!-- end of main container -->

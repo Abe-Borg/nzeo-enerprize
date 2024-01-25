@@ -1,61 +1,234 @@
 {% extends "base_nav_top_sidebar.html" %}
 {% load static %}
 
-{% block center-panel-content %}
-<div id="district-map" style="height: 700px;"></div>
+{% block center-panel-content %} 
 
-<script src="{% static 'maps/annotations.js' %}"></script>
-<link href="{% static 'maps/annotations.css' %}" rel="stylesheet">
+<!-- <script src="{% static 'maps/annotations.js' %}"></script> -->
+<link href="{% static 'district_management/district_maps_styles.css' %}" rel="stylesheet">
+
+<br>
+<h1 style = "margin: 10px;">District Map</h1>
+<h2 style = "margin: 10px;">{{ district_name }}</h2>
+<p style ="padding: 15px;">
+    Click on the map to place an annotation. Press enter to confirm the annotation or escape to cancel.<br>
+    Navigation is limited to district boundaries.
+</p>
+
+<!-- Map goes here -->
+<div id="map"></div>
+
+<div id="legend">
+    <h3>Legend</h3>
+    <div>
+        <span style="height: 10px; width: 10px; background-color: red; display: inline-block;"></span>School Locations
+    </div> 
+</div>
+
+<input id="search-input" class="controls" type="text" placeholder="Search Map">
+<button id="reset-map">Recenter map</button>
+<button id="clear-search">Clear search</button>
+
+<!-- district school locations on the map -->
+{{ district_schools_coordinates|json_script:"marker-data"}}
 
 <script>
-    // Define the southwest and northeast corners of your district
-    var corner1 = L.latLng(southwest_lat, southwest_lng);
-    var corner2 = L.latLng(northeast_lat, northeast_lng);
-    var bounds = L.latLngBounds(corner1, corner2);
+    district_southwest_lat = parseFloat("{{southwest_lat}}");
+    district_southwest_lng = parseFloat("{{southwest_lng}}");
+    district_northeast_lat = parseFloat("{{northeast_lat}}");
+    district_northeast_lng = parseFloat("{{northeast_lng}}");
+    district_geo_lat = parseFloat("{{ district_geo_lat }}");
+    district_geo_long = parseFloat("{{ district_geo_long }}");
+    map_zoom_level = parseInt("{{ map_zoom_level }}");
+    district_name = "{{ district_name }}";
 
-    // Initialize the map with dynamic or fixed coordinates
-    var latitude = parseFloat("{{ district_geo_lat }}") || corner1.lat;
-    var longitude = parseFloat("{{ district_geo_long }}") || corner1.lng;
-    var zoomLevel = parseInt("{{ map_zoom_level }}") || map.getBoundsZoom(bounds);
+    function initMap() {
+    
+        // The bounds of the area
+        var allowedBounds = new google.maps.LatLngBounds(
+            new google.maps.LatLng(district_southwest_lat, district_southwest_lng),
+            new google.maps.LatLng(district_northeast_lat, district_northeast_lng)
+        );
 
-    var map = L.map('district-map').setView([latitude, longitude], zoomLevel);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-    }).addTo(map);
-    map.setMaxBounds(bounds);
-
-    // Annotation Placement Logic
-    var annotationMode = false;
-    var currentAnnotation;
-
-    // Function to start annotation placement
-    function startAnnotation() {
-        annotationMode = true;
-    }
-
-    // Click event on the map for placing annotations
-    map.on('click', function(e) {
-        if (annotationMode) {
-            currentAnnotation = L.marker(e.latlng).addTo(map);
-        }
-    });
-
-    // Keyboard event listener for confirming or canceling annotations
-    document.addEventListener('keydown', function(event) {
-        if (annotationMode) {
-            if (event.key === "Enter") {
-                // Confirm and save the annotation
-                annotationMode = false;
-            } else if (event.key === "Escape") {
-                // Cancel the annotation
-                map.removeLayer(currentAnnotation);
-                annotationMode = false;
+        // Map options
+        var mapOptions = {
+            zoom: map_zoom_level,
+            center: { lat: district_geo_lat, lng: district_geo_long },
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            restriction: {
+                latLngBounds: allowedBounds,
+                strictBounds: false,
             }
-        }
-    });
+        };
 
-    // Example: Attach startAnnotation to an icon or button click
-    document.getElementById('your-icon-id').addEventListener('click', startAnnotation);
+        // Creating the map
+        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        var school_markers = JSON.parse(document.getElementById('marker-data').textContent);
+
+        // Create markers for each school location
+        school_markers.forEach(function(school) {
+            var marker = new google.maps.Marker({
+                position: {lat: school.lat, lng: school.lng},
+                map: map,
+                title: school.name
+            });
+
+            // add an info window for each marker
+            // Add an info window for each marker
+            var infowindowContent = 
+            '<div>' +
+                '<h6>' + school.name + '</h6>' +
+                '<p>' + school.description + '</p>' + // Additional description
+                '<a href="' + school.url + 
+                '" target="_blank">Visit School Page</a>' + // Link
+            '</div>';
+
+            var infowindow = new google.maps.InfoWindow({
+                content: infowindowContent
+            });
+
+            marker.addListener('click', function() {
+                map.setZoom(16); // You can adjust the zoom level as needed
+                map.setCenter(marker.getPosition());
+                infowindow.open(map, marker);
+            });
+        });
+        
+        // ========== CODE FOR SEARCH BOX ==========
+        // Create the search box and link it to the UI element.
+        var input = document.getElementById('search-input');
+        var clear_search = document.getElementById('clear-search');
+        var reset_map = document.getElementById('reset-map');
+        var searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.LEFT].push(input);
+        map.controls[google.maps.ControlPosition.LEFT].push(clear_search);
+        map.controls[google.maps.ControlPosition.LEFT].push(reset_map);
+
+        // Bias the SearchBox results towards current map's viewport.
+        map.addListener('bounds_changed', function() {
+            searchBox.setBounds(map.getBounds());
+        });
+
+        var markers = [];
+        // Listen for the event fired when the user selects a prediction and retrieve more details for that place.
+        searchBox.addListener('places_changed', function() {
+            var places = searchBox.getPlaces();
+
+            if (places.length == 0) {
+                return;
+            }
+
+            // Clear out the old markers.
+            markers.forEach(function(marker) {
+                marker.setMap(null);
+            });
+            markers = [];
+
+            // For each place, get the icon, name and location.
+            var bounds = new google.maps.LatLngBounds();
+            places.forEach(function(place) {
+                if (!place.geometry) {
+                    console.log("Returned place contains no geometry");
+                    return;
+                }
+
+                // Create a marker for each place.
+                markers.push(new google.maps.Marker({
+                    map: map,
+                    title: place.name,
+                    position: place.geometry.location
+                }));                
+            });
+            map.fitBounds(bounds);
+        }); 
+
+        // Clear the search input
+        document.getElementById('clear-search').addEventListener('click', function() {
+            document.getElementById('search-input').value = '';
+            // Clear markers and reset map view
+            markers.forEach(function(marker) {
+                marker.setMap(null);
+            });
+            markers = [];
+            document.getElementById('search-input').value = '';
+
+        });
+
+        // Reset the map to its initial state
+        document.getElementById('reset-map').addEventListener('click', function() {
+            map.setCenter({lat: district_geo_lat, lng: district_geo_long});
+            map.setZoom(map_zoom_level);
+            markers.forEach(function(marker) {
+                marker.setMap(null);
+            });
+            markers = [];
+            document.getElementById('search-input').value = '';
+        });
+
+
+        // ========== CODE FOR DRAWING TOOLS ==========
+        const drawingManager = new google.maps.drawing.DrawingManager({
+            drawingMode: google.maps.drawing.OverlayType.MARKER,
+            drawingControl: true,
+            drawingControlOptions: {
+            position: google.maps.ControlPosition.TOP_CENTER,
+            drawingModes: [
+                google.maps.drawing.OverlayType.MARKER,
+                google.maps.drawing.OverlayType.CIRCLE,
+                google.maps.drawing.OverlayType.POLYGON,
+                google.maps.drawing.OverlayType.POLYLINE,
+                google.maps.drawing.OverlayType.RECTANGLE,
+            ],
+            },
+            markerOptions: {
+                icon: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
+                dragable: true
+            },
+            circleOptions: {
+                fillColor: "cyan",
+                fillOpacity: 0.5,
+                strokeWeight: 2,
+                clickable: true,
+                editable: true,
+                draggable: true,
+                zIndex: 1,
+            },
+            polygonOptions: {
+                fillColor: "light-blue",
+                fillOpacity: 0.5,
+                strokeWeight: 2,
+                clickable: true,
+                editable: true,
+                draggable: true,
+                zIndex: 1,
+            },
+            polylineOptions: {
+                fillColor: "red",
+                fillOpacity: 0.5,
+                strokeWeight: 2,
+                clickable: true,
+                editable: true,
+                draggable: true,
+                zIndex: 1,
+            },
+            rectangleOptions: {
+                fillColor: "purple",
+                fillOpacity: 0.5,
+                strokeWeight: 2,
+                clickable: true,
+                editable: true,
+                draggable: true,
+                zIndex: 1,
+            },
+        });
+
+        drawingManager.setMap(map);
+    } // end of initMap()
+
 </script>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&libraries=places,drawing&callback=initMap">
+</script>
+
 {% endblock %}

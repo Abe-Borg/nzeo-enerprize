@@ -1,26 +1,12 @@
 // -- Interactive features --
-let currentAnnotation = 'marker';
+
+
 let linePoints = [];
 let polyPoints = [];
-let markerCount = 0;
-const MAX_POINTS = 10;
 const SNAP_DISTANCE = 10; // pixels
 let annotations = []; // store all annotations
 var tempLine = null;
 var tempPolyline = null;
-var annotationMode = false;
-
-// func to start annotation placement
-function startAnnotation() {
-    annotationMode = true;
-}
-
-// 
-document.getElementById('annotationControls').addEventListener('change', function(e) {
-    currentAnnotation = e.target.value;
-    linePoints = []; // Reset line points
-    polyPoints = []; // Reset polygon points
-});
 
 
 // let the users click on the map to add annotations.

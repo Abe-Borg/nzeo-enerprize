@@ -1,30 +1,13 @@
-var mymap = L.map('fresno_map').setView([36.73825, -119.7915], 12); 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '© OpenStreetMap contributors'
-}).addTo(mymap);
-
-var marker = L.marker([36.69991667, -119.57691667]).addTo(mymap);
-marker.bindPopup("<b>Fresno</b>").openPopup();
-
-
 // -- Interactive features --
-let currentAnnotation = 'marker'; //default
+
+
 let linePoints = [];
 let polyPoints = [];
-let markerCount = 0;
-const MAX_POINTS = 10;
 const SNAP_DISTANCE = 10; // pixels
 let annotations = []; // store all annotations
 var tempLine = null;
 var tempPolyline = null;
 
-
-document.getElementById('annotationControls').addEventListener('change', function(e) {
-    currentAnnotation = e.target.value;
-    linePoints = []; // Reset line points
-    polyPoints = []; // Reset polygon points
-});
 
 // let the users click on the map to add annotations.
 mymap.on('click', function(e) {
@@ -179,6 +162,18 @@ function isPointCloseToFirst(points, newPoint) {
     return false;
 }    
 
-function saveAnnotation(type, points) {
-    // Implement AJAX call here to send the points to your Django backend
+function saveAnnotation(type, coordinates, metadata) {
+    var data = {
+        annotation_type: type,
+        coordinates: coordinates,
+        metadata: metadata
+    };
+    // AJAX call to Django POST endpoint
+    // Handle response and errors
 }
+
+// On map load
+map.on('load', function() {
+    // AJAX call to Django GET endpoint
+    // Iterate over the response data and add each annotation to the map
+});
