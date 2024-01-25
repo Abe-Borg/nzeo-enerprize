@@ -1,4 +1,5 @@
 djangoprojectenv/
 src/django_error.log
-
-
+*.pyc
+__pycache__/
+*.py[cod]
