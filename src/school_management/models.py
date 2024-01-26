@@ -10,9 +10,10 @@ class School(models.Model):
     # school_geo_long = models.FloatField()
     school_address = models.CharField(max_length=100) # geo coordinates are calculated form address.
     school_student_population = models.IntegerField()
-    school_student_percent_disenfrachised = models.IntegerField()    
+    school_student_percent_disenfrachised = models.IntegerField()
 
-
+    def __str__(self):
+        return str(self.school_district) + ' ' + str(self.school_name) + ' ' + str(self.school_area_sqft) + ' ' + str(self.school_address) + ' ' + str(self.school_student_population) + ' ' + str(self.school_student_percent_disenfrachised)
 
 
 class Building(models.Model):
@@ -51,6 +52,11 @@ class Building(models.Model):
     building_geo_lat = models.FloatField()
     building_geo_long = models.FloatField()
     building_photo = models.ImageField(upload_to='images/', default='images/None/no-img.jpg')
+
+    def __str__(self):
+        # return everything
+        return str(self.building_school) + ' ' + str(self.building_name) + ' ' + str(self.building_type) + ' ' + str(self.building_area_sqft) + ' ' + str(self.building_geo_lat) + ' ' + str(self.building_geo_long)
+    
 
 
 # # school equipment represents, hvac, electrical, plumbing, etc.
@@ -131,6 +137,10 @@ class Equipment(models.Model):
     equipment_storage_btu_kwh = models.IntegerField()
     equipment_photo = models.ImageField(upload_to='images/', default='images/None/no-img.jpg')
 
+    def __str__(self):
+        # return everything
+        return str(self.equipment_school) + ' ' + str(self.equipment_building) + ' ' + str(self.equipment_tag) + ' ' + str(self.equipment_type) + ' ' + str(self.equipment_manufacturer) + ' ' + str(self.equipment_model) + ' ' + str(self.equipment_serial_number) + ' ' + str(self.equipment_install_date) + ' ' + str(self.equipment_warranty_expiration) + ' ' + str(self.equipment_location) + ' ' + str(self.equipment_notes) + ' ' + str(self.equipment_elec_kw_demand) + ' ' + str(self.equipment_gas_btuh_demand) + ' ' + str(self.equipment_generates_elec_kw) + ' ' + str(self.equipment_storage_btu_kwh)
+
 
 class PerformanceMetrics(models.Model):
     school = models.ForeignKey(School, on_delete=models.CASCADE)
@@ -148,5 +158,9 @@ class PerformanceMetrics(models.Model):
     total_cost_dollar = models.IntegerField()
     year_to_date_kbtu_savings = models.IntegerField()
     year_to_date_co2_savings = models.IntegerField()
+
+    def __str__(self):
+        # return everything
+        return str(self.school) + ' ' + str(self.emmissions_co2) + ' ' + str(self.CUI_co2_sqft) + ' ' + str(self.EUI_kbtu_sqft) + ' ' + str(self.EUI_kbtu_student) + ' ' + str(self.renewables_kwh) + ' ' + str(self.peak_demand_kw) + ' ' + str(self.elec_consumption_kwh) + ' ' + str(self.gas_consumption_mmbtu) + ' ' + str(self.total_consumption_mmbtu) + ' ' + str(self.ECI_dollar_sqft) + ' ' + str(self.ECI_dollar_student) + ' ' + str(self.total_cost_dollar) + ' ' + str(self.year_to_date_kbtu_savings) + ' ' + str(self.year_to_date_co2_savings)
 
 
