@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import MapAnnotation
 
-# Register your models here.
+admin.site.register(MapAnnotation)
+

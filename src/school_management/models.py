@@ -58,7 +58,6 @@ class Building(models.Model):
         return str(self.building_school) + ' ' + str(self.building_name) + ' ' + str(self.building_type) + ' ' + str(self.building_area_sqft) + ' ' + str(self.building_geo_lat) + ' ' + str(self.building_geo_long)
     
 
-
 # # school equipment represents, hvac, electrical, plumbing, etc.
 class Equipment(models.Model):
     ELECTRICAL_EQUIPMENT_TYPES = (

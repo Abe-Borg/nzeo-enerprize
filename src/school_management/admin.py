@@ -1,3 +1,9 @@
 from django.contrib import admin
+from .models import School, Building, Equipment, PerformanceMetrics
 
-# Register your models here.
+admin.site.register(School)
+admin.site.register(Building)
+admin.site.register(Equipment)
+admin.site.register(PerformanceMetrics)
+
+
