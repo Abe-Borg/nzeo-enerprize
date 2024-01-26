@@ -1,4 +1,3 @@
-from django.contrib.gis.db import models as gis_models
 from django.conf import settings
 from django.db import models
 
@@ -7,7 +6,7 @@ class MapAnnotation(models.Model):
     ANNOTATION_TYPES = (
         ('market', 'Marker'), 
         ('line', 'Line'), 
-        ('polygon', 'Polygon')
+        ('polygon', 'Polygon'),
         ('mechanical', 'Mechanical'),
         ('electrical', 'Electrical'),
         ('plumbing', 'Plumbing'),

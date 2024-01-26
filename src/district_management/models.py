@@ -10,7 +10,7 @@ class SchoolDistrict(models.Model):
     district_bb_northeast_lat = models.FloatField()
     district_bb_northeast_lng = models.FloatField()
 
-    def save(serlf, *args, **kwargs):
+    def save(self, *args, **kwargs):
         self.district_name = self.district_name.lower()
         self.district_city = self.district_city.lower()
         super(SchoolDistrict, self).save(*args, **kwargs)

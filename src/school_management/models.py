@@ -8,7 +8,7 @@ class School(models.Model):
     school_area_sqft = models.IntegerField()
     # school_geo_lat = models.FloatField() this will be dynamicall calculated
     # school_geo_long = models.FloatField()
-    school_address = models.CharField(max_length=50) # geo coordinates are calculated form address.
+    school_address = models.CharField(max_length=100) # geo coordinates are calculated form address.
     school_student_population = models.IntegerField()
     school_student_percent_disenfrachised = models.IntegerField()    
 
