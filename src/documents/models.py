@@ -3,7 +3,21 @@ from django.conf import settings
 from school_management.models import Building, Equipment, School
 
 class Document(models.Model):
-
+    """
+        Represents a document within a Django application for managing document operations such as upload, download, and deletion.
+        This model stores information about the document, including its name, type, format, description, file path, and upload date. It also maintains relationships with entities like the document owner, associated school, building, and equipment. Historical information about these associations is preserved in separate fields.
+        Fields:
+        - document_name: The name of the document.
+        - document_type: The type of the document, chosen from a predefined set of types.
+        - document_format: The format of the document, chosen from a predefined set of formats.
+        - document_description: A textual description of the document.
+        - document_filepath: The file path where the document is stored.
+        - document_upload_date: The date and time when the document was uploaded.
+        - [Other Foreign Key Relationships]
+        - historical_owner/school/equipment: Fields to store historical association data.
+        The `save` method is overridden to update historical fields when current associations are null.
+        The `__str__` method returns a string representation of the document and its key details.
+    """
     DOCUMENT_TYPES = (
         ('report', 'Report'),
         ('invoice', 'Invoice'),
@@ -33,7 +47,7 @@ class Document(models.Model):
     document_type = models.CharField(max_length=100, choices=DOCUMENT_TYPES)
     document_format = models.CharField(max_length=50, choices=DOCUMENT_FORMATS)
     document_description = models.TextField(max_length=250)
-    document_filepath = models.FileField(upload_to='documents/')
+    document_filepath = models.FileField(upload_to='documents/', default='document_path')
     document_upload_date = models.DateTimeField(auto_now_add=True)
     
     document_owner = models.ForeignKey(

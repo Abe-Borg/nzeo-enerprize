@@ -2,7 +2,17 @@ from django.conf import settings
 from django.db import models
 
 class MapAnnotation(models.Model):
-
+    """
+    Represents an annotation on a map within a Django application for managing maps and annotations.
+    This model handles various types of annotations that can be placed on maps, such as markers, lines, polygons, and labels, among others. It is designed to work with the Google Maps API for displaying and managing these annotations.
+    Fields:
+    - annotation_author: The user who created the annotation.
+    - annotation_layer: The category of the annotation, chosen from predefined layers like HVAC, lighting, plumbing, etc.
+    - annotation_description: An optional description of the annotation.
+    - annotation_type: The type of the annotation, chosen from predefined types.
+    - annotation_coordinates: The coordinates of the annotation stored in JSON format.
+    The `__str__` method returns a string representation of the annotation, including the author, layer, description, type, and coordinates.
+    """
     ANNOTATION_TYPES = (
         ('market', 'Marker'), 
         ('line', 'Line'), 

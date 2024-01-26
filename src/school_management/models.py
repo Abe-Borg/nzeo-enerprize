@@ -3,6 +3,18 @@ from district_management.models import SchoolDistrict
 
 
 class School(models.Model):
+    """
+    Represents a school within the school management application.
+    This model stores comprehensive information about a school, including its association with a school district, physical attributes, demographic data, and geo-location (dynamically calculated from the address). This information is foundational for various analyses and data visualization related to school performance and resource management.
+    Fields:
+    - school_district: The associated school district (ForeignKey).
+    - school_name: The name of the school.
+    - school_area_sqft: The total area of the school in square feet.
+    - school_address: The physical address of the school.
+    - school_student_population: The total number of students.
+    - school_student_percent_disenfrachised: The percentage of disenfranchised students.
+    The `__str__` method returns a string representation of the school, including key attributes.
+    """
     school_district = models.ForeignKey(SchoolDistrict, on_delete=models.CASCADE)
     school_name = models.CharField(max_length=100)
     school_area_sqft = models.IntegerField()
@@ -17,6 +29,19 @@ class School(models.Model):
 
 
 class Building(models.Model):
+    """
+    Represents a building within a school, as part of the school management application.
+    This model captures detailed information about each building in a school, such as its name, type, size, geographical location, and a photo for visual reference. The variety of building types, from classrooms to energy plants, allows for comprehensive tracking and management of school facilities.
+    Fields:
+    - building_school: The school to which the building belongs (ForeignKey).
+    - building_name: The name of the building.
+    - building_type: The type/category of the building, chosen from a predefined set of options.
+    - building_area_sqft: The total area of the building in square feet.
+    - building_geo_lat: The latitude coordinate of the building's geographical location.
+    - building_geo_long: The longitude coordinate of the building's geographical location.
+    - building_photo: An image of the building, stored in the specified path.
+    The `__str__` method returns a string representation of the building, including its association with a school, name, type, area, and geographical coordinates.
+    """
     BUILDING_TYPES = (
         ('classroom', 'Classroom Building'),
         ('laboratory', 'Laboratory'),
@@ -58,8 +83,29 @@ class Building(models.Model):
         return str(self.building_school) + ' ' + str(self.building_name) + ' ' + str(self.building_type) + ' ' + str(self.building_area_sqft) + ' ' + str(self.building_geo_lat) + ' ' + str(self.building_geo_long)
     
 
-# # school equipment represents, hvac, electrical, plumbing, etc.
 class Equipment(models.Model):
+    """
+    Represents equipment within a school's facilities, as part of the school management application.
+    This model is designed to store and manage detailed information about various types of equipment used in school facilities, such as electrical, mechanical, and plumbing equipment. It includes comprehensive details like the type of equipment, manufacturer, model, serial number, installation date, warranty expiration, and specific attributes related to energy consumption and generation.
+    Fields:
+    - equipment_school: The school where the equipment is located (ForeignKey).
+    - equipment_building: The specific building within the school where the equipment is housed (ForeignKey, nullable).
+    - equipment_tag: A unique identifier or tag for the equipment.
+    - equipment_type: The type of equipment, chosen from a predefined set of electrical, mechanical, and plumbing equipment types.
+    - equipment_manufacturer: The manufacturer of the equipment, chosen from a predefined set of manufacturers.
+    - equipment_model: The model of the equipment.
+    - equipment_serial_number: The serial number of the equipment.
+    - equipment_install_date: The date when the equipment was installed.
+    - equipment_warranty_expiration: The expiration date of the equipment's warranty.
+    - equipment_location: The specific location of the equipment within the building.
+    - equipment_notes: Additional notes or comments about the equipment.
+    - equipment_elec_kw_demand: The electrical demand of the equipment in kilowatts.
+    - equipment_gas_btuh_demand: The gas demand of the equipment in British Thermal Units per hour.
+    - equipment_generates_elec_kw: The electrical generation capacity of the equipment in kilowatts, if applicable.
+    - equipment_storage_btu_kwh: The energy storage capacity of the equipment in British Thermal Units or kilowatt-hours.
+    - equipment_photo: An image of the equipment, stored in the specified path.
+    The `__str__` method returns a string representation of the equipment, including its association with a school, building, tag, type, manufacturer, model, and serial number.
+    """
     ELECTRICAL_EQUIPMENT_TYPES = (
         ('circuit_breaker', 'Circuit Breaker'),
         ('transformer', 'Transformer'),
@@ -142,6 +188,27 @@ class Equipment(models.Model):
 
 
 class PerformanceMetrics(models.Model):
+    """
+    Represents various performance metrics related to energy usage and sustainability for a school, as part of the school management application.
+    This model is crucial for tracking and analyzing the school's environmental impact and energy efficiency. It encompasses a wide range of metrics including CO2 emissions, energy use intensity (EUI), cost of energy intensity (ECI), renewable energy usage, and more. These metrics are essential for assessing the school's performance in terms of energy consumption, cost, and environmental sustainability.
+    Fields:
+    - school: The school to which these performance metrics are related (ForeignKey).
+    - emmissions_co2: The amount of CO2 emissions in a specified unit.
+    - CUI_co2_sqft: Carbon Usage Intensity per square foot.
+    - EUI_kbtu_sqft: Energy Use Intensity in kBTU per square foot.
+    - EUI_kbtu_student: Energy Use Intensity in kBTU per student.
+    - renewables_kwh: Renewable energy usage in kilowatt-hours.
+    - peak_demand_kw: Peak electrical demand in kilowatts.
+    - elec_consumption_kwh: Total electrical consumption in kilowatt-hours.
+    - gas_consumption_mmbtu: Total gas consumption in million British Thermal Units (MMBTU).
+    - total_consumption_mmbtu: Total energy consumption in MMBTU.
+    - ECI_dollar_sqft: Energy Cost Intensity per square foot.
+    - ECI_dollar_student: Energy Cost Intensity per student.
+    - total_cost_dollar: Total energy cost in dollars.
+    - year_to_date_kbtu_savings: Year-to-date savings in kBTU.
+    - year_to_date_co2_savings: Year-to-date CO2 savings.
+    The `__str__` method returns a string representation of the performance metrics, encompassing key data points for easy identification and analysis.
+    """
     school = models.ForeignKey(School, on_delete=models.CASCADE)
     emmissions_co2 = models.IntegerField()
     CUI_co2_sqft = models.IntegerField()
@@ -159,7 +226,6 @@ class PerformanceMetrics(models.Model):
     year_to_date_co2_savings = models.IntegerField()
 
     def __str__(self):
-        # return everything
         return str(self.school) + ' ' + str(self.emmissions_co2) + ' ' + str(self.CUI_co2_sqft) + ' ' + str(self.EUI_kbtu_sqft) + ' ' + str(self.EUI_kbtu_student) + ' ' + str(self.renewables_kwh) + ' ' + str(self.peak_demand_kw) + ' ' + str(self.elec_consumption_kwh) + ' ' + str(self.gas_consumption_mmbtu) + ' ' + str(self.total_consumption_mmbtu) + ' ' + str(self.ECI_dollar_sqft) + ' ' + str(self.ECI_dollar_student) + ' ' + str(self.total_cost_dollar) + ' ' + str(self.year_to_date_kbtu_savings) + ' ' + str(self.year_to_date_co2_savings)
 
 
