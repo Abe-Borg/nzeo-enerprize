@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('district_management', '0002_rename_district_bb_bottom_left_lat_schooldistrict_district_bb_northeast_lat_and_more'),
+        ('district_management', '0001_initial'),
     ]
 
     operations = [

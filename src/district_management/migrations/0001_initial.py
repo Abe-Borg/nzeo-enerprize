@@ -17,6 +17,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('district_id', models.IntegerField()),
                 ('district_name', models.CharField(default='District', max_length=100)),
+                ('district_city', models.CharField(max_length=100)),
                 ('district_num_schools', models.IntegerField()),
                 ('district_geo_lat', models.FloatField()),
                 ('district_geo_long', models.FloatField()),
