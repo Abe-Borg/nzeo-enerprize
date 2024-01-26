@@ -17,7 +17,6 @@ class Document(models.Model):
         ('diagram', 'Diagram'),
         ('memo', 'Memo'),
     )
-
     DOCUMENT_FORMATS = (
         ('pdf', 'PDF'),
         ('doc', 'DOC/DOCX (Word Document)'),
@@ -58,9 +57,9 @@ class Document(models.Model):
         null=True, 
     )
 
-    historical_owner = models.CharField(max_length=255, blank=True, null=True)
-    historical_school = models.CharField(max_length=255, blank=True, null=True)
-    historical_equipment = models.CharField(max_length=255, blank=True, null=True)
+    historical_owner = models.CharField(max_length=100, blank=True, null=True)
+    historical_school = models.CharField(max_length=100, blank=True, null=True)
+    historical_equipment = models.CharField(max_length=100, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if not self.document_owner_id:

@@ -67,7 +67,6 @@ class Equipment(models.Model):
         ('conduit_fittings', 'Conduit Fittings'),
         ('junction_box', 'Junction Box'),
     )
-
     MECHANICAL_EQUIPMENT_TYPES = (
         ('hvac_unit', 'HVAC Unit'),
         ('boiler', 'Boiler'),
@@ -80,7 +79,6 @@ class Equipment(models.Model):
         ('ductwork_components', 'Ductwork Components'),
         ('cooling_tower', 'Cooling Tower'),
     )
-
     PLUMBING_EQUIPMENT_TYPES = (
         ('water_heater', 'Water Heater'),
         ('pump', 'Pump'),
@@ -93,7 +91,6 @@ class Equipment(models.Model):
         ('faucet', 'Faucet'),
         ('toilet', 'Toilet'),
     )
-
     MANUFACTURERS = (
         ('siemens', 'Siemens'),
         ('general_electric', 'General Electric'),
@@ -119,15 +116,15 @@ class Equipment(models.Model):
 
     equipment_school = models.ForeignKey(School, on_delete=models.CASCADE)
     equipment_building = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True, blank=True)
-    equipment_tag = models.CharField(max_length=50)
-    equipment_type = models.CharField(max_length=50, choices = ELECTRICAL_EQUIPMENT_TYPES + MECHANICAL_EQUIPMENT_TYPES + PLUMBING_EQUIPMENT_TYPES)
-    equipment_manufacturer = models.CharField(max_length=50, choices = MANUFACTURERS)
-    equipment_model = models.CharField(max_length=50)
-    equipment_serial_number = models.CharField(max_length=50)
+    equipment_tag = models.CharField(max_length=100)
+    equipment_type = models.CharField(max_length=100, choices = ELECTRICAL_EQUIPMENT_TYPES + MECHANICAL_EQUIPMENT_TYPES + PLUMBING_EQUIPMENT_TYPES)
+    equipment_manufacturer = models.CharField(max_length=100, choices = MANUFACTURERS)
+    equipment_model = models.CharField(max_length=100)
+    equipment_serial_number = models.CharField(max_length=100)
     equipment_install_date = models.DateField()
     equipment_warranty_expiration = models.DateField(auto_now=False, auto_now_add=False)
     equipment_location = models.CharField(max_length=100)
-    equipment_notes = equipment_notes = models.TextField(max_length=300, blank=True)
+    equipment_notes = equipment_notes = models.TextField(max_length=200, blank=True)
     equipment_elec_kw_demand = models.IntegerField()
     equipment_gas_btuh_demand = models.IntegerField()
     equipment_generates_elec_kw = models.IntegerField()
