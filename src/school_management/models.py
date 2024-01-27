@@ -178,25 +178,30 @@ class Equipment(models.Model):
 
     equipment_school = models.ForeignKey(School, on_delete=models.CASCADE)
     equipment_building = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True, blank=True)
-    equipment_tag = models.CharField(max_length=100)
+    equipment_tag = models.CharField(max_length=100, default='equipment_tag')
     equipment_type = models.CharField(max_length=100, choices = ELECTRICAL_EQUIPMENT_TYPES + MECHANICAL_EQUIPMENT_TYPES + PLUMBING_EQUIPMENT_TYPES)
     equipment_manufacturer = models.CharField(max_length=100, choices = MANUFACTURERS)
-    equipment_model = models.CharField(max_length=100)
-    equipment_serial_number = models.CharField(max_length=100)
+    equipment_model = models.CharField(max_length=100, default='equipment_model')
+    equipment_serial_number = models.CharField(max_length=100, default='equipment_serial_number')
     equipment_install_date = models.DateField()
     equipment_warranty_expiration = models.DateField(auto_now=False, auto_now_add=False)
-    equipment_location = models.CharField(max_length=100)
-    equipment_notes = equipment_notes = models.TextField(max_length=200, blank=True)
-    equipment_elec_kw_demand = models.IntegerField()
-    equipment_gas_btuh_demand = models.IntegerField()
-    equipment_generates_elec_kw = models.IntegerField()
-    equipment_storage_btu_kwh = models.IntegerField()
+    equipment_location = models.CharField(max_length=100, default='equipment_location')
+    equipment_notes = equipment_notes = models.TextField(max_length=200, blank=True, default='equipment_notes')
+    equipment_elec_kw_demand = models.IntegerField(default = 0)
+    equipment_gas_btuh_demand = models.IntegerField(default = 0)
+    equipment_generates_elec_kw = models.IntegerField(default = 0)
+    equipment_storage_btu_kwh = models.IntegerField(default = 0)
     equipment_geo_lat = models.FloatField(default=0.0)
     equipment_geo_long = models.FloatField(default=0.0)
 
     def __str__(self):
         # return everything
         return str(self.equipment_school) + ' ' + str(self.equipment_building) + ' ' + str(self.equipment_tag) + ' ' + str(self.equipment_type) + ' ' + str(self.equipment_manufacturer) + ' ' + str(self.equipment_model) + ' ' + str(self.equipment_serial_number) + ' ' + str(self.equipment_install_date) + ' ' + str(self.equipment_warranty_expiration) + ' ' + str(self.equipment_location) + ' ' + str(self.equipment_notes) + ' ' + str(self.equipment_elec_kw_demand) + ' ' + str(self.equipment_gas_btuh_demand) + ' ' + str(self.equipment_generates_elec_kw) + ' ' + str(self.equipment_storage_btu_kwh)
+    
+    def save(self, *args, **kwargs):
+        if self.equipment_building and self.equipment_building.school != self.equipment_school:
+            raise ValueError("The building is not part of the assigned school.")
+        super().save(*args, **kwargs)
 
 
 class PerformanceMetrics(models.Model):
@@ -279,8 +284,4 @@ class Meter(models.Model):
     # meter_type = models.CharField(max_length=100, choices = METER_TYPE, default = 'meter_type')
     meter_building = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Associated Building")
 
-
-# I need a large list of equipment, maybe 2000 or more (again, 
-# what is feasible, all at once or in increments?) we will look at the performance metrics 
-# table later, that will take a lot of work to get right. Let's start here, with buildings and equipment. 
 
