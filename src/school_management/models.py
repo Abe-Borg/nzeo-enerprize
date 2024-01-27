@@ -67,14 +67,24 @@ class Building(models.Model):
         ('security', 'Security'),
         ('energy_plant', 'Energy Plant'),
         ('commons', 'Student Commons/Common Area'),
+        ('computer_lab', 'Computer Lab'),
+        ('science_center', 'Science Center'),
+        ('art_studio', 'Art Studio'),
+        ('language_lab', 'Language Lab'),
+        ('greenhouse', 'Greenhouse'),
+        ('childcare', 'Childcare Center'),
+        ('outdoor_classroom', 'Outdoor Classroom'),
+        ('student_center', 'Student Center'),
+        ('technology_hub', 'Technology Hub'),
+        ('vocational_training', 'Vocational Training Center')
     )
 
     building_school = models.ForeignKey(School, on_delete=models.CASCADE)
-    building_name = models.CharField(max_length=100)
+    building_name = models.CharField(max_length=100, default='building_name')
     building_type = models.CharField(max_length=100, choices=BUILDING_TYPES)
     building_area_sqft = models.IntegerField()
-    building_geo_lat = models.FloatField()
-    building_geo_long = models.FloatField()
+    building_geo_lat = models.FloatField(default=0.0)
+    building_geo_long = models.FloatField(default=0.0)
     building_photo = models.ImageField(upload_to='images/', default='images/None/no-img.jpg')
 
     def __str__(self):
@@ -227,6 +237,44 @@ class PerformanceMetrics(models.Model):
     def __str__(self):
         return str(self.school) + ' ' + str(self.emmissions_co2) + ' ' + str(self.CUI_co2_sqft) + ' ' + str(self.EUI_kbtu_sqft) + ' ' + str(self.EUI_kbtu_student) + ' ' + str(self.renewables_kwh) + ' ' + str(self.peak_demand_kw) + ' ' + str(self.elec_consumption_kwh) + ' ' + str(self.gas_consumption_mmbtu) + ' ' + str(self.total_consumption_mmbtu) + ' ' + str(self.ECI_dollar_sqft) + ' ' + str(self.ECI_dollar_student) + ' ' + str(self.total_cost_dollar) + ' ' + str(self.year_to_date_kbtu_savings) + ' ' + str(self.year_to_date_co2_savings)
 
+
+class Meter(models.Model):
+    METER_TYPE = (
+        ('gas', 'Gas'),
+        ('electric', 'Electric'),
+        ('water', 'Water'),
+        ('steam', 'Steam'),
+        ('chilled_water', 'Chilled Water'),
+        ('hot_water', 'Hot Water'),
+        ('fuel_oil', 'Fuel Oil'),
+        ('other', 'Other'),
+    )
+    UTILITY_PROVIDERS = (
+        ('pg_e', 'PG&E'),
+    )
+    INTERVAL_TIME_ZONES = (
+        ('us_pacific', 'US/Pacific'),
+    )
+
+    meter_uid = models.IntegerField(primary_key=True)
+    meter_utility_provider = models.CharField(max_length=100, choices = UTILITY_PROVIDERS)
+    meter_utility_service_id = models.IntegerField()
+    meter_utility_billing_account = models.IntegerField()
+    meter_utility_service_address = models.CharField(max_length=100)
+    meter_utility_meter_number = models.IntegerField()
+    meter_utility_tariff_name = models.CharField(max_length=100)
+    meter_interval_start = models.DateTimeField()
+    meter_interval_end = models.DateTimeField()
+    meter_interval_kwh = models.FloatField(default=0.0)
+    meter_fwd_kwh = models.FloatField(default=0.0)
+    meter_net_kwh = models.FloatField(default=0.0) # is this fwd - interval_kwh?
+    meter_rev_kwh = models.FloatField(default=0.0)
+    meter_source = models.CharField(max_length=100)
+    meter_updated = models.DateTimeField() # what is the format?
+    meter_interval_timezone = models.CharField(max_length=100, choices = INTERVAL_TIME_ZONES, default = 'us_pacific')
+    
+    meter_type = models.CharField(max_length=100, choices = METER_TYPE, default = 'meter_type')
+    meter_building = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Associated Building")
 
 
 # I need a large list of equipment, maybe 2000 or more (again, 
