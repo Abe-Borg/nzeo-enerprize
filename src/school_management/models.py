@@ -24,7 +24,10 @@ class School(models.Model):
     school_student_percent_low_income = models.IntegerField(default=0)
 
     def __str__(self):
-        return str(self.school_district) + ' ' + str(self.school_name) + ' ' + str(self.school_area_sqft) + ' ' + str(self.school_address) + ' ' + str(self.school_student_population) + ' ' + str(self.school_student_percent_disenfrachised)
+        return str(self.school_name)
+    
+    def print_all(self):
+        return str(self.school_district) + ' ' + str(self.school_name) + ' ' + str(self.school_area_sqft) + ' ' + str(self.school_address) + ' ' + str(self.school_student_population) + ' ' + str(self.school_student_percent_disenfrachised) + ' ' + str(self.school_student_percent_low_income)
 
 
 class Building(models.Model):
@@ -88,7 +91,7 @@ class Building(models.Model):
 
     def __str__(self):
         # return everything
-        return str(self.building_school) + ' ' + str(self.building_name) + ' ' + str(self.building_type) + ' ' + str(self.building_area_sqft) + ' ' + str(self.building_geo_lat) + ' ' + str(self.building_geo_long)
+        return str(self.building_school) + ' ' + str(self.building_name) + ' ' + str(self.building_type)
     
 
 class Equipment(models.Model):
