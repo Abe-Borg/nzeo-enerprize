@@ -17,12 +17,11 @@ class School(models.Model):
     """
     school_district = models.ForeignKey(SchoolDistrict, on_delete=models.CASCADE)
     school_name = models.CharField(max_length=100)
-    school_area_sqft = models.IntegerField()
-    # school_geo_lat = models.FloatField() this will be dynamicall calculated
-    # school_geo_long = models.FloatField()
+    school_area_sqft = models.IntegerField() # dynamically calculated
     school_address = models.CharField(max_length=100) # geo coordinates are calculated form address.
-    school_student_population = models.IntegerField()
-    school_student_percent_disenfrachised = models.IntegerField()
+    school_student_population = models.IntegerField(default=0)
+    school_student_percent_disenfrachised = models.IntegerField(default=0)
+    school_student_percent_low_income = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.school_district) + ' ' + str(self.school_name) + ' ' + str(self.school_area_sqft) + ' ' + str(self.school_address) + ' ' + str(self.school_student_population) + ' ' + str(self.school_student_percent_disenfrachised)
@@ -228,4 +227,9 @@ class PerformanceMetrics(models.Model):
     def __str__(self):
         return str(self.school) + ' ' + str(self.emmissions_co2) + ' ' + str(self.CUI_co2_sqft) + ' ' + str(self.EUI_kbtu_sqft) + ' ' + str(self.EUI_kbtu_student) + ' ' + str(self.renewables_kwh) + ' ' + str(self.peak_demand_kw) + ' ' + str(self.elec_consumption_kwh) + ' ' + str(self.gas_consumption_mmbtu) + ' ' + str(self.total_consumption_mmbtu) + ' ' + str(self.ECI_dollar_sqft) + ' ' + str(self.ECI_dollar_student) + ' ' + str(self.total_cost_dollar) + ' ' + str(self.year_to_date_kbtu_savings) + ' ' + str(self.year_to_date_co2_savings)
 
+
+
+# I need a large list of equipment, maybe 2000 or more (again, 
+# what is feasible, all at once or in increments?) we will look at the performance metrics 
+# table later, that will take a lot of work to get right. Let's start here, with buildings and equipment. 
 

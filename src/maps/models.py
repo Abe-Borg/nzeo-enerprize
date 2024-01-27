@@ -51,7 +51,7 @@ class MapAnnotation(models.Model):
 
     annotation_author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # filled dynamically
     annotation_layer = models.CharField(max_length=100, choices=ANNOTATION_LAYERS)
-    annotation_description = models.TextField(max_length = 100, null = True, blank = True)
+    annotation_description = models.TextField(max_length = 100, null = True, blank = True, default = 'annotation_description')
     annotation_type = models.CharField(max_length=100, choices=ANNOTATION_TYPES)
     annotation_coordinates = models.JSONField() # filled dynamically
 

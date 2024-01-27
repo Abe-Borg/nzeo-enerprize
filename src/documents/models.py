@@ -46,7 +46,7 @@ class Document(models.Model):
     document_name = models.CharField(max_length=100)
     document_type = models.CharField(max_length=100, choices=DOCUMENT_TYPES)
     document_format = models.CharField(max_length=50, choices=DOCUMENT_FORMATS)
-    document_description = models.TextField(max_length=250)
+    document_description = models.TextField(max_length=250, default='document_description')
     document_filepath = models.FileField(upload_to='documents/', default='document_path')
     document_upload_date = models.DateTimeField(auto_now_add=True)
     
