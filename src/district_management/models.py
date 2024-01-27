@@ -38,4 +38,4 @@ class SchoolDistrict(models.Model):
         unique_together = (('district_name', 'district_city'),)
 
     def __str__(self):
-        return str(self.district_name) + ' ' + str(self.district_city) + ' ' + str(self.district_geo_lat) + ' ' + str(self.district_geo_long) + ' ' + str(self.district_bb_southwest_lat) + ' ' + str(self.district_bb_southwest_lng) + ' ' + str(self.district_bb_northeast_lat) + ' ' + str(self.district_bb_northeast_lng)
+        return str(self.district_name)
