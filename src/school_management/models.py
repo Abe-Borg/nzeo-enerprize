@@ -273,7 +273,7 @@ class Meter(models.Model):
     meter_updated = models.DateTimeField() # what is the format?
     meter_interval_timezone = models.CharField(max_length=100, choices = INTERVAL_TIME_ZONES, default = 'us_pacific')
     
-    meter_type = models.CharField(max_length=100, choices = METER_TYPE, default = 'meter_type')
+    # meter_type = models.CharField(max_length=100, choices = METER_TYPE, default = 'meter_type')
     meter_building = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Associated Building")
 
 
