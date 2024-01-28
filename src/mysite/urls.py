@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from . import views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.enerprize_home, name = 'enerprize_home'),
@@ -30,8 +31,6 @@ urlpatterns = [
     path('test-account-settings/', views.test_account_settings, name = 'test_account_settings'),
     path('test-create-account/', views.test_create_account, name = 'test_create_account'),
     path('test-forgot-password/', views.test_forgot_password, name = 'test_forgot_password'),
-    
-
     path('district-management/', include('district_management.urls')),
     path('documents/', include('documents.urls')),
     path('enerprize-api/', include('enerprize_api.urls')),
@@ -39,3 +38,6 @@ urlpatterns = [
     path('nzeo-management/', include('nzeo_management.urls')),
     path('school-management/', include('school_management.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
