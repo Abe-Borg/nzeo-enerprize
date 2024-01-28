@@ -88,6 +88,7 @@ class Building(models.Model):
     building_area_sqft = models.IntegerField()
     building_geo_lat = models.FloatField(default=0.0)
     building_geo_long = models.FloatField(default=0.0)
+    building_age = models.IntegerField(default=0)
 
     def __str__(self):
         # return everything
@@ -230,7 +231,8 @@ class Equipment(models.Model):
     equipment_elec_kw_demand = models.IntegerField(default = 0)
     equipment_gas_btuh_demand = models.IntegerField(default = 0)
     equipment_generates_elec_kw = models.IntegerField(default = 0)
-    equipment_storage_btu_kwh = models.IntegerField(default = 0)
+    equipment_storage_kwh = models.IntegerField(default = 0)
+    equipment_storage_kbtu = models.IntegerField(default = 0)
     equipment_geo_lat = models.FloatField(default=0.0)
     equipment_geo_long = models.FloatField(default=0.0)
 

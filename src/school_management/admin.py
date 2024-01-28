@@ -106,19 +106,34 @@ class GeneratesElecKwFilter(admin.SimpleListFilter):
                 return queryset.filter(generates_elec_kw=250)
         return queryset
 
-class StorageBtuKwhFilter(admin.SimpleListFilter):
-    title = _('Storage BTU/KWh')
-    parameter_name = 'storage_btu_kwh'
+class StorageKBtuFilter(admin.SimpleListFilter):
+    title = _('Storage kBTU')
+    parameter_name = 'storage_kbtu'
 
     def lookups(self, request, model_admin):
-        ranges = [(i, f"{i} - {i+4999} BTU/KWh") for i in range(50000, 100000, 5000)]
+        ranges = [(i, f"{i} - {i+4999} kBTU") for i in range(50000, 100000, 5000)]
         return ranges
 
     def queryset(self, request, queryset):
         if self.value():
             low = int(self.value())
             high = low + 4999
-            return queryset.filter(storage_btu_kwh__gte=low, storage_btu_kwh__lte=high)
+            return queryset.filter(storage_kbtu__gte=low, storage_kbtu__lte=high)
+        return queryset
+
+class StorageKWhFilter(admin.SimpleListFilter):
+    title = _('Storage kWh')
+    parameter_name = 'storage_kwh'
+
+    def lookups(self, request, model_admin):
+        ranges = [(i, f"{i} - {i+4999} kWh") for i in range(50000, 100000, 5000)]
+        return ranges
+
+    def queryset(self, request, queryset):
+        if self.value():
+            low = int(self.value())
+            high = low + 4999
+            return queryset.filter(storage_kwh__gte=low, storage_kwh__lte=high)
         return queryset
 
 class InstallDateRangeFilter(admin.SimpleListFilter):
@@ -183,8 +198,8 @@ class EquipmentAdmin(admin.ModelAdmin):
     
     get_building_name.short_description = 'Building Name'
     
-    list_filter = ('equipment_school', 'equipment_building', 'equipment_type', 'equipment_manufacturer', InstallDateRangeFilter, WarrantyExpirationDateRangeFilter, ElecKwDemandFilter, GasBtuhDemandFilter, GeneratesElecKwFilter, StorageBtuKwhFilter)
-    ordering = ('equipment_model', 'equipment_type', 'equipment_manufacturer', 'equipment_install_date', 'equipment_warranty_expiration', 'equipment_elec_kw_demand', 'equipment_gas_btuh_demand', 'equipment_generates_elec_kw', 'equipment_storage_btu_kwh')
+    list_filter = ('equipment_school', 'equipment_building', 'equipment_type', 'equipment_manufacturer', InstallDateRangeFilter, WarrantyExpirationDateRangeFilter, ElecKwDemandFilter, GasBtuhDemandFilter, GeneratesElecKwFilter, StorageKBtuFilter, StorageKWhFilter)
+    ordering = ('equipment_model', 'equipment_type', 'equipment_manufacturer', 'equipment_install_date', 'equipment_warranty_expiration', 'equipment_elec_kw_demand', 'equipment_gas_btuh_demand', 'equipment_generates_elec_kw', 'equipment_storage_kbtu')
 
 
 admin.site.register(PerformanceMetrics)
