@@ -128,6 +128,16 @@ class Equipment(models.Model):
         ('ups', 'UPS (Uninterruptible Power Supply)'),
         ('conduit_fittings', 'Conduit Fittings'),
         ('junction_box', 'Junction Box'),
+        ('lighting_control', 'Lighting Control System'),
+        ('battery_storage', 'Battery Storage'),
+        ('inverter', 'Inverter'),
+        ('power_distribution_unit', 'Power Distribution Unit'),
+        ('energy_management_system', 'Energy Management System'),
+        ('smart_meter', 'Smart Meter'),
+        ('ev_charging_station', 'EV Charging Station'),
+        ('security_camera', 'Security Camera'),
+        ('network_switch', 'Network Switch'),
+        ('fire_alarm_panel', 'Fire Alarm Panel')
     )
     MECHANICAL_EQUIPMENT_TYPES = (
         ('hvac_unit', 'HVAC Unit'),
@@ -140,6 +150,16 @@ class Equipment(models.Model):
         ('chiller', 'Chiller'),
         ('ductwork_components', 'Ductwork Components'),
         ('cooling_tower', 'Cooling Tower'),
+        ('fire_suppression_system', 'Fire Suppression System'),
+        ('gas_detection_system', 'Gas Detection System'),
+        ('irrigation_system', 'Irrigation System'),
+        ('exhaust_fan', 'Exhaust Fan'),
+        ('vibration_isolator', 'Vibration Isolator'),
+        ('filtration_system', 'Filtration System'),
+        ('humidifier', 'Humidifier'),
+        ('dehumidifier', 'Dehumidifier'),
+        ('air_purifier', 'Air Purifier'),
+        ('roof_top_unit', 'Rooftop Unit')
     )
     PLUMBING_EQUIPMENT_TYPES = (
         ('water_heater', 'Water Heater'),
@@ -152,6 +172,16 @@ class Equipment(models.Model):
         ('drainage_system', 'Drainage System'),
         ('faucet', 'Faucet'),
         ('toilet', 'Toilet'),
+        ('irrigation_controller', 'Irrigation Controller'),
+        ('sump_pump', 'Sump Pump'),
+        ('greywater_system', 'Greywater System'),
+        ('rainwater_harvesting_system', 'Rainwater Harvesting System'),
+        ('sewage_pump', 'Sewage Pump'),
+        ('water_recycling_system', 'Water Recycling System'),
+        ('water_filtration', 'Water Filtration System'),
+        ('sensor_faucet', 'Sensor Faucet'),
+        ('emergency_shower', 'Emergency Shower'),
+        ('eye_wash_station', 'Eye Wash Station')
     )
     MANUFACTURERS = (
         ('siemens', 'Siemens'),
@@ -174,10 +204,20 @@ class Equipment(models.Model):
         ('delta', 'Delta'),
         ('grohe', 'Grohe'),
         ('american_standard', 'American Standard'),
+        ('lennox', 'Lennox'),
+        ('york', 'York'),
+        ('goodman', 'Goodman'),
+        ('lg', 'LG'),
+        ('fujitsu', 'Fujitsu'),
+        ('bryant', 'Bryant'),
+        ('armstrong', 'Armstrong'),
+        ('panasonic', 'Panasonic'),
+        ('frigidaire', 'Frigidaire'),
+        ('maytag', 'Maytag')
     )
 
     equipment_school = models.ForeignKey(School, on_delete=models.CASCADE)
-    equipment_building = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True, blank=True)
+    equipment_building = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True, blank=True, default = None, verbose_name="Associated Building")
     equipment_tag = models.CharField(max_length=100, default='equipment_tag')
     equipment_type = models.CharField(max_length=100, choices = ELECTRICAL_EQUIPMENT_TYPES + MECHANICAL_EQUIPMENT_TYPES + PLUMBING_EQUIPMENT_TYPES)
     equipment_manufacturer = models.CharField(max_length=100, choices = MANUFACTURERS)

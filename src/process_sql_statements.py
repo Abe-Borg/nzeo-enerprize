@@ -8,7 +8,7 @@ django.setup()
 
 from django.db import connection
 
-FILE_NAME = 'buildings.sql'
+FILE_NAME = 'equipment_sql_inserts.sql'
 
 with connection.cursor() as cursor:
     with open(FILE_NAME, 'r') as file:
