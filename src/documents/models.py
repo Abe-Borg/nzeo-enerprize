@@ -84,4 +84,4 @@ class Document(models.Model):
         super(Document, self).save(*args, **kwargs)
 
     def __str__(self):
-        return str(self.document_name) + ' ' + str(self.document_type) + ' ' + str(self.document_format) + ' ' + str(self.document_school) 
+        return str(self.document_name)

@@ -91,7 +91,7 @@ class Building(models.Model):
 
     def __str__(self):
         # return everything
-        return str(self.building_school) + ' ' + str(self.building_name) + ' ' + str(self.building_type)
+        return 'School: '+ str(self.building_school) + ' ' + 'Building Name: ' + str(self.building_name)
     
 
 class Equipment(models.Model):
@@ -235,8 +235,7 @@ class Equipment(models.Model):
     equipment_geo_long = models.FloatField(default=0.0)
 
     def __str__(self):
-        # return everything
-        return str(self.equipment_school) + ' ' + str(self.equipment_building) + ' ' + str(self.equipment_tag) + ' ' + str(self.equipment_type) + ' ' + str(self.equipment_manufacturer) + ' ' + str(self.equipment_model) + ' ' + str(self.equipment_serial_number) + ' ' + str(self.equipment_install_date) + ' ' + str(self.equipment_warranty_expiration) + ' ' + str(self.equipment_location) + ' ' + str(self.equipment_notes) + ' ' + str(self.equipment_elec_kw_demand) + ' ' + str(self.equipment_gas_btuh_demand) + ' ' + str(self.equipment_generates_elec_kw) + ' ' + str(self.equipment_storage_btu_kwh)
+        return str(self.equipment_tag)
     
     def save(self, *args, **kwargs):
         if self.equipment_building and self.equipment_building.school != self.equipment_school:

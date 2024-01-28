@@ -2,6 +2,9 @@ from django.contrib import admin
 from .models import School, Building, Equipment, PerformanceMetrics, Meter
 from django.utils.translation import gettext_lazy as _
 
+
+admin.site.register(School)
+
 class AreaRangeFilter(admin.SimpleListFilter):
     # Human-readable title which will be displayed in the right admin sidebar just above the filter options.
     title = _('building area (sqft)')
@@ -38,19 +41,33 @@ class AreaRangeFilter(admin.SimpleListFilter):
                 return queryset.filter(building_area_sqft__gte=int(low), building_area_sqft__lte=int(high))
         return queryset
 
-admin.site.register(School)
 
 @admin.register(Building)
 class BuildingAdmin(admin.ModelAdmin):
     list_display = ('get_school_name', 'building_type', 'building_area_sqft')
+
     def get_school_name(self, obj):
         return obj.building_school.school_name
+
     get_school_name.short_description = 'School Name'
     
     list_filter = ('building_school', 'building_type', AreaRangeFilter)
     ordering = ('building_type', 'building_area_sqft')  # Sort by school and then by name
 
-admin.site.register(Equipment)
+@admin.register(Equipment)
+class EquipmentAdmin(admin.ModelAdmin):
+    list_display = ('get_school_name', 'get_building_name', 'equipment_model', 'equipment_type', 'equipment_manufacturer','equipment_install_date')
+    def get_school_name(self, obj):
+        return obj.equipment_school.school_name
+    get_school_name.short_description = 'School Name'
+
+    def get_building_name(self, obj):
+        return obj.equipment_building.building_name
+    get_building_name.short_description = 'Building Name'
+    
+    list_filter = ('equipment_school', 'equipment_building', 'equipment_type', 'equipment_manufacturer', 'equipment_install_date', 'equipment_warranty_expiration', 'equipment_elec_kw_demand', 'equipment_gas_btuh_demand', 'equipment_generates_elec_kw', 'equipment_storage_btu_kwh')
+    ordering = ('building_type', 'building_area_sqft')
+
 admin.site.register(PerformanceMetrics)
 admin.site.register(Meter)
 

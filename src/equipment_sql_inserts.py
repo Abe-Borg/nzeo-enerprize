@@ -2,7 +2,7 @@
 import random
 from datetime import datetime, timedelta
 
-NUM_RECORDS = 1000
+NUM_RECORDS = 20000
 file_path = 'equipment_sql_inserts.sql'
 
 # Function to generate a random date within a given range
@@ -17,9 +17,13 @@ def generate_random_date(start_year, end_year):
 # Function to generate a weighted random date
 def generate_weighted_random_date(early_start, early_end, late_start, late_end, early_weight):
     if random.random() < early_weight:
-        return generate_random_date(early_start, early_end).strftime('%Y-%m-%d')
+        return generate_random_date(early_start, early_end)
     else:
-        return generate_random_date(late_start, late_end).strftime('%Y-%m-%d')
+        return generate_random_date(late_start, late_end)
+
+def generate_warranty_expiration(install_date):
+    additional_years = random.randint(1, 15)
+    return install_date + timedelta(days=365 * additional_years)
 
 # Equipment types and manufacturers
 equipment_types = [
@@ -51,7 +55,7 @@ for _ in range(NUM_RECORDS):
     equipment_type = random.choice(equipment_types)
     manufacturer = random.choice(manufacturers)
     install_date = generate_weighted_random_date(1950, 1970, 1971, 2010, 0.3)
-    warranty_expiration = generate_weighted_random_date(1960, 1980, 1981, 2030, 0.3)
+    warranty_expiration = warranty_expiration = generate_warranty_expiration(install_date)
     elec_kw_demand = random.randint(500, 4000) if random.random() < 0.5 else 0
     gas_btuh_demand = random.randint(30000, 70000) if random.random() < 0.5 else 0
     generates_elec_kw = random.randint(50, 250) if random.random() < 0.1 else 0
@@ -62,12 +66,13 @@ for _ in range(NUM_RECORDS):
         f"equipment_manufacturer, equipment_model, equipment_serial_number, equipment_install_date, "
         f"equipment_warranty_expiration, equipment_location, equipment_notes, equipment_elec_kw_demand, "
         f"equipment_gas_btuh_demand, equipment_generates_elec_kw, equipment_storage_btu_kwh, "
-        f"equipment_geo_lat, equipment_geo_long) VALUES "
+        f"equipment_geo_lat, equipment_geo_long, equipment_tag) VALUES "
         f"({school_id}, NULL, '{equipment_type}', '{manufacturer}', 'equipment_model', 'equipment_serial_number', "
         f"'{install_date}', '{warranty_expiration}', 'equipment_location', 'equipment_notes', {elec_kw_demand}, "
-        f"{gas_btuh_demand}, {generates_elec_kw}, {storage_btu_kwh}, 0.0, 0.0);"
+        f"{gas_btuh_demand}, {generates_elec_kw}, {storage_btu_kwh}, 0.0, 0.0, 'equipment_tag');"
     )
 
 with open(file_path, 'a') as file:
     for insert_statement in sql_insert_statements:
         file.write(insert_statement + "\n")
+
