@@ -2,11 +2,34 @@
 {% load static %}
 
 {% block main_body %}
+
+<style>
+  /* Custom CSS for smaller error messages */
+  .form-error {
+      color: #721c24;
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+      padding: .75rem 1.25rem;
+      margin-bottom: 1rem;
+      border: 1px solid transparent;
+      border-radius: .25rem;
+      font-size: 0.875rem; 
+  }
+  .error-message-box {
+    padding: 0.25rem; 
+    margin-bottom: 0.1rem; 
+  }
+</style>
+
     <div class="main-container fullscreen">
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-xl-5 col-lg-6 col-md-7">
             <div class="text-center">
+              <div style="text-align: center;">
+                <img src="{% static 'NZEO-Logo.png' %}" alt="NZEO Logo" style="max-width: 100%; height: auto;"/>
+              </div>
+              <br>
               <h1 class="h2">Create account</h1>
               <!-- <button class="btn btn-lg btn-block btn-primary">
                 <img alt="Google" src="{% static 'assets/img/logo-google.svg' %}" class="rounded align-top mr-2" />Continue with Google
@@ -18,7 +41,7 @@
                 <div class="form-group">
                   <input class="form-control" type="text" name="{{ form.username.name }}" placeholder="Username" id="{{ form.username.id_for_label }}" {% if form.username.value %}value="{{ form.username.value }}"{% endif %} />
                   {% if form.username.errors %}
-                    <div class="alert alert-danger">
+                    <div class="form-error error-message-box">
                       {{ form.username.errors }}
                     </div>
                   {% endif %}
@@ -29,7 +52,7 @@
                 <div class="form-group">
                   <input class="form-control" type="email" name="{{ form.email.name }}" placeholder="Email Address" id="{{ form.email.id_for_label }}" {% if form.email.value %}value="{{ form.email.value }}"{% endif %} />
                   {% if form.email.errors %}
-                    <div class="alert alert-danger">
+                    <div class="form-error error-message-box">
                       {{ form.email.errors }}
                     </div>
                   {% endif %}
@@ -38,14 +61,14 @@
                 <div class="form-group">
                   <input class="form-control" type="email" name="{{ form.confirm_email.name }}" placeholder="Confirm Email" id="{{ form.confirm_email.id_for_label }}" />
                   {% if form.confirm_email.errors %}
-                    <div class="alert alert-danger">{{ form.confirm_email.errors }}</div>
+                    <div class="form-error error-message-box">{{ form.confirm_email.errors }}</div>
                   {% endif %}
                 </div>
 
                 <div class="form-group">
                   <input class="form-control" type="password" name="{{ form.password1.name }}" placeholder="Password" id="{{ form.password1.id_for_label }}" />
                   {% if form.password1.errors %}
-                    <div class="alert alert-danger">
+                    <div class="form-error error-message-box">
                       {{ form.password1.errors }}
                     </div>
                   {% endif %}
@@ -54,7 +77,7 @@
                 <div class="form-group">
                   <input class="form-control" type="password" name="{{ form.password2.name }}" placeholder="Confirm Password" id="{{ form.password2.id_for_label }}" />
                   {% if form.password2.errors %}
-                    <div class="alert alert-danger">
+                    <div class="form-error error-message-box">
                     {{ form.password2.errors }}
                     </div>
                   {% endif %}
