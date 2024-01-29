@@ -16,26 +16,58 @@
               <form method = "post">
                 {% csrf_token %}
                 <div class="form-group">
-                  {{ form.username}}
-                  <small>Username format, lastname.firstname.district. Example: smith.john.clovis</small>
+                  <input class="form-control" type="text" name="{{ form.username.name }}" placeholder="Username" id="{{ form.username.id_for_label }}" {% if form.username.value %}value="{{ form.username.value }}"{% endif %} />
+                  {% if form.username.errors %}
+                    <div class="alert alert-danger">
+                      {{ form.username.errors }}
+                    </div>
+                  {% endif %}
+                  <br>
+                  <small>Username Format: lastname.firstname.district | Example: smith.john.clovis</small>
                 </div>
+                
                 <div class="form-group">
-                  {{ form.email }} 
+                  <input class="form-control" type="email" name="{{ form.email.name }}" placeholder="Email Address" id="{{ form.email.id_for_label }}" {% if form.email.value %}value="{{ form.email.value }}"{% endif %} />
+                  {% if form.email.errors %}
+                    <div class="alert alert-danger">
+                      {{ form.email.errors }}
+                    </div>
+                  {% endif %}
                 </div>
+                
                 <div class="form-group">
-                  {{ form.password1 }}
-                  <div class="text-left">
-                    <small>Password requirements:</small>
-                    <ul class="text-muted">
-                        <li>Must not be too similar to your other personal information.</li>
-                        <li>Minimum length of 8 characters.</li>
-                        <li>Cannot be a commonly used password.</li>
-                        <li>Cannot be entirely numeric.</li>
-                    </ul>
-                  </div>
+                  <input class="form-control" type="email" name="{{ form.confirm_email.name }}" placeholder="Confirm Email" id="{{ form.confirm_email.id_for_label }}" />
+                  {% if form.confirm_email.errors %}
+                    <div class="alert alert-danger">{{ form.confirm_email.errors }}</div>
+                  {% endif %}
                 </div>
+
                 <div class="form-group">
-                  {{ form.password2 }} <!-- Password confirmation field -->
+                  <input class="form-control" type="password" name="{{ form.password1.name }}" placeholder="Password" id="{{ form.password1.id_for_label }}" />
+                  {% if form.password1.errors %}
+                    <div class="alert alert-danger">
+                      {{ form.password1.errors }}
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="form-group">
+                  <input class="form-control" type="password" name="{{ form.password2.name }}" placeholder="Confirm Password" id="{{ form.password2.id_for_label }}" />
+                  {% if form.password2.errors %}
+                    <div class="alert alert-danger">
+                    {{ form.password2.errors }}
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="text-left">
+                  <small>Password requirements:</small>
+                  <ul class="text-muted">
+                      <li>Must not be too similar to your other personal information.</li>
+                      <li>Minimum length of 8 characters.</li>
+                      <li>Cannot be a commonly used password.</li>
+                      <li>Cannot be entirely numeric.</li>
+                  </ul>
                 </div>
                 <button class="btn btn-lg btn-block btn-primary" role="button" type="submit">
                   Create account
