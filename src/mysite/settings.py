@@ -98,7 +98,7 @@ DATABASES = {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': enerprize,
 #         'USER': abe-borg,
-#         'PASSWORD': 'P+aqv&6%4GG+',
+#         'PASSWORD': '',
 #         'HOST': 'localhost',
 #         'PORT': '5432',
 #     }
@@ -172,20 +172,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-# if DEBUG:
-    # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend
-
-# ACCOUNT_ACTIVATION_DAYS = 7  # Number of days for account activation
-# REGISTRATION_AUTO_LOGIN = True  # Automatically log the user in.
-# LOGIN_REDIRECT_URL = reverse_lazy('enerprize_home')
-# REGISTRATION_FORM = 'account.forms.RegistrationForm'
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else: 
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
-# # required for email confirmation during registration
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # for development only
-# # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'your.smtp.host'                                         ### placeholder
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'your-email@example.com'                            ### placeholder
-# EMAIL_HOST_PASSWORD = 'your-email-password'                           ### placeholder
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
+LOGIN_REDIRECT_URL = reverse_lazy('enerprize_home')
+REGISTRATION_FORM = 'account.forms.RegistrationForm'
+
+
+# required for email confirmation during registration
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # for development only
+EMAIL_HOST = 'your.smtp.host'                                         ### placeholder
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'your-email@example.com'                            ### placeholder
+EMAIL_HOST_PASSWORD = 'your-email-password'                           ### placeholder
