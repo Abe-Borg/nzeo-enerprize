@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1',  '161.35.239.38', 'nzeo-enerprize.com
 # Application definition
 
 INSTALLED_APPS = [
-    'users',
+    # 'users', implement custom user model later
     'enerprize_api',
     'district_management',
     'documents',
