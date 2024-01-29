@@ -19,13 +19,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from . views import redirect_after_login
-from django.contrib.auth.views import LoginView
-from django.urls import path
+from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', LoginView.as_view(template_name = 'enerprize_home_page.html'), name = 'login'),
+    path('create-account/', create_account, name='create_account'),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('', auth_views.LoginView.as_view(template_name = 'enerprize_home_page.html'), name = 'login'),
     path('redirect_after_login/', redirect_after_login, name = 'redirect_after_login'),
     path('district-management/', include('district_management.urls')),
     path('documents/', include('documents.urls')),

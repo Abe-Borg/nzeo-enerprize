@@ -8,19 +8,34 @@
           <div class="col-xl-5 col-lg-6 col-md-7">
             <div class="text-center">
               <h1 class="h2">Create account</h1>
-              <button class="btn btn-lg btn-block btn-primary">
+              <!-- <button class="btn btn-lg btn-block btn-primary">
                 <img alt="Google" src="{% static 'assets/img/logo-google.svg' %}" class="rounded align-top mr-2" />Continue with Google
-              </button>
+              </button> -->
               <hr>
-              <form>
+
+              <form method = "post">
+                {% csrf_token %}
                 <div class="form-group">
-                  <input class="form-control" type="email" placeholder="Email Address" name="create-account-email" />
+                  {{ form.username}}
+                  <small>Username format, lastname.firstname.district. Example: smith.john.clovis</small>
                 </div>
                 <div class="form-group">
-                  <input class="form-control" type="password" placeholder="Password" name="create-account-password" />
+                  {{ form.email }} 
+                </div>
+                <div class="form-group">
+                  {{ form.password1 }}
                   <div class="text-left">
-                    <small>Your password should be at least 8 characters</small>
+                    <small>Password requirements:</small>
+                    <ul class="text-muted">
+                        <li>Must not be too similar to your other personal information.</li>
+                        <li>Minimum length of 8 characters.</li>
+                        <li>Cannot be a commonly used password.</li>
+                        <li>Cannot be entirely numeric.</li>
+                    </ul>
                   </div>
+                </div>
+                <div class="form-group">
+                  {{ form.password2 }} <!-- Password confirmation field -->
                 </div>
                 <button class="btn btn-lg btn-block btn-primary" role="button" type="submit">
                   Create account
@@ -28,6 +43,7 @@
                 <small>By clicking 'Create Account' you agree to our <a href="#">Terms of Use</a>
                 </small>
               </form>
+
             </div>
           </div>
         </div>
