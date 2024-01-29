@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from . views import redirect_after_login
 from django.contrib.auth import views as auth_views
+from . views import create_account, error_page
 
 
 urlpatterns = [
@@ -34,6 +35,7 @@ urlpatterns = [
     path('maps/', include('maps.urls')),
     path('nzeo-management/', include('nzeo_management.urls')),
     path('school-management/', include('school_management.urls')),
+    path('error/', error_page, name='error_page'),
 ]
 
 if settings.DEBUG:
