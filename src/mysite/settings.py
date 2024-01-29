@@ -172,22 +172,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
+# Email Configuration
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else: 
+else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'your.smtp.host'  # placeholder for SMTP host
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_USER = 'your-email@example.com'  # placeholder for SMTP user
+    EMAIL_HOST_PASSWORD = 'your-email-password'  # placeholder for SMTP password
 
-
+# User Registration and Authentication Settings
 ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_AUTO_LOGIN = True
 LOGIN_REDIRECT_URL = reverse_lazy('enerprize_home')
-REGISTRATION_FORM = 'account.forms.RegistrationForm'
 
-
-# required for email confirmation during registration
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # for development only
-EMAIL_HOST = 'your.smtp.host'                                         ### placeholder
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'your-email@example.com'                            ### placeholder
-EMAIL_HOST_PASSWORD = 'your-email-password'                           ### placeholder
+REGISTRATION_FORM = 'templates/create_account.html'
