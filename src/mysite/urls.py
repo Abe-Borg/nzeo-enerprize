@@ -35,7 +35,7 @@ urlpatterns = [
     path('maps/', include('maps.urls')),
     path('nzeo-management/', include('nzeo_management.urls')),
     path('school-management/', include('school_management.urls')),
-    path('error/', error_page, name='error_page'),
+    path('error_page/', error_page, name='error_page'),
 ]
 
 if settings.DEBUG:

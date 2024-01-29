@@ -13,7 +13,7 @@ def redirect_after_login(request):
     elif user.groups.filter(name='School Staff').exists():
         return redirect('school_staff_home')
     else:
-        return redirect('error')  # Fallback redirect
+        return redirect('error_page')  # Fallback redirect
 
 
 
@@ -26,7 +26,7 @@ def create_account(request):
             user.save()
             # later, I need to add additional logic here for sending a confirmation email, logging the user in, redirecting to a specific page, etc.)
             # Redirect to login page.
-            return redirect('')
+            return redirect('login')
     else:
         form = CustomUserCreationForm()
     return render(request, 'create_account.html', {'form': form})
