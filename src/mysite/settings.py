@@ -186,6 +186,6 @@ else:
 # User Registration and Authentication Settings
 ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_AUTO_LOGIN = True
-LOGIN_REDIRECT_URL = reverse_lazy('enerprize_home')
+LOGIN_REDIRECT_URL = reverse_lazy('redirect_after_login')
 
 REGISTRATION_FORM = 'templates/create_account.html'
