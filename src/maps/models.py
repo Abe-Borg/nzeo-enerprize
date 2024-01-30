@@ -56,4 +56,4 @@ class MapAnnotation(models.Model):
     annotation_coordinates = models.JSONField() # filled dynamically
 
     def __str__(self):
-        return str(self.annotation_author) + ' ' + str(self.annotation_layer) + ' ' + str(self.annotation_description)
+        return f'{self.annotation_author} | {self.annotation_layer} | {self.annotation_description} | {self.annotation_type} | {self.annotation_coordinates}'

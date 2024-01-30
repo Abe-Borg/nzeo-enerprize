@@ -8,7 +8,7 @@ from django.contrib import messages
 
 
 @login_required
-def download_file(request):
+def download_document(request):
     # Simulating file download logic
     file_path = request.GET.get('file_path')
     
@@ -26,7 +26,7 @@ def download_file(request):
 
 
 @login_required
-def upload_file(request):
+def upload_document(request):
     if request.method == 'POST' and 'file' in request.FILES:
         file = request.FILES['file']
         file_path = 'path/to/save/file'  # Define where you want to save the file
@@ -43,10 +43,12 @@ def upload_file(request):
     
     return render(request, 'documents/upload_file.html')
 
+
 @login_required
 def upload_green_button_data(request):
     context = {}
     return render(request, 'documents/upload_green_button_data.html', context)
+
 
 @login_required
 def upload_utility_bill(request):
