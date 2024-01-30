@@ -6,11 +6,11 @@ from .forms import CustomUserCreationForm
 @login_required
 def redirect_after_login(request):
     user = request.user
-    if user.groups.filter(name='NZEO Staff').exists():
+    if user.groups.filter(name='NZEO-Staff').exists():
         return redirect('nzeo_admin_home')
-    elif user.groups.filter(name='District Admin').exists():
+    elif user.groups.filter(name='District-Admin').exists():
         return redirect('district_admin_home')
-    elif user.groups.filter(name='School Staff').exists():
+    elif user.groups.filter(name='School-Staff').exists():
         return redirect('school_staff_home')
     else:
         return redirect('error_page')  # Fallback redirect
