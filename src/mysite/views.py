@@ -36,7 +36,7 @@ def create_account(request):
 def error_page(request):
     return render(request, 'error_page.html')
 
-
+@login_required
 def change_email(request):
     if request.method == 'POST':
         email_form = UserEmailForm(request.POST, instance=request.user)
@@ -49,7 +49,7 @@ def change_email(request):
     return render(request, 'account_settings.html', {'email_form': email_form})
 
 
-
+@login_required
 def change_password(request):
     if request.method == 'POST':
         password_form = PasswordChangeForm(request.user, request.POST)
