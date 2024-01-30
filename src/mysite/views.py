@@ -16,7 +16,6 @@ def redirect_after_login(request):
         return redirect('error_page') 
 
 
-
 def create_account(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)

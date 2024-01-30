@@ -27,6 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('create-account/', create_account, name='create_account'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('password_reset/', auth_views.PasswordResetView.as_view(template_name = 'forgot_password.html'), name = 'password_reset'),
     path('', auth_views.LoginView.as_view(template_name = 'enerprize_home_page.html'), name = 'login'),
     path('redirect_after_login/', redirect_after_login, name = 'redirect_after_login'),
     path('district-management/', include('district_management.urls')),
