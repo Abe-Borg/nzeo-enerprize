@@ -1,7 +1,9 @@
 # mysite/views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, UserEmailForm
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 @login_required
 def redirect_after_login(request):
@@ -33,3 +35,31 @@ def create_account(request):
 
 def error_page(request):
     return render(request, 'error_page.html')
+
+
+def change_email(request):
+    if request.method == 'POST':
+        email_form = UserEmailForm(request.POST, instance=request.user)
+        if email_form.is_valid():
+            email_form.save()
+            # Redirect to some success page or add a success message
+            return redirect('account_settings')
+    else:
+        email_form = UserEmailForm(instance=request.user)
+    return render(request, 'account_settings.html', {'email_form': email_form})
+
+
+
+def change_password(request):
+    if request.method == 'POST':
+        password_form = PasswordChangeForm(request.user, request.POST)
+        if password_form.is_valid():
+            user = password_form.save()
+            update_session_auth_hash(request, user)  # Important for keeping the user logged in
+            return redirect('account_settings') 
+    else:
+        password_form = PasswordChangeForm(request.user)
+
+    return render(request, 'account_settings.html', {
+        'password_form': password_form
+    })

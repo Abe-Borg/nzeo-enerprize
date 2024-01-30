@@ -18,9 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from . views import redirect_after_login
 from django.contrib.auth import views as auth_views
-from . views import create_account, error_page
+from . views import create_account, error_page, change_password, change_email, redirect_after_login
 
 
 urlpatterns = [
@@ -37,6 +36,8 @@ urlpatterns = [
     path('nzeo-management/', include('nzeo_management.urls')),
     path('school-management/', include('school_management.urls')),
     path('error_page/', error_page, name='error_page'),
+    path('change_password/', change_password, name='change_password'),
+    path('change_email/', change_email, name='change_email'),
 ]
 
 if settings.DEBUG:
