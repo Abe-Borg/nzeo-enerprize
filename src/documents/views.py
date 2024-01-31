@@ -2,7 +2,6 @@ import os
 from django.http import FileResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 
 from documents.forms import DocumentDownloadForm, DocumentUploadForm

@@ -13,3 +13,9 @@ class UserProfile(models.Model):
 
     def get_assigned_district(self):
         return self.user_district
+    
+    def get_assigned_school(self):
+        return self.user_school
+    
+    def get_job_title(self):
+        return self.job_title
