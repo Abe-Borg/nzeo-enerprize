@@ -316,10 +316,10 @@ class Meter(models.Model):
     meter_interval_end = models.DateTimeField()
     meter_interval_kwh = models.FloatField(default=0.0)
     meter_fwd_kwh = models.FloatField(default=0.0)
-    meter_net_kwh = models.FloatField(default=0.0) # is this fwd - interval_kwh?
+    meter_net_kwh = models.FloatField(default=0.0)
     meter_rev_kwh = models.FloatField(default=0.0)
     meter_source = models.CharField(max_length=100)
-    meter_updated = models.DateTimeField() # what is the format?
+    meter_updated = models.DateTimeField()
     meter_interval_timezone = models.CharField(max_length=100, choices = INTERVAL_TIME_ZONES, default = 'us_pacific')
     
     # meter_type = models.CharField(max_length=100, choices = METER_TYPE, default = 'meter_type')

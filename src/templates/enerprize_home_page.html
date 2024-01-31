@@ -3,6 +3,24 @@
 {% load static %}
 {% block main_body %}
 
+<style>
+  /* Custom CSS for smaller error messages */
+  .form-error {
+      color: #721c24;
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+      padding: .75rem 1.25rem;
+      margin-bottom: 1rem;
+      border: 1px solid transparent;
+      border-radius: .25rem;
+      font-size: 0.875rem; 
+  }
+  .error-message-box {
+    padding: 0.25rem; 
+    margin-bottom: 0.1rem; 
+  }
+</style>
+
 <div class="main-container fullscreen">
     <div class="container">
         <div style="text-align: center;">
@@ -17,22 +35,24 @@
             <form method = "post" action = "{% url 'login' %}">
               {% csrf_token %}
               {% if form.non_field_errors %}
-                <div class="alert alert-danger">
+                <div class="form-error error-message-box">
                   {{ form.non_field_errors }}
                 </div>
               {% endif %}
+
               <div class="form-group">
-                {{ form.username }}
+                <input class="form-control" type="text" name="{{ form.username.name }}" placeholder="Username" id="{{ form.username.id_for_label }}" {% if form.username.value %}value="{{ form.username.value }}"{% endif %} />
                 {% if form.username.errors %}
-                  <div class="alert alert-danger">
+                  <div class="form-error error-message-box">
                     {{ form.username.errors }}
                   </div>
                 {% endif %}
               </div>
+
               <div class="form-group">
-                {{ form.password }}
+                <input class="form-control" type="password" name="{{ form.password.name }}" placeholder="Password" id="{{ form.password.id_for_label }}" />
                 {% if form.password.errors %}
-                  <div class="alert alert-danger">
+                  <div class="form-error error-message-box">
                     {{ form.password.errors }}
                   </div>
                 {% endif %}
@@ -40,10 +60,11 @@
                   <small><a href="{% url 'password_reset' %}">Forgot password?</a></small>
                 </div>
               </div>
+
               <button class="btn btn-lg btn-block btn-primary" role="button" type="submit">Log in</button>
-              <small>Don't have an account yet? <a href="{% url 'create_account' %}">Create one</a>
-              </small>
+              <small>Don't have an account yet? <a href="{% url 'create_account' %}">Create one</a></small>
             </form>
+
           </div>
         </div>
       </div>

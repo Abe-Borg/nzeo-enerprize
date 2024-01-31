@@ -1,17 +1,21 @@
 from django.shortcuts import render
-# from django.contrib.auth.decorators import login_required
-# from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 import googlemaps
 from district_management.models import SchoolDistrict
+from django.contrib import messages
 gmaps = googlemaps.Client(key='AIzaSyANW4JtLihHDKEiBkkknOHOn6CCX-WwthA')
 
 
-# @login_required
+@login_required
 def district_admin_home(request):
     context = {}
     # assigned_district = # get the district id from the user's profile
     # district_info = SchoolDistrict.objects.get(district_id = assigned_district)
 
+    assigned_district = 1 # get the district id from the user's profile
+
+    district_info = SchoolDistrict.objects.get(district_id = assigned_district)
     context = {
         'district_geo_lat': district_info.district_geo_lat,
         'district_geo_long': district_info.district_geo_long,
@@ -33,6 +37,7 @@ def district_admin_home(request):
     return render(request, 'district_management/district_admin_home.html', context)
 
 
+@login_required
 def get_geo_coordinates(address):
     """
     Retrieve the geographical coordinates (latitude and longitude) for a given address.
@@ -52,6 +57,7 @@ def get_geo_coordinates(address):
     return latitude, longitude
 
 
+@login_required
 def get_coordinates_for_named_locations(named_locations):
     """
     Get geographical coordinates for a list of named locations.

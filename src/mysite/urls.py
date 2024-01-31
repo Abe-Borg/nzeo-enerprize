@@ -18,15 +18,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from . views import redirect_after_login
 from django.contrib.auth import views as auth_views
-from . views import create_account, error_page
+from . views import create_account, error_page, change_password, change_email, redirect_after_login
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('create-account/', create_account, name='create_account'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('password_reset/', auth_views.PasswordResetView.as_view(template_name = 'forgot_password.html'), name = 'password_reset'),
     path('', auth_views.LoginView.as_view(template_name = 'enerprize_home_page.html'), name = 'login'),
     path('redirect_after_login/', redirect_after_login, name = 'redirect_after_login'),
     path('district-management/', include('district_management.urls')),
@@ -36,6 +36,8 @@ urlpatterns = [
     path('nzeo-management/', include('nzeo_management.urls')),
     path('school-management/', include('school_management.urls')),
     path('error_page/', error_page, name='error_page'),
+    path('change_password/', change_password, name='change_password'),
+    path('change_email/', change_email, name='change_email'),
 ]
 
 if settings.DEBUG:
