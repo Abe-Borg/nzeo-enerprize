@@ -12,4 +12,4 @@ class UserProfile(models.Model):
     job_title = models.CharField(max_length=100, blank=True)
 
     def get_assigned_district(self):
-        return self.assigned_district
+        return self.user_district
