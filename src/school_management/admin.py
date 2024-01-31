@@ -173,14 +173,14 @@ class WarrantyExpirationDateRangeFilter(admin.SimpleListFilter):
 
 @admin.register(Building)
 class BuildingAdmin(admin.ModelAdmin):
-    list_display = ('get_school_name', 'building_type', 'building_area_sqft')
+    list_display = ('building_name', 'building_type', 'building_area_sqft')
 
     def get_school_name(self, obj):
         return obj.building_school.school_name
 
     get_school_name.short_description = 'School Name'
     
-    list_filter = ('building_school', 'building_type', AreaRangeFilter)
+    list_filter = ('building_school', 'building_type', AreaRangeFilter, 'building_age')
     ordering = ('building_type', 'building_area_sqft')  # Sort by school and then by name
 
 @admin.register(Equipment)

@@ -31,7 +31,7 @@ urlpatterns = [
     path('redirect_after_login/', redirect_after_login, name = 'redirect_after_login'),
     path('district-management/', include('district_management.urls')),
     path('documents/', include('documents.urls')),
-    path('enerprize-api/', include('enerprize_api.urls')),
+    # path('enerprize-api/', include('enerprize_api.urls')),
     path('maps/', include('maps.urls')),
     path('nzeo-management/', include('nzeo_management.urls')),
     path('school-management/', include('school_management.urls')),
