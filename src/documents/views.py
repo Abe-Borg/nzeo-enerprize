@@ -5,43 +5,39 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 
+from documents.forms import DocumentDownloadForm, DocumentUploadForm
+
 
 
 @login_required
-def download_document(request):
-    # Simulating file download logic
-    file_path = request.GET.get('file_path')
-    
-    if file_path:
-        try:
-            file = open(file_path, 'rb')
-            messages.success(request, 'File downloaded successfully.')
-            return FileResponse(file)
-        except IOError:
-            messages.error(request, 'File not found.')
-            return render(request, 'documents/download_file.html')
+def download_document(request):    
+    if request.method == 'POST':
+        form = DocumentDownloadForm(request.POST)
+        if form.is_valid():
+            results = form.search()
+            return render(request, 'documents/download_results.html', {'results': results})
     else:
-        messages.error(request, 'No file specified.')
-        return render(request, 'documents/download_file.html')
+        form = DocumentDownloadForm()
+    
+    return render(request, 'documents/download_document.html', {'form': form})
 
 
 @login_required
 def upload_document(request):
-    if request.method == 'POST' and 'file' in request.FILES:
-        file = request.FILES['file']
-        file_path = 'path/to/save/file'  # Define where you want to save the file
-
-        try:
-            with open(file_path, 'wb+') as destination:
-                for chunk in file.chunks():
-                    destination.write(chunk)
-
+    if request.method == 'POST':
+        form = DocumentUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            document = form.save(commit=False)
+            document.document_owner = request.user  # Automatically set the document owner to the current user
+            document.save()
             messages.success(request, 'File uploaded successfully.')
-            return redirect('some_view')  # Redirect to a relevant view after upload
-        except Exception as e:
-            messages.error(request, f'File upload failed: {str(e)}')
-    
-    return render(request, 'documents/upload_file.html')
+            return redirect('some_view')  # Redirect to a success page or another relevant view
+        else:
+            # If the form is not valid, display the form again with validation errors
+            messages.error(request, 'File upload failed. Please correct the errors below.')
+    else:
+        form = DocumentUploadForm()
+    return render(request, 'documents/upload_document.html', {'form': form})
 
 
 @login_required

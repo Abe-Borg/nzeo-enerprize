@@ -4,9 +4,9 @@ from school_management.models import Building, Equipment, School
 from .models import Document
 
 class DocumentUploadForm(forms.ModelForm):
-    document_school = forms.ModelChoiceField(queryset=School.objects.none(), required=False)
-    document_building = forms.ModelChoiceField(queryset=Building.objects.none(), required=False)
-    document_equipment = forms.ModelChoiceField(queryset=Equipment.objects.none(), required=False)
+    document_school = forms.ModelChoiceField(queryset=School.objects.none(), required=True, label='Building (Required)')
+    document_building = forms.ModelChoiceField(queryset=Building.objects.none(), required=False, label='Building (Optional)')
+    document_equipment = forms.ModelChoiceField(queryset=Equipment.objects.none(), required=False, label='Building (Optional)')
 
     class Meta:
         model = Document

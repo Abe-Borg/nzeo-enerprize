@@ -67,12 +67,14 @@ class Document(models.Model):
     document_building = models.ForeignKey(
         Building, 
         on_delete=models.SET_NULL, 
-        null=True, 
+        null=True,
+        blank = True 
     )
     document_equipment = models.ForeignKey(
         Equipment, 
         on_delete=models.SET_NULL, 
         null=True, 
+        blank = True
     )
 
     historical_owner = models.CharField(max_length=100, blank=True, null=True)

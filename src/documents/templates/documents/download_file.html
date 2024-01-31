@@ -2,6 +2,22 @@
 {% extends 'base_minimal.html' %}
 {% block main_body %}
 
-download file page
 
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const schoolSelect = document.querySelector('select[name="document_school"]');
+        const buildingSelect = document.querySelector('select[name="document_building"]');
+        schoolSelect.addEventListener('change', function () {
+            // Fetch buildings based on the selected school
+            fetch(`/api/buildings/?school_id=${this.value}`)
+            .then(response => response.json())
+            .then(data => {
+                buildingSelect.innerHTML = data.buildings.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
+            });
+        });
+    });
+</script>
 {% endblock %}
