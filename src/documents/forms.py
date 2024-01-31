@@ -16,8 +16,8 @@ class DocumentUploadForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super(DocumentUploadForm, self).__init__(*args, **kwargs)
-        if user:
-            self.fields['document_school'].queryset = School.objects.filter(district=UserProfile.get_assigned_district())
+        if user and hasattr(user, 'userprofile'):
+            self.fields['document_school'].queryset = School.objects.filter(district=user.userprofile.get_assigned_district())
         
 
 
@@ -26,9 +26,9 @@ class DocumentDownloadForm(forms.Form):
     document_type = forms.ChoiceField(choices=Document.DOCUMENT_TYPES, required=False, label='Document Type (Optional)')
     document_format = forms.ChoiceField(choices=Document.DOCUMENT_FORMATS, required=False, label='Document Format (Optional)')
     document_description = forms.CharField(max_length=250, required=False, label='Document Description (Optional)')
-    document_building = forms.CharField(max_length=100, required=False, label='Building (Optional)')
+    document_building = forms.ModelChoiceField(queryset=Building.objects.none(), required=False, label='Building (Optional)')
     document_school = forms.ModelChoiceField(queryset=School.objects.none(), required=True, label='School (Required)')
-    document_equipment = forms.CharField(max_length=100, required=False, label='Equipment (Optional)')
+    document_equipment = forms.ModelChoiceField(queryset=Equipment.objects.none(), required=False, label='Equipment (Optional)')
     upload_date = forms.DateField(required=False, label='Upload Date (Optional)')
 
     def search(self):

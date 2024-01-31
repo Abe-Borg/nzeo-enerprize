@@ -56,11 +56,6 @@ class Document(models.Model):
         on_delete=models.SET_NULL, 
         null=True
     )
-    document_district = models.ForeignKey(
-        'school_management.District', 
-        on_delete=models.SET_NULL, 
-        null=True
-    )
     document_school = models.ForeignKey(
         School, on_delete=models.SET_NULL, 
         null=True
