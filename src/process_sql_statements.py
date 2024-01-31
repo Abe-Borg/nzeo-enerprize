@@ -8,7 +8,7 @@ django.setup()
 
 from django.db import connection
 
-FILE_NAME = 'building_names_ages.sql'
+FILE_NAME = 'equipment_tags_models.sql'
 
 with connection.cursor() as cursor:
     with open(FILE_NAME, 'r') as file:

@@ -169,6 +169,24 @@ class WarrantyExpirationDateRangeFilter(admin.SimpleListFilter):
             return queryset.filter(equipment_warranty_expiration__year__gte=start_year,
                                    equipment_warranty_expiration__year__lte=end_year)
         return queryset
+    
+class BuildingAgeRangeFilter(admin.SimpleListFilter):
+    title = _('Building Age')
+    parameter_name = 'building_age_range'
+
+    def lookups(self, request, model_admin):
+        # Generate ranges in the format ('0-9', '0 - 9 years'), ('10-19', '10 - 19 years') etc.
+        date_ranges = [(f"{start_year}-{start_year + 10}", f"{start_year} - {start_year + 10} years")
+                       for start_year in range(0, 100, 10)]  # Adjusted for ranges starting from 0
+        return date_ranges
+
+    def queryset(self, request, queryset):
+        if self.value():
+            start_year, end_year = [int(year) for year in self.value().split('-')]
+            # Filter the queryset based on the building age range
+            return queryset.filter(building_age__gte=start_year,
+                                   building_age__lte=end_year)
+        return queryset
 
 
 @admin.register(Building)
@@ -180,12 +198,12 @@ class BuildingAdmin(admin.ModelAdmin):
 
     get_school_name.short_description = 'School Name'
     
-    list_filter = ('building_school', 'building_type', AreaRangeFilter, 'building_age')
+    list_filter = ('building_school', 'building_type', AreaRangeFilter, BuildingAgeRangeFilter)
     ordering = ('building_type', 'building_area_sqft')  # Sort by school and then by name
 
 @admin.register(Equipment)
 class EquipmentAdmin(admin.ModelAdmin):
-    list_display = ('get_school_name', 'get_building_name', 'equipment_model', 'equipment_type', 'equipment_manufacturer','equipment_install_date')
+    list_display = ('equipment_tag','equipment_model', 'equipment_type', 'equipment_manufacturer')
     def get_school_name(self, obj):
         return obj.equipment_school.school_name
     
@@ -199,8 +217,7 @@ class EquipmentAdmin(admin.ModelAdmin):
     get_building_name.short_description = 'Building Name'
     
     list_filter = ('equipment_school', 'equipment_building', 'equipment_type', 'equipment_manufacturer', InstallDateRangeFilter, WarrantyExpirationDateRangeFilter, ElecKwDemandFilter, GasBtuhDemandFilter, GeneratesElecKwFilter, StorageKBtuFilter, StorageKWhFilter)
-    ordering = ('equipment_model', 'equipment_type', 'equipment_manufacturer', 'equipment_install_date', 'equipment_warranty_expiration', 'equipment_elec_kw_demand', 'equipment_gas_btuh_demand', 'equipment_generates_elec_kw', 'equipment_storage_kbtu')
-
+    ordering = ('equipment_model', 'equipment_type', 'equipment_manufacturer')
 
 admin.site.register(PerformanceMetrics)
 admin.site.register(Meter)
