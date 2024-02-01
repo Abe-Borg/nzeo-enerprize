@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1',  '161.35.239.38', 'nzeo-enerprize.com
 # Application definition
 
 INSTALLED_APPS = [
+    'chatnzeo',
     'enerprize_api',
     'school_management',
     'district_management',

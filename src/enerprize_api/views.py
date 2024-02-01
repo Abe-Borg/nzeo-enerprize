@@ -13,9 +13,6 @@ def get_schools_for_district(request, district_id):
 
 
 
-def chatnzeo(request):
-    return render(request, 'chatnzeo.html')
-
 
 
 

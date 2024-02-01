@@ -5,6 +5,5 @@ from django.contrib.auth.models import User
 from . import views
 
 urlpatterns = [
-    path('chatnzeo', views.chatnzeo, name = 'chatnzeo'),
     path('get-schools-for-district/<int:district_id>/', views.get_schools_for_district, name='get_schools_for_district'),
 ]
