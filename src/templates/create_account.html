@@ -41,7 +41,7 @@
           <form method = "post">
             {% csrf_token %}
             <div class="form-group">
-              <input class="form-control" type="text" name="{{ form.username.name }}" placeholder="Username" id="{{ form.username.id_for_label }}" {% if form.username.value %}value="{{ form.username.value }}"{% endif %} />
+              <input class="form-control" type="text" name="{{ form.username.name }}" placeholder="Username" id="{{ form.username.id_for_label }}" autocomplete="username" {% if form.username.value %} value="{{ form.username.value }}"{% endif %} />
               {% if form.username.errors %}
                 <div class="form-error error-message-box">
                   {{ form.username.errors }}
@@ -50,41 +50,41 @@
               <br>
               <small>Username Format: lastname.firstname.district | Example: smith.john.clovis</small>
             </div>
-            
+            <!--email-->
             <div class="form-group">
-              <input class="form-control" type="email" name="{{ form.email.name }}" placeholder="Email Address" id="{{ form.email.id_for_label }}" {% if form.email.value %}value="{{ form.email.value }}"{% endif %} />
+              <input class="form-control" type="email" name="{{ form.email.name }}" placeholder="Email Address" id="{{ form.email.id_for_label }}"autocomplete = "email" {% if form.email.value %}value="{{ form.email.value }}"{% endif %} />
               {% if form.email.errors %}
                 <div class="form-error error-message-box">
                   {{ form.email.errors }}
                 </div>
               {% endif %}
             </div>
-            
+            <!--confirm email-->
             <div class="form-group">
               <input class="form-control" type="email" name="{{ form.confirm_email.name }}" placeholder="Confirm Email" id="{{ form.confirm_email.id_for_label }}" />
               {% if form.confirm_email.errors %}
                 <div class="form-error error-message-box">{{ form.confirm_email.errors }}</div>
               {% endif %}
             </div>
-
+            <!--password-->
             <div class="form-group">
-              <input class="form-control" type="password" name="{{ form.password1.name }}" placeholder="Password" id="{{ form.password1.id_for_label }}" />
+              <input class="form-control" type="password" name="{{ form.password1.name }}" placeholder="Password" id="{{ form.password1.id_for_label }}" autocomplete="new-password"/>
               {% if form.password1.errors %}
                 <div class="form-error error-message-box">
                   {{ form.password1.errors }}
                 </div>
               {% endif %}
             </div>
-
+            <!--confirm password-->
             <div class="form-group">
-              <input class="form-control" type="password" name="{{ form.password2.name }}" placeholder="Confirm Password" id="{{ form.password2.id_for_label }}" />
+              <input class="form-control" type="password" name="{{ form.password2.name }}" placeholder="Confirm Password" id="{{ form.password2.id_for_label }}" autocomplete="new-password"/>
               {% if form.password2.errors %}
                 <div class="form-error error-message-box">
                 {{ form.password2.errors }}
                 </div>
               {% endif %}
             </div>
-
+            
             <div class="text-left">
               <small>Password requirements:</small>
               <ul class="text-muted">

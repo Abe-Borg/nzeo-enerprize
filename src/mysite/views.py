@@ -21,6 +21,7 @@ def redirect_after_login(request):
 
 def create_account(request):
     districts = SchoolDistrict.objects.all()
+    print(districts)
 
     if request.method == 'POST':    
         form = CustomUserCreationForm(request.POST)
