@@ -28,7 +28,7 @@ class CustomUserCreationForm(UserCreationForm):
         if 'user_district' in self.data:
             try:
                 district_id = int(self.data.get('user_district'))
-                self.fields['user_school'].queryset = School.objects.filter(district_id=district_id).order_by('name')
+                self.fields['user_school'].queryset = School.objects.filter(school_district_id=district_id).order_by('school_name')
             except (ValueError, TypeError):
                 pass  # Invalid input; fallback to empty School queryset
 

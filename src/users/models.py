@@ -19,3 +19,6 @@ class UserProfile(models.Model):
     
     def get_job_title(self):
         return self.job_title
+    
+    def __str__(self):
+        return self.user.username
