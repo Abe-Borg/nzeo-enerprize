@@ -21,17 +21,12 @@ def redirect_after_login(request):
 
 def create_account(request):
     districts = SchoolDistrict.objects.all()
-    print(districts)
 
     if request.method == 'POST':    
         form = CustomUserCreationForm(request.POST)
 
         if form.is_valid():
-            user = form.save(commit=False)
-            user.email = form.cleaned_data['email']
-            user.save()
-            # later, I need to add additional logic here for sending a confirmation email, logging the user in, redirecting to a specific page, etc.)
-            # Redirect to login page.
+            form.save()
             return redirect('login')
     else:
         form = CustomUserCreationForm()

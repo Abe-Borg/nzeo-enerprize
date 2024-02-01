@@ -4,7 +4,8 @@ from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from district_management.models import SchoolDistrict
 from django.db import transaction
 from district_management.models import SchoolDistrict
-from .models import UserProfile
+from users.models import UserProfile
+from school_management.models import School
 
 
 class CustomUserCreationForm(UserCreationForm):

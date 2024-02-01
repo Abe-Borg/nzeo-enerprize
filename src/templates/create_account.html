@@ -101,7 +101,7 @@
               <select class="form-control" name="user_district" id="user_district" required>
                 <option value="">Select District</option>
                 {% for district in districts %}
-                  <option value="{{ district.id }}">{{ district.name }}</option>
+                  <option value="{{ district.id }}">{{ district.district_name }}</option>
                 {% endfor %}
               </select>
             </div>
@@ -146,13 +146,15 @@
         schoolSelect.disabled = false;
 
         // Fetch schools for the selected district
-        fetch(`/get-schools-for-district/${districtId}/`)
+        console.log(`Fetching schools for district ID: ${districtId}`);
+        fetch(`/enerprize-api/get-schools-for-district/${districtId}/`)
           .then(response => response.json())
           .then(data => {
+            console.log(data);  // Check what data is received
             data.schools.forEach(school => {
               const option = document.createElement('option');
               option.value = school.id;
-              option.textContent = school.name;
+              option.textContent = school.school_name;
               schoolSelect.appendChild(option);
             });
           })

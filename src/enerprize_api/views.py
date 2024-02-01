@@ -7,12 +7,7 @@ from django.http import JsonResponse
 
 
 def get_schools_for_district(request, district_id):
-    schools = School.objects.filter(district_id=district_id).values('id', 'name')
+    schools = School.objects.filter(school_district_id=district_id).values('id', 'school_name')
     school_list = list(schools)
     return JsonResponse({'schools': school_list})
-
-
-
-
-
 
