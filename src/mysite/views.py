@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm, UserEmailForm
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
+from district_management.models import SchoolDistrict
 
 @login_required
 def redirect_after_login(request):
@@ -19,8 +20,11 @@ def redirect_after_login(request):
 
 
 def create_account(request):
-    if request.method == 'POST':
+    districts = SchoolDistrict.objects.all()
+
+    if request.method == 'POST':    
         form = CustomUserCreationForm(request.POST)
+
         if form.is_valid():
             user = form.save(commit=False)
             user.email = form.cleaned_data['email']
@@ -30,7 +34,12 @@ def create_account(request):
             return redirect('login')
     else:
         form = CustomUserCreationForm()
-    return render(request, 'create_account.html', {'form': form})
+
+    context = {
+        'form': form,
+        'districts': districts,
+    }
+    return render(request, 'create_account.html', context)
 
 
 def error_page(request):
