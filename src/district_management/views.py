@@ -9,9 +9,7 @@ gmaps = googlemaps.Client(key='AIzaSyANW4JtLihHDKEiBkkknOHOn6CCX-WwthA')
 @login_required
 def district_admin_home(request):
     context = {}
-    # get the district id from the user's profile, maybe somethig like this?
-    assigned_district = request.user.profile.user_district
-    
+    assigned_district = request.user.profile.user_district    
     district_info = SchoolDistrict.objects.get(district_name = assigned_district)
     context = {
         'district_geo_lat': district_info.district_geo_lat,
@@ -25,14 +23,15 @@ def district_admin_home(request):
         'API_KEY': 'AIzaSyANW4JtLihHDKEiBkkknOHOn6CCX-WwthA'
     }
 
-    # get the district schools from the db. maybe something like this, 
     district_schools_list = School.objects.filter(school_district = assigned_district)
-    district_schools_coordinates = get_coordinates_for_named_locations(district_schools_list)
+    print(district_schools_list)
+    named_locations = [{'name': school.school_name, 'address': school.school_address} for school in district_schools_list]
+    district_schools_coordinates = get_coordinates_for_named_locations(named_locations)
+    print(district_schools_coordinates)
     context['district_schools_coordinates'] = district_schools_coordinates
     return render(request, 'district_management/district_admin_home.html', context)
 
 
-@login_required
 def get_geo_coordinates(address):
     """
     Retrieve the geographical coordinates (latitude and longitude) for a given address.
@@ -52,7 +51,6 @@ def get_geo_coordinates(address):
     return latitude, longitude
 
 
-@login_required
 def get_coordinates_for_named_locations(named_locations):
     """
     Get geographical coordinates for a list of named locations.

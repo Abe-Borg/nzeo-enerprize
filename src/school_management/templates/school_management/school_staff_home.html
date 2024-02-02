@@ -1,6 +1,8 @@
-{% extends 'base_minimal.html' %}
-{% block main_body %}
+{% extends 'base_top_navbar.html' %}
+{% block center_content %}
 
-<p>School Staff homepage</p>
+<link href="{% static 'school_management/school_home_styles.css' %}" rel="stylesheet">
+<h1 style = "margin: 10px;">{{ school_name }} Home Page</h1>
+<h2 style = "margin: 10px;">{{ district_name }}</h2>
 
 {% endblock %}
