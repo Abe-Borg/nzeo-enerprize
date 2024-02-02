@@ -24,10 +24,8 @@ def district_admin_home(request):
     }
 
     district_schools_list = School.objects.filter(school_district = assigned_district)
-    print(district_schools_list)
     named_locations = [{'name': school.school_name, 'address': school.school_address} for school in district_schools_list]
     district_schools_coordinates = get_coordinates_for_named_locations(named_locations)
-    print(district_schools_coordinates)
     context['district_schools_coordinates'] = district_schools_coordinates
     return render(request, 'district_management/district_admin_home.html', context)
 

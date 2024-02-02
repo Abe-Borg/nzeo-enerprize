@@ -1,8 +1,33 @@
-<!--html template for the home page of an individual school -->
+{% extends 'base_top_navbar.html' %}
+{% load static %}
 
-{% extends 'base_minimal.html' %}
-{% block main_body %}
+{% block center_content %}
+<!-- <link href="{% static 'school_management/school_home_styles.css' %}" rel="stylesheet"> -->
 
-<p>school homepage</p>
+<!--School title and greeting-->
+<div class="col-lg-9">
+  <span class="h3 d-block mt-3" ><strong>{{ school_name }}</strong></span>
+  <p>
+    {{ school_district }}
+  </p>
+</div>
+
+<!-- main content-->
+<div class="main-container">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9">
+        <div class="text-center d-flex align-items-center justify-content-center pt-5">
+          <div>
+            <span class="h3 d-block mt-3">Content Here</span>
+            <p>
+              School page under construction
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

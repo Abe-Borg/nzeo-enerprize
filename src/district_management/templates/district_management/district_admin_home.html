@@ -7,22 +7,14 @@
 <link href="{% static 'district_management/district_maps_styles.css' %}" rel="stylesheet">
 
 <br>
-<h1 style = "margin: 10px;">District Map</h1>
-<h2 style = "margin: 10px;">{{ district_name }}</h2>
-<p style ="padding: 15px;">
-    Click on the map to place an annotation. Press enter to confirm the annotation or escape to cancel.<br>
+<h1 style = "margin-left: 10px;">{{ district_name }} Map</h1>
+<p style="margin-left: 10px; padding-bottom: 10px">
+    Click on the map to place an annotation. Press enter to confirm the annotation or escape to cancel.
     Navigation is limited to district boundaries.
 </p>
 
 <!-- Map goes here -->
 <div id="map"></div>
-
-<div id="legend">
-    <h3>Legend</h3>
-    <div>
-        <span style="height: 10px; width: 10px; background-color: red; display: inline-block;"></span>School Locations
-    </div> 
-</div>
 
 <input id="search-input" class="controls" type="text" placeholder="Search Map">
 <button id="reset-map">Recenter map</button>
@@ -123,7 +115,7 @@
         });
 
         var markers = [];
-        // Listen for the event fired when the user selects a prediction and retrieve more details for that place.
+        // Listen for the event fired when the user selects a location and retrieve more details for that place.
         searchBox.addListener('places_changed', function() {
             var places = searchBox.getPlaces();
 
@@ -179,7 +171,7 @@
         });
 
 
-        // ========== CODE FOR DRAWING TOOLS ==========
+        // ========== CODE FOR GOOGLE DRAWING TOOLS ==========
         const drawingManager = new google.maps.drawing.DrawingManager({
             drawingMode: google.maps.drawing.OverlayType.MARKER,
             drawingControl: true,
@@ -234,6 +226,7 @@
                 zIndex: 1,
             },
         });
+        // ========== END OF CODE FOR GOOGLE DRAWING TOOLS ==========
 
         drawingManager.setMap(map);
 
