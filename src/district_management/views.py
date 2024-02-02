@@ -10,9 +10,9 @@ gmaps = googlemaps.Client(key='AIzaSyANW4JtLihHDKEiBkkknOHOn6CCX-WwthA')
 def district_admin_home(request):
     context = {}
     # get the district id from the user's profile, maybe somethig like this?
-    assigned_district = request.user.profile.assigned_district
+    assigned_district = request.user.profile.user_district
     
-    district_info = SchoolDistrict.objects.get(district_id = assigned_district)
+    district_info = SchoolDistrict.objects.get(district_name = assigned_district)
     context = {
         'district_geo_lat': district_info.district_geo_lat,
         'district_geo_long': district_info.district_geo_long,
@@ -26,7 +26,7 @@ def district_admin_home(request):
     }
 
     # get the district schools from the db. maybe something like this, 
-    district_schools_list = School.objects.filter(district_id = assigned_district)
+    district_schools_list = School.objects.filter(school_district = assigned_district)
     district_schools_coordinates = get_coordinates_for_named_locations(district_schools_list)
     context['district_schools_coordinates'] = district_schools_coordinates
     return render(request, 'district_management/district_admin_home.html', context)
