@@ -31,6 +31,28 @@
 <!-- district school locations on the map -->
 {{ district_schools_coordinates|json_script:"marker-data"}}
 
+<!-- Modal for schools-->
+<div class="modal fade" id="schoolModal" tabindex="-1" role="dialog" aria-labelledby="schoolModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="schoolModalLabel">School Details At-a-Glance</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                school details go here.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="#" id="visitSchoolPage" target="_blank" class="btn btn-primary">Visit School Page</a>
+            </div>
+        </div>
+    </div>
+</div>
+  
+
 <script>
     district_southwest_lat = parseFloat("{{southwest_lat}}");
     district_southwest_lng = parseFloat("{{southwest_lng}}");
@@ -73,24 +95,15 @@
                 title: school.name
             });
 
-            // add an info window for each marker
-            // Add an info window for each marker
-            var infowindowContent = 
-            '<div>' +
-                '<h6>' + school.name + '</h6>' +
-                '<p>' + school.description + '</p>' + // Additional description
-                '<a href="' + school.url + 
-                '" target="_blank">Visit School Page</a>' + // Link
-            '</div>';
-
-            var infowindow = new google.maps.InfoWindow({
-                content: infowindowContent
-            });
-
             marker.addListener('click', function() {
                 map.setZoom(16); // You can adjust the zoom level as needed
                 map.setCenter(marker.getPosition());
-                infowindow.open(map, marker);
+                document.getElementById('schoolModalLabel').textContent = school.name; // School name for the modal title
+                document.querySelector('#schoolModal .modal-body').innerHTML = '<p>' + school.description + '</p>'; // School description
+                document.getElementById('visitSchoolPage').setAttribute('href', school.url); // Update the lin
+                
+                // Show the modal
+                $('#schoolModal').modal('show');
             });
         });
         
@@ -223,12 +236,37 @@
         });
 
         drawingManager.setMap(map);
+
+        // triggers for modal on school click.
+        school_markers.forEach(function(school) {
+            var marker = new google.maps.Marker({
+                position: {lat: school.lat, lng: school.lng},
+                map: map,
+                title: school.name
+            });
+
+            marker.addListener('click', function() {
+                // Update modal content
+                $('#schoolModalLabel').text(school.name); // School name for the modal title
+                $('#schoolModal .modal-body').html('<p>' + school.description + '</p>'); // School description
+                $('#visitSchoolPage').attr('href', school.url); // Update the link
+
+                // Show the modal
+                $('#schoolModal').modal('show');
+            });
+        });
     } // end of initMap()
+
+
+    
+
 
 </script>
 
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&libraries=places,drawing&callback=initMap">
 </script>
+
+
 
 {% endblock %}

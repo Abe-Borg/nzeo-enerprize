@@ -2,17 +2,16 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 import googlemaps
 from district_management.models import SchoolDistrict
+from school_management.models import School
 gmaps = googlemaps.Client(key='AIzaSyANW4JtLihHDKEiBkkknOHOn6CCX-WwthA')
 
 
 @login_required
 def district_admin_home(request):
     context = {}
-    # assigned_district = # get the district id from the user's profile
-    # district_info = SchoolDistrict.objects.get(district_id = assigned_district)
-
-    assigned_district = 1 # get the district id from the user's profile
-
+    # get the district id from the user's profile, maybe somethig like this?
+    assigned_district = request.user.profile.assigned_district
+    
     district_info = SchoolDistrict.objects.get(district_id = assigned_district)
     context = {
         'district_geo_lat': district_info.district_geo_lat,
@@ -23,13 +22,11 @@ def district_admin_home(request):
         'northeast_lng': district_info.district_bb_northeast_lng,
         'district_name': district_info.district_name,
         'map_zoom_level': 12,
-        'API_KEY': 'AIzaSyANW4JtLihHDKEiBkkknOHOn6CCX-WwthA' # for google maps api
+        'API_KEY': 'AIzaSyANW4JtLihHDKEiBkkknOHOn6CCX-WwthA'
     }
-    district_schools_list = [
-        {"name": 'Centerville Elementary', "address": "48 S Smith Ave, Sanger, CA 93657"},
-        
-    ]
 
+    # get the district schools from the db. maybe something like this, 
+    district_schools_list = School.objects.filter(district_id = assigned_district)
     district_schools_coordinates = get_coordinates_for_named_locations(district_schools_list)
     context['district_schools_coordinates'] = district_schools_coordinates
     return render(request, 'district_management/district_admin_home.html', context)
