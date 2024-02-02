@@ -171,63 +171,6 @@
         });
 
 
-        // ========== CODE FOR GOOGLE DRAWING TOOLS ==========
-        const drawingManager = new google.maps.drawing.DrawingManager({
-            drawingMode: google.maps.drawing.OverlayType.MARKER,
-            drawingControl: true,
-            drawingControlOptions: {
-            position: google.maps.ControlPosition.TOP_CENTER,
-            drawingModes: [
-                google.maps.drawing.OverlayType.MARKER,
-                google.maps.drawing.OverlayType.CIRCLE,
-                google.maps.drawing.OverlayType.POLYGON,
-                google.maps.drawing.OverlayType.POLYLINE,
-                google.maps.drawing.OverlayType.RECTANGLE,
-            ],
-            },
-            markerOptions: {
-                icon: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
-                dragable: true
-            },
-            circleOptions: {
-                fillColor: "cyan",
-                fillOpacity: 0.5,
-                strokeWeight: 2,
-                clickable: true,
-                editable: true,
-                draggable: true,
-                zIndex: 1,
-            },
-            polygonOptions: {
-                fillColor: "light-blue",
-                fillOpacity: 0.5,
-                strokeWeight: 2,
-                clickable: true,
-                editable: true,
-                draggable: true,
-                zIndex: 1,
-            },
-            polylineOptions: {
-                fillColor: "red",
-                fillOpacity: 0.5,
-                strokeWeight: 2,
-                clickable: true,
-                editable: true,
-                draggable: true,
-                zIndex: 1,
-            },
-            rectangleOptions: {
-                fillColor: "purple",
-                fillOpacity: 0.5,
-                strokeWeight: 2,
-                clickable: true,
-                editable: true,
-                draggable: true,
-                zIndex: 1,
-            },
-        });
-        // ========== END OF CODE FOR GOOGLE DRAWING TOOLS ==========
-
         drawingManager.setMap(map);
 
         // triggers for modal on school click.
