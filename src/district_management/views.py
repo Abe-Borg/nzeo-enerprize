@@ -18,7 +18,7 @@ def district_admin_home(request):
         'southwest_lng': district_info.district_bb_southwest_lng,
         'northeast_lat': district_info.district_bb_northeast_lat,
         'northeast_lng': district_info.district_bb_northeast_lng,
-        'district_name': district_info.district_name,
+        'district_name': district_info.district_name.upper(),
         'map_zoom_level': 12,
         'API_KEY': 'AIzaSyANW4JtLihHDKEiBkkknOHOn6CCX-WwthA'
     }

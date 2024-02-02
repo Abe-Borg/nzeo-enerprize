@@ -114,38 +114,41 @@
             searchBox.setBounds(map.getBounds());
         });
 
-        var markers = [];
-        // Listen for the event fired when the user selects a location and retrieve more details for that place.
+        // ### Function: Update Map Markers for Selected Places
+        // **Purpose**: Handles the `places_changed` event for a Google Maps search box, updating the map with markers for each selected place.
+        // **Description**:
+        // This function is attached as an event listener to a Google Maps search box. When the user selects one or more places from the search box suggestions, the function performs the following actions:
+        // - Removes any existing markers from the map.
+        // - Retrieves the selected places and checks for their validity. If a place does not have geometry information, it is skipped with a console log indicating the issue.
+        // - For each valid place, creates a new marker with the place's name as the title and its location as the position. These markers are then added to the map.
+        // - Adjusts the map's viewport to ensure all new markers are visible.
+        // **Usage**:
+        // Attach this function to a Google Maps search box instance to dynamically update the map with markers representing user-selected places. Ensure `markers` is a globally accessible array and `map` is the initialized Google Maps instance.
+        var marker;
         searchBox.addListener('places_changed', function() {
             var places = searchBox.getPlaces();
-
             if (places.length == 0) {
                 return;
             }
-
-            // Clear out the old markers.
-            markers.forEach(function(marker) {
+            // if a marker already exists, remove it
+            if (marker) {
                 marker.setMap(null);
+            }
+            var place = places[0];
+            if (!place.geometry) {
+                console.log("Returned place contains no geometry");
+                return;
+            }
+            // Create a marker for the selected place
+            marker = new google.maps.Marker({
+                map: map,
+                title: place.name,
+                position: place.geometry.location
             });
-            markers = [];
-
-            // For each place, get the icon, name and location.
-            var bounds = new google.maps.LatLngBounds();
-            places.forEach(function(place) {
-                if (!place.geometry) {
-                    console.log("Returned place contains no geometry");
-                    return;
-                }
-
-                // Create a marker for each place.
-                markers.push(new google.maps.Marker({
-                    map: map,
-                    title: place.name,
-                    position: place.geometry.location
-                }));                
-            });
-            map.fitBounds(bounds);
-        }); 
+            // Center the map on the selected place and zoom
+            map.setCenter(place.geometry.location);
+            map.setZoom(16);     
+        });
 
         // Clear the search input
         document.getElementById('clear-search').addEventListener('click', function() {
@@ -170,7 +173,6 @@
             document.getElementById('search-input').value = '';
         });
 
-
         drawingManager.setMap(map);
 
         // triggers for modal on school click.
@@ -193,16 +195,23 @@
         });
     } // end of initMap()
 
-
-    
-
-
 </script>
 
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&libraries=places,drawing&callback=initMap">
 </script>
 
+<style>
+    .pac-container {
+        width: auto !important; /* This allows the container to size based on content */
+        min-width: 300px; /* This sets a minimum width for the container */
+    }
+
+    .pac-item {
+        width: auto !important; /* This allows each item to size based on content */
+        white-space: nowrap; /* This prevents text from wrapping */
+    }
+</style>
 
 
 {% endblock %}
