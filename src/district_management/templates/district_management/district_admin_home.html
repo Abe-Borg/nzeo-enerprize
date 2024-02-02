@@ -5,6 +5,8 @@
 
 <!-- <script src="{% static 'maps/annotations.js' %}"></script> -->
 <link href="{% static 'district_management/district_maps_styles.css' %}" rel="stylesheet">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 
 <br>
 <h1 style = "margin-left: 10px;">{{ district_name }} Map</h1>
@@ -16,7 +18,7 @@
 <!-- Map goes here -->
 <div id="map"></div>
 
-<input id="search-input" class="controls" type="text" placeholder="Search Map">
+<input id="search-input" class="controls form-control me-2" type="text" placeholder="Search Map">
 <button id="reset-map">Recenter map</button>
 <button id="clear-search">Clear search</button>
 
