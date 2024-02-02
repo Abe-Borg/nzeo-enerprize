@@ -10,12 +10,21 @@
     border-radius: 5px; 
   }
 </style>
+
 <div class="layout layout-nav-top layout-sidebar">
   <div class="navbar navbar-expand-lg bg-dark navbar-dark sticky-top">
     <!-- logo -->
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href= "{% url 'login' %}">
       <img alt="NZEO" src="{% static 'NZEO-small-logo.png' %}" />
     </a>
+
+    <!--this is required for responsiveness to different screen sizes-->
+    <div class="d-flex align-items-center">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+
     <!-- top menu -->
     <div class="collapse navbar-collapse justify-content-between" id="navbar-collapse">
       <ul class="navbar-nav">
