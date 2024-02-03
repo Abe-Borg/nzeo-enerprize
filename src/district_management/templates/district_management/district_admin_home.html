@@ -90,11 +90,11 @@
             });
 
             marker.addListener('click', function() {
-                map.setZoom(16); // You can adjust the zoom level as needed
+                map.setZoom(16);
                 map.setCenter(marker.getPosition());
                 document.getElementById('schoolModalLabel').textContent = school.name; // School name for the modal title
-                document.querySelector('#schoolModal .modal-body').innerHTML = '<p>' + school.description + '</p>'; // School description
-                document.getElementById('visitSchoolPage').setAttribute('href', school.url); // Update the lin
+                document.querySelector('#schoolModal .modal-body').innerHTML = '<p>' + school.description + '</p>'; 
+                document.getElementById('visitSchoolPage').setAttribute('href', school.url); 
                 
                 // Show the modal
                 $('#schoolModal').modal('show');
@@ -116,16 +116,7 @@
             searchBox.setBounds(map.getBounds());
         });
 
-        // ### Function: Update Map Markers for Selected Places
-        // **Purpose**: Handles the `places_changed` event for a Google Maps search box, updating the map with markers for each selected place.
-        // **Description**:
-        // This function is attached as an event listener to a Google Maps search box. When the user selects one or more places from the search box suggestions, the function performs the following actions:
-        // - Removes any existing markers from the map.
-        // - Retrieves the selected places and checks for their validity. If a place does not have geometry information, it is skipped with a console log indicating the issue.
-        // - For each valid place, creates a new marker with the place's name as the title and its location as the position. These markers are then added to the map.
-        // - Adjusts the map's viewport to ensure all new markers are visible.
-        // **Usage**:
-        // Attach this function to a Google Maps search box instance to dynamically update the map with markers representing user-selected places. Ensure `markers` is a globally accessible array and `map` is the initialized Google Maps instance.
+        // add marker to the map when user searches a location
         var marker;
         searchBox.addListener('places_changed', function() {
             var places = searchBox.getPlaces();

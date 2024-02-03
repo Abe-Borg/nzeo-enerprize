@@ -288,8 +288,11 @@ class PerformanceMetrics(models.Model):
 
 
 class Meter(models.Model):
+    """ 
+    a model that stores the data returned from the UtilityAPI call.
+    """
     METER_TYPE = (
-        ('gas', 'Gas'),
+        ('natural_gas', 'Natural Gas'),
         ('electric', 'Electric'),
         ('water', 'Water'),
         ('steam', 'Steam'),
@@ -304,25 +307,78 @@ class Meter(models.Model):
     INTERVAL_TIME_ZONES = (
         ('us_pacific', 'US/Pacific'),
     )
+    UNITS_OF_MEASURE = (
+        ('kwh', 'Kilowatt hours (e.g. usage)'),
+        ('kw', 'Kilowatts (e.g. demand)'),
+        ('kva', 'Kilovolt-amperes (e.g. apparent power)'),
+        ('kvah', 'Kilovolt-amperes-hour (e.g. apparent energy)'),
+        ('kvar', 'Kilovolt-amperes-reactive (e.g. reactive power)'),
+        ('kvarh', 'Kilovolt-amperes-reactive-hour (e.g. reactive energy)'),
+        ('therms', 'Therms (e.g. natural gas energy)'),
+        ('ccf', 'ccf, Hundreds of cubic feet (e.g. natural gas volume)'),
+        ('mcf', 'mcf, Thousands of cubic feet (e.g. natural gas volume)'),
+        ('hcf', 'hcf, Water volume in hundreds of cubic feet'),
+        ('gallons', 'Gallons (e.g. water volume)'),
+        ('m3', 'Cubic meters (e.g. water volume)'),
+        ('days', 'Days'),
+        ('months', 'Months'),
+        ('percent', 'Percent'),
+        ('poles', 'Number of lamp poles (used in certain Outdoor Lighting Tariffs)'),
+        ('lamps', 'Number of lamps (used in certain Outdoor Lighting Tariffs)'),
+        ('metering_devices', 'Number of metering devices (e.g. electric meters)'),
+        ('currency', 'Currency, USD'),
+    )
+    SOURCE_TYPES = (
+        ('pdf', 'PDF usually containing one or more utility bills or intervals'),
+        ('pdf_other', 'A PDF document other than a utility bill, for example a monthly summary'),
+        ('raw_pdf', 'A un-parsed PDF document from the utility website'),
+        ('website', 'The HTML of a page on the utility website.'),
+        ('greenbutton_dmd', 'Green Button DOWNLOAD My Data xml files.'),
+        ('greenbutton_cmd', 'Green Button CONNECT My Data xml files.'),
+        ('greenbutton_other', 'Another form of Green Button xml files.'),
+        ('spreadsheet', 'A spreadsheet download or report.'),
+        ('edi', 'EDI format files'),
+        ('other', 'another format not listed here.'),
+    )
 
     meter_uid = models.IntegerField(primary_key=True)
     meter_utility_provider = models.CharField(max_length=100, choices = UTILITY_PROVIDERS)
     meter_utility_service_id = models.IntegerField()
     meter_utility_billing_account = models.IntegerField()
     meter_utility_service_address = models.CharField(max_length=100)
-    meter_utility_meter_number = models.IntegerField()
+    meter_utility_meter_number = models.IntegerField() # not sure if this is a duplicate of meter_uid
     meter_utility_tariff_name = models.CharField(max_length=100)
     meter_interval_start = models.DateTimeField()
     meter_interval_end = models.DateTimeField()
-    meter_interval_kwh = models.FloatField(default=0.0)
-    meter_fwd_kwh = models.FloatField(default=0.0)
-    meter_net_kwh = models.FloatField(default=0.0)
-    meter_rev_kwh = models.FloatField(default=0.0)
-    meter_source = models.CharField(max_length=100)
+    meter_interval_kwh_usage = models.FloatField(default=0.0)
+    meter_fwd_kwh_usage = models.FloatField(default=0.0)
+    meter_net_kwh_usage = models.FloatField(default=0.0)
+    meter_rev_kwh_usage = models.FloatField(default=0.0)
+    meter_source = models.CharField(max_length=100) # unclear what this is. might be source of data, (e.g. UtilityAPI, manual entry, PDFs, etc.)
     meter_updated = models.DateTimeField()
     meter_interval_timezone = models.CharField(max_length=100, choices = INTERVAL_TIME_ZONES, default = 'us_pacific')
-    
-    # meter_type = models.CharField(max_length=100, choices = METER_TYPE, default = 'meter_type')
+    meter_type = models.CharField(max_length=100, choices = METER_TYPE, default = 'meter_type')
     meter_building = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Associated Building")
+
+
+    # meter_ISO_timestamp = models.CharField(max_length=100, null=True, blank=True)
+    # meter_kw_demand = models.FloatField(default=0.0, null=True, blank=True)
+    # meter_kva_apparent_power = models.FloatField(default=0.0, null=True, blank=True)
+    # meter_kvah_apparent_energy = models.FloatField(default=0.0, null=True, blank=True)
+    # meter_kvar_reactive_power = models.FloatField(default=0.0, null=True, blank=True)
+    # meter_kvarh_reactive_energy = models.FloatField(default=0.0, null=True, blank=True)
+    # meter_therms_natural_gas_energy = models.FloatField(default=0.0, null=True, blank=True)
+    # meter_ccf_natural_gas_volume = models.FloatField(default=0.0, null=True, blank=True) # in hundreds of cubic feet
+    # meter_mcf_natural_gas_volume = models.FloatField(default=0.0, null=True, blank=True) # in thousands of cubic feet
+    # meter_gal_water_volume = models.FloatField(default=0.0, null=True, blank=True)
+    # meter_m3_water_volume = models.FloatField(default=0.0, null=True, blank=True) # in cubic meters
+    # meter_days = models.IntegerField(default=0, null=True, blank=True)
+    # meter_months = models.IntegerField(default=0, null=True, blank=True)
+    # meter_percent = models.FloatField(default=0.0, null=True, blank=True)
+    # meter_poles = models.IntegerField(default=0, null=True, blank=True) # number of lamp poles (used in certain outdoor lighting taffifs)
+    # meter_lamps = models.IntegerField(default=0, null=True, blank=True) # number of lamps (used in certain outdoor lighting taffifs)
+    # meter_metering_devices = models.IntegerField(default=0, null=True, blank=True) # number of metering devices (Number of metering devices (e.g. electric meters)
+    # meter_currency = models.CharField(max_length=100, null=True, blank=True) # US Dollars
+
 
 
