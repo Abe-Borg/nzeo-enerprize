@@ -340,6 +340,16 @@ class Meter(models.Model):
         ('edi', 'EDI format files'),
         ('other', 'another format not listed here.'),
     )
+    SOURCE = (
+        ('type', 'SOURCE_TYPES'),
+        ('raw_url', 'The URL of the source data.'),
+        ('...', 'additional attributes (for some SOURCE_TYPES)')
+    )
+    SUPPLIER_TYPE = (
+        ('cca', 'Energy is supplied by a Community Choice Aggregator (CCA)'),
+        ('direct_access', 'Energy is purchased directly from an ESP'),
+        ('third_party', 'Energy is provided by some other third party supplier')
+    )
 
     meter_uid = models.IntegerField(primary_key=True)
     meter_utility_provider = models.CharField(max_length=100, choices = UTILITY_PROVIDERS)
