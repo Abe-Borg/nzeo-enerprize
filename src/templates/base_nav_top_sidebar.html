@@ -88,50 +88,58 @@
   <div class="main-container">
     <!-- sidebar -->
     <div class = "sidebar-container">
-      <div class="col-6 unique-grid-cell">
-        <button type = "button" class = "icon-button" id = "mechanical-icon-button">
+      <!--mech icon button-->
+      <div class="col-6 unique-grid-cell marker-icon-button">
+        <button type = "button" class = "icon-button" id = "mechanical-icon-button" data-icon-url="{% static 'gear-complex-solid.svg' %}">
           <i class="fa-solid fa-gear-complex" style="color: #1679c5;" ></i>
           <span class="custom-tooltip">Mechanical Markup</span>
         </button>
       </div>
-      <div class="col-6 unique-grid-cell">
-        <button type = "button" class = "icon-button" id = "electrical-icon-button">
+      <!--electrail icon button-->
+      <div class="col-6 unique-grid-cell marker-icon-button">
+        <button type = "button" class = "icon-button" id = "electrical-icon-button" data-icon-url="{% static 'plug-solid.svg' %}">
           <i class="fa-solid fa-plug" style="color: #bcdc18;" ></i>
           <span class="custom-tooltip">Electrical Markup</span>
         </button>
       </div>
-      <div class="col-6 unique-grid-cell">
-        <button type = "button" class = "icon-button" id = "plumbing-icon-button">
+      <!--plumbing icon button-->
+      <div class="col-6 unique-grid-cell marker-icon-button">
+        <button type = "button" class = "icon-button" id = "plumbing-icon-button" data-icon-url="{% static 'pipe-valve-solid.svg' %}">
           <i class="fa-solid fa-pipe-valve" style="color: #3e2c14;" ></i>
           <span class="custom-tooltip">Plumbing Markup</span>
         </button>
       </div>
-      <div class="col-6 unique-grid-cell">
-        <button type = "button" class = "icon-button" id = "line-icon-button">
+      <!--line icon button-->
+      <div class="col-6 unique-grid-cell marker-icon-button">
+        <button type = "button" class = "icon-button" id = "line-icon-button" data-icon-url="{% static 'pen-line-regular.svg' %}">
           <i class="fa-regular fa-pen-line" style="color: #63E6BE;" ></i>
           <span class="custom-tooltip">Draw Line</span>
         </button>
       </div>
-      <div class="col-6 unique-grid-cell">
-        <button type = "button" class = "icon-button" id = "polygon-icon-button">
+      <!--polygon icon button-->
+      <div class="col-6 unique-grid-cell marker-icon-button">
+        <button type = "button" class = "icon-button" id = "polygon-icon-button" data-icon-url="{% static 'draw-polygon-regular.svg' %}">
           <i class="fa-regular fa-draw-polygon" style="color: #FFD43B;" ></i>
           <span class="custom-tooltip">Draw Polygon</span>
         </button>
       </div>
-      <div class="col-6 unique-grid-cell">
-        <button type = "button" class = "icon-button" id = "marker-icon-button">
+      <!--marker icon button-->
+      <div class="col-6 unique-grid-cell marker-icon-button">
+        <button type = "button" class = "icon-button" id = "marker-icon-button" data-icon-url="{% static 'location-dot-solid.svg' %}">
           <i class="fa-solid fa-location-dot"></i>
           <span class="custom-tooltip">Place Marker</span>
         </button>
       </div>
-      <div class="col-6 unique-grid-cell">
-        <button type = "button" class = "icon-button" id = "tag-icon-button">
+      <!--tag icon button-->
+      <div class="col-6 unique-grid-cell marker-icon-button">
+        <button type = "button" class = "icon-button" id = "tag-icon-button" data-icon-url="{% static 'tag-solid.svg' %}">
           <i class="fa-solid fa-tag" style="color: #af0e74;"></i>
           <span class="custom-tooltip">Place Label</span>
         </button>
       </div>
-      <div class="col-6 unique-grid-cell">
-        <button type = "button" class = "icon-button" id = sticky-note-icon-button>
+      <!--sticky note icon button-->
+      <div class="col-6 unique-grid-cell marker-icon-button">
+        <button type = "button" class = "icon-button" id = sticky-note-icon-button data-icon-url="{% static 'notes-solid.svg' %}">
           <i class="fa-solid fa-notes" style="color: #FFD43B;"></i>
           <span class="custom-tooltip">Place Sticky Note</span>
         </button>
@@ -146,6 +154,8 @@
     </div> <!-- end of center panel -->
   </div> <!-- end of main container -->
 </div> <!-- end of layout -->
+
+
 
 {% endblock %}
 
