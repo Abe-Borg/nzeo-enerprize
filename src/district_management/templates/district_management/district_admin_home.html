@@ -166,7 +166,28 @@
             document.getElementById('search-input').value = '';
         });
 
+         // Configure the drawing manager
+        var drawingManager = new google.maps.drawing.DrawingManager({
+            drawingMode: google.maps.drawing.OverlayType.MARKER,
+            drawingControl: true,
+            drawingControlOptions: {
+                position: google.maps.ControlPosition.TOP_CENTER,
+                drawingModes: ['marker', 'circle', 'polygon', 'polyline', 'rectangle']
+            },
+            markerOptions: { icon: "{static 'gear-complex-solid.svg'}", draggable: true },
+            // Define styles for other shapes if necessary
+        });
         drawingManager.setMap(map);
+
+        // Event listener for when an overlay (marker, shape, etc.) is complete
+        google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
+            if (event.type == google.maps.drawing.OverlayType.MARKER) {
+                // Here you can capture the marker details, like position
+                var position = event.overlay.getPosition();
+                // Optionally, save the marker to your database via an AJAX call to a Django view
+            }
+            // Handle other types of overlays (circle, polygon, polyline, rectangle) similarly
+        });
 
         // triggers for modal on school click.
         school_markers.forEach(function(school) {
@@ -188,52 +209,26 @@
         });
     } // end of initMap()
 
-
     // ========== CODE FOR CLICK AND DRAW ANNOTATIONS
-    
-    // MARKER ICON
-    // Add any event listeners to the marker here (e.g., click event to show an info window)
-    document.getElementById('marker-icon-button').addEventListener('click', function() {
-        // Change the cursor on the map to indicate the user is in "placement" mode
-        var iconUrl = this.getAttribute('data-icon-url');
-        map.setOptions({ draggableCursor: `url(${iconUrl}), auto` });
+    document.querySelectorAll('.marker-icon-button').forEach(button => {
+        button.addEventListener('click', function() {
+            var iconUrl = this.getAttribute('data-icon-url');
+            map.setOptions({ draggableCursor: `url(${iconUrl}), auto` });
 
-        // Setup a one-time listener for placing the marker
-        google.maps.event.addListenerOnce(map, 'click', function(event) {
-            placeCustomMarker(event.latLng, map, iconUrl);
-            // Reset cursor after placing the marker
-            map.setOptions({ draggableCursor: null });
+            google.maps.event.addListenerOnce(map, 'click', function(event) {
+                placeCustomMarker(event.latLng, map, iconUrl);
+                map.setOptions({ draggableCursor: null });
+            });
         });
     });
     function placeCustomMarker(location, map, iconUrl) {
         var marker = new google.maps.Marker({
             position: location,
             map: map,
-            icon: iconUrl, // Path to your SVG icon
-            draggable: true // Makes the marker draggable
+            icon: iconUrl,
+            draggable: true
         });
     }
-    
-    document.getElementById('plumbing-icon-button').addEventListener('click', function() {
-    // Change the cursor on the map to indicate the user is in "placement" mode
-        map.setOptions({ draggableCursor: 'url(path/to/your/svg/icon.svg), auto' });
-
-        // Setup a one-time listener for placing the marker
-        google.maps.event.addListenerOnce(map, 'click', function(event) {
-            placeCustomMarker(event.latLng, map);
-            // Reset cursor after placing the marker
-            map.setOptions({ draggableCursor: null });
-        });
-    });
-
-
-
-    
-
-
-
-
-
 </script>
 
 <script async defer
@@ -251,6 +246,5 @@
         white-space: nowrap; /* This prevents text from wrapping */
     }
 </style>
-
 
 {% endblock %}
