@@ -3,7 +3,6 @@
 
 {% block center-panel-content %} 
 
-<!-- <script src="{% static 'maps/annotations.js' %}"></script> -->
 <link href="{% static 'district_management/district_maps_styles.css' %}" rel="stylesheet">
 
 <br>
@@ -153,22 +152,12 @@
         // ===== Clear the search input =====
         document.getElementById('clear-search').addEventListener('click', function() {
             document.getElementById('search-input').value = '';
-            // Clear markers and reset map view
-            markers.forEach(function(marker) {
-                marker.setMap(null);
-            });
-            markers = [];
-            document.getElementById('search-input').value = '';
         });
 
         // ===== Reset the map to its initial state =====
         document.getElementById('reset-map').addEventListener('click', function() {
             map.setCenter({lat: district_geo_lat, lng: district_geo_long});
             map.setZoom(map_zoom_level);
-            markers.forEach(function(marker) {
-                marker.setMap(null);
-            });
-            markers = [];
             document.getElementById('search-input').value = '';
         });
     } // end of initMap()
