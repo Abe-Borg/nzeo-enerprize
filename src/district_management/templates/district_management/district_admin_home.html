@@ -5,8 +5,6 @@
 
 <!-- <script src="{% static 'maps/annotations.js' %}"></script> -->
 <link href="{% static 'district_management/district_maps_styles.css' %}" rel="stylesheet">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 
 <br>
 <h1 style = "margin-left: 10px;">{{ district_name }} Map</h1>
@@ -57,14 +55,13 @@
     map_zoom_level = parseInt("{{ map_zoom_level }}");
     district_name = "{{ district_name }}";
 
+    var map;
     function initMap() {
-    
         // The bounds of the area
         var allowedBounds = new google.maps.LatLngBounds(
             new google.maps.LatLng(district_southwest_lat, district_southwest_lng),
             new google.maps.LatLng(district_northeast_lat, district_northeast_lng)
         );
-
         // Map options
         var mapOptions = {
             zoom: map_zoom_level,
@@ -75,13 +72,11 @@
                 strictBounds: false,
             }
         };
-
         // Creating the map
-        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-        var school_markers = JSON.parse(document.getElementById('marker-data').textContent);
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
         // Create markers for each school location
+        var school_markers = JSON.parse(document.getElementById('marker-data').textContent);
         school_markers.forEach(function(school) {
             var marker = new google.maps.Marker({
                 position: {lat: school.lat, lng: school.lng},
@@ -89,15 +84,27 @@
                 title: school.name
             });
 
+            // add modals to each school marker
             marker.addListener('click', function() {
                 map.setZoom(16);
                 map.setCenter(marker.getPosition());
-                document.getElementById('schoolModalLabel').textContent = school.name; // School name for the modal title
+                document.getElementById('schoolModalLabel').textContent = school.name;
                 document.querySelector('#schoolModal .modal-body').innerHTML = '<p>' + school.description + '</p>'; 
                 document.getElementById('visitSchoolPage').setAttribute('href', school.url); 
                 
                 // Show the modal
                 $('#schoolModal').modal('show');
+
+                // add listener
+                marker.addListener('click', function() {
+                    // Update modal content
+                    $('#schoolModalLabel').text(school.name);
+                    $('#schoolModal .modal-body').html('<p>' + school.description + '</p>');
+                    $('#visitSchoolPage').attr('href', school.url);
+
+                    // Show the modal
+                    $('#schoolModal').modal('show');
+                });
             });
         });
         
@@ -116,7 +123,7 @@
             searchBox.setBounds(map.getBounds());
         });
 
-        // add marker to the map when user searches a location
+        // ===== add marker to the map when user searches a location ===== 
         var marker;
         searchBox.addListener('places_changed', function() {
             var places = searchBox.getPlaces();
@@ -143,7 +150,7 @@
             map.setZoom(16);     
         });
 
-        // Clear the search input
+        // ===== Clear the search input =====
         document.getElementById('clear-search').addEventListener('click', function() {
             document.getElementById('search-input').value = '';
             // Clear markers and reset map view
@@ -152,10 +159,9 @@
             });
             markers = [];
             document.getElementById('search-input').value = '';
-
         });
 
-        // Reset the map to its initial state
+        // ===== Reset the map to its initial state =====
         document.getElementById('reset-map').addEventListener('click', function() {
             map.setCenter({lat: district_geo_lat, lng: district_geo_long});
             map.setZoom(map_zoom_level);
@@ -165,57 +171,16 @@
             markers = [];
             document.getElementById('search-input').value = '';
         });
-
-         // Configure the drawing manager
-        var drawingManager = new google.maps.drawing.DrawingManager({
-            drawingMode: google.maps.drawing.OverlayType.MARKER,
-            drawingControl: true,
-            drawingControlOptions: {
-                position: google.maps.ControlPosition.TOP_CENTER,
-                drawingModes: ['marker', 'circle', 'polygon', 'polyline', 'rectangle']
-            },
-            markerOptions: { icon: "{static 'gear-complex-solid.svg'}", draggable: true },
-            // Define styles for other shapes if necessary
-        });
-        drawingManager.setMap(map);
-
-        // Event listener for when an overlay (marker, shape, etc.) is complete
-        google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
-            if (event.type == google.maps.drawing.OverlayType.MARKER) {
-                // Here you can capture the marker details, like position
-                var position = event.overlay.getPosition();
-                // Optionally, save the marker to your database via an AJAX call to a Django view
-            }
-            // Handle other types of overlays (circle, polygon, polyline, rectangle) similarly
-        });
-
-        // triggers for modal on school click.
-        school_markers.forEach(function(school) {
-            var marker = new google.maps.Marker({
-                position: {lat: school.lat, lng: school.lng},
-                map: map,
-                title: school.name
-            });
-
-            marker.addListener('click', function() {
-                // Update modal content
-                $('#schoolModalLabel').text(school.name); // School name for the modal title
-                $('#schoolModal .modal-body').html('<p>' + school.description + '</p>'); // School description
-                $('#visitSchoolPage').attr('href', school.url); // Update the link
-
-                // Show the modal
-                $('#schoolModal').modal('show');
-            });
-        });
     } // end of initMap()
 
+    
     // ========== CODE FOR CLICK AND DRAW ANNOTATIONS
     document.querySelectorAll('.marker-icon-button').forEach(button => {
         button.addEventListener('click', function() {
             var iconUrl = this.getAttribute('data-icon-url');
             map.setOptions({ draggableCursor: `url(${iconUrl}), auto` });
 
-            google.maps.event.addListenerOnce(map, 'click', function(event) {
+            google.maps.event.addListener(map, 'click', function(event) {
                 placeCustomMarker(event.latLng, map, iconUrl);
                 map.setOptions({ draggableCursor: null });
             });

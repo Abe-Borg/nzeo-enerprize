@@ -12,6 +12,7 @@
       <img alt="NZEO" src="{% static 'NZEO-small-logo.png' %}" />
     </a>
 
+    <!--enables collapsible menu-->
     <div class="d-flex align-items-center">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -46,7 +47,7 @@
             </div>
           </div>
         </li>
-
+        
         <li class="nav-item">
           <a class="nav-link" href="#">District Leaderboards</a>
         </li>
@@ -139,7 +140,7 @@
       </div>
       <!--sticky note icon button-->
       <div class="col-6 unique-grid-cell marker-icon-button">
-        <button type = "button" class = "icon-button" id = sticky-note-icon-button data-icon-url="{% static 'notes-solid.svg' %}">
+        <button type = "button" class = "icon-button" id = "sticky-note-icon-button" data-icon-url="{% static 'notes-solid.svg' %}">
           <i class="fa-solid fa-notes" style="color: #FFD43B;"></i>
           <span class="custom-tooltip">Place Sticky Note</span>
         </button>
