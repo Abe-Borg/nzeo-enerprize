@@ -23,6 +23,6 @@ def extract_specific_entries(input_file_path, output_file_path):
         f.write(entries_xml)
 
 # Example usage
-input_file = 'path_to_your_input.xml'  # Update this to your input file path
-output_file = 'path_to_your_output.xml'  # Update this to your desired output file path
+input_file = 'intervals_10203040.xml'  # Update this to your input file path
+output_file = 'intervals_10203040_processed.xml'  # Update this to your desired output file path
 extract_specific_entries(input_file, output_file)
