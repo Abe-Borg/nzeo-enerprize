@@ -89,11 +89,3 @@ class Document(models.Model):
     def __str__(self):
         return str(self.document_name)
     
-
-
-
-# class GreenButtonData(models.Model):
-    #
-
-# class UtilityBill(models.Model):
-#     #
