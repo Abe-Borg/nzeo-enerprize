@@ -1,9 +1,8 @@
 from django.contrib import admin
+
+from district_management.models import SchoolDistrict
 from .models import School, Building, Equipment, PerformanceMetrics, Meter
 from django.utils.translation import gettext_lazy as _
-
-
-admin.site.register(School)
 
 class AreaRangeFilter(admin.SimpleListFilter):
     # Human-readable title which will be displayed in the right admin sidebar just above the filter options.
@@ -188,6 +187,19 @@ class BuildingAgeRangeFilter(admin.SimpleListFilter):
                                    building_age__lte=end_year)
         return queryset
 
+class DistrictFilter(admin.SimpleListFilter):
+    title = _('School District')
+    parameter_name = 'district'
+
+    def lookups(self, request, model_admin):
+        districts = SchoolDistrict.objects.all()
+        return [(district.id, district.district_name) for district in districts]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(school_district__id=self.value())
+        return queryset
+
 
 @admin.register(Building)
 class BuildingAdmin(admin.ModelAdmin):
@@ -219,7 +231,14 @@ class EquipmentAdmin(admin.ModelAdmin):
     list_filter = ('equipment_school', 'equipment_building', 'equipment_type', 'equipment_manufacturer', InstallDateRangeFilter, WarrantyExpirationDateRangeFilter, ElecKwDemandFilter, GasBtuhDemandFilter, GeneratesElecKwFilter, StorageKBtuFilter, StorageKWhFilter)
     ordering = ('equipment_model', 'equipment_type', 'equipment_manufacturer')
 
+@admin.register(School)
+class SchoolAdmin(admin.ModelAdmin):
+    # Your other admin options here
+    list_filter = (DistrictFilter,)
+
+
 admin.site.register(PerformanceMetrics)
 admin.site.register(Meter)
+
 
 
