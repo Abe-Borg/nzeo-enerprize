@@ -3,6 +3,7 @@ from django.contrib import admin
 from district_management.models import SchoolDistrict
 from .models import School, Building, Equipment, PerformanceMetrics, Meter
 from django.utils.translation import gettext_lazy as _
+from django.utils.html import format_html
 
 class AreaRangeFilter(admin.SimpleListFilter):
     # Human-readable title which will be displayed in the right admin sidebar just above the filter options.
@@ -234,7 +235,34 @@ class EquipmentAdmin(admin.ModelAdmin):
 @admin.register(School)
 class SchoolAdmin(admin.ModelAdmin):
     # Your other admin options here
+    list_display = ('school_name','display_school_district', 'display_school_area', 'display_school_student_population', 'display_school_student_percent_disenfrachised', 'display_school_student_percent_low_income')
     list_filter = (DistrictFilter,)
+
+    def display_school_district(self, obj):
+        return format_html("<span>{}</span>", obj.school_district)
+    
+    def display_school_area(self, obj):
+        return format_html("<span>{}</span>", obj.school_area_sqft)
+    
+    def display_school_student_population(self, obj):
+        return format_html("<span>{}</span>", obj.school_student_population)
+    
+    def display_school_student_percent_disenfrachised(self, obj):
+        return format_html("<span>{}</span>", obj.school_student_percent_disenfrachised)
+    
+    def display_school_student_percent_low_income(self, obj):
+        return format_html("<span>{}</span>", obj.school_student_percent_low_income)
+        
+    display_school_area.short_description = "AREA (sqft)"
+    display_school_district.short_description = "DISTRICT"
+    display_school_student_population.short_description = "STUDENT POPULATION"
+    display_school_student_percent_disenfrachised.short_description = "% DISENFRANCHISED"
+    display_school_student_percent_low_income.short_description = "% LOW INCOME"
+
+    display_school_student_population.admin_order_field = 'school_student_population'
+    display_school_student_percent_disenfrachised.admin_order_field = 'school_student_percent_disenfrachised'
+    display_school_student_percent_low_income.admin_order_field = 'school_student_percent_low_income'
+    display_school_area.admin_order_field = 'school_area_sqft'
 
 
 admin.site.register(PerformanceMetrics)
