@@ -1,5 +1,4 @@
 from django import forms
-
 from school_management.models import Building, Equipment, School
 from .models import Document
 from users.models import UserProfile
