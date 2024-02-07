@@ -1,6 +1,9 @@
 from lxml import etree
 
-def extract_specific_entries(input_file_path, output_file_path):
+input_file = 'intervals_10203040.xml'
+output_file = 'intervals_10203040_processed.xml'
+
+def extract_interval_block(input_file_path, output_file_path):
     """
     Extracts specific <entry> sections from an input XML file and saves them to an output file,
     focusing specifically on entries that contain IntervalBlock data.
@@ -39,7 +42,5 @@ def extract_specific_entries(input_file_path, output_file_path):
     with open(output_file_path, 'w', encoding='utf-8') as f:
         f.write(entries_xml)
 
-# Example usage
-input_file = 'intervals_10203040.xml'  # Ensure this is the correct path to your XML file
-output_file = 'intervals_10203040_processed.xml'  # Desired path for the output file
-extract_specific_entries(input_file, output_file)
+
+extract_interval_block(input_file, output_file)
