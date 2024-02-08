@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'plots',
     'school_management',
     'users',
-    'utilityapi_api',
+    # 'utilityapi_api',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

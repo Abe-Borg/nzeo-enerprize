@@ -8,7 +8,6 @@ from io import BytesIO
 from matplotlib.dates import DateFormatter, AutoDateLocator
 from . forms import UploadXMLForm
 from io import BytesIO
-from . views import xml_to_dataframe
 from lxml import etree
 from django.shortcuts import get_object_or_404
 from django.conf import settings
