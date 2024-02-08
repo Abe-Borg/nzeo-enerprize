@@ -3,3 +3,5 @@ src/django_error.log
 *.pyc
 __pycache__/
 *.py[cod]
+
+db.sqlite3
