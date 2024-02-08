@@ -1,13 +1,13 @@
 <h1>School Analytics Page</h1><br>
 <h2>Analysis of XML Green Button Data for a Year (monthly analysis in development)</h2>
 <!-- form to upload xml -->
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" action="{% url 'plots:upload-xml-file' %}">
     {% csrf_token %}
     <input type="file" name="xml_file" accept=".xml">
     <button type="submit">Upload XML Green Button Interval Data</button>
 </form>
 
-<!-- area to plot visualizations using matplotlib -->
+<p>Select the plot you want to view.</p>
 <select id="plot_type">
     <option value="line_plot">Line Plot</option>
     <option value="scatter_plot">Scatter Plot</option>
@@ -20,7 +20,7 @@
 <div id="plot_area">
     <h2>Plot Area</h2>
     <div id="selected_plot_type">
-        <h3>Plot 1</h3>
+        <h3>Green Button Data Plot</h3>
         <img src="{% static 'plots/img/some_image.png' %}" alt="selected_plot_type">
     </div>
 </div>

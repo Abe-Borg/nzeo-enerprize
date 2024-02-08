@@ -1,8 +1,9 @@
 import os
+from django.urls import reverse
 from django.shortcuts import render
 import pandas as pd
 import matplotlib.pyplot as plt
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from io import BytesIO
 from matplotlib.dates import DateFormatter, AutoDateLocator
 from . forms import UploadXMLForm
@@ -20,25 +21,15 @@ HISTOGRAM_MONTHLY_BINS = 30
 
 def upload_xml_file(request):
     if request.method == 'POST' and request.FILES.get('xml_file'):
-        xml_file = request.FILES['xml_file']
-        
-        # Extract the base filename without extension
+        xml_file = request.FILES['xml_file']        
         base_filename = os.path.splitext(xml_file.name)[0]
         pickle_filename = f"{base_filename}.pkl"
-        
         pickle_file_path = os.path.join(settings.MEDIA_ROOT, 'plots/data_sources', pickle_filename)
-        
-        # Ensure the directory exists
         os.makedirs(os.path.dirname(pickle_file_path), exist_ok=True)
         
-        # Process the XML file to a DataFrame here
-        # This step depends on how you're converting XML to DataFrame
         df = xml_to_dataframe(xml_file)
-        
-        # Pickle the DataFrame
         df.to_pickle(pickle_file_path)
         
-        # Inform the user or your system that the file was processed successfully
         return HttpResponse(f"File {xml_file.name} uploaded and processed successfully.")
     else:
         form = UploadXMLForm()

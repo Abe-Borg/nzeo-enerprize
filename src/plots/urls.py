@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+app_name = 'plots'
+
 urlpatterns = [
     path('line-plot', views.get_line_plot, name='line-plot'),
     path('scatter-plot', views.get_scatter_plot, name='scatter-plot'),

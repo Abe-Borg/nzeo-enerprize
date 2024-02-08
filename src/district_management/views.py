@@ -82,5 +82,4 @@ def get_coordinates_for_named_locations(named_locations):
 
 @login_required
 def school_level_analytics(request):    
-    form = UploadXMLForm()
-    return render(request, 'district_management/school_level_analytics.html', {'form': form})
+    return render(request, 'district_management/school_level_analytics.html')
