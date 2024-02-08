@@ -160,6 +160,115 @@
             map.setZoom(map_zoom_level);
             document.getElementById('search-input').value = '';
         });
+
+
+        // ===== GOOGLE DEFAULT DRAWING TOOLS
+        // Initialize the Google Maps Drawing Manager with options for clickable and draggable shapes
+        var drawingManager = new google.maps.drawing.DrawingManager({
+            drawingMode: null,
+            drawingControl: true,
+            drawingControlOptions: {
+                position: google.maps.ControlPosition.TOP_CENTER,
+                drawingModes: [
+                    google.maps.drawing.OverlayType.MARKER,
+                    google.maps.drawing.OverlayType.CIRCLE,
+                    google.maps.drawing.OverlayType.POLYGON,
+                    google.maps.drawing.OverlayType.POLYLINE,
+                    google.maps.drawing.OverlayType.RECTANGLE
+                ]
+            },
+            markerOptions: {
+                draggable: true,
+                clickable: true,
+                icon: {
+                    url: "{% static 'location-dot-solid.svg' %}",
+                    scaledSize: new google.maps.Size(30, 30)
+                }
+            },
+            circleOptions: {
+                fillColor: '#ffff00',
+                fillOpacity: 0.4,
+                strokeWeight: 2,
+                clickable: true,
+                draggable: true,
+                editable: true,
+                zIndex: 1
+            },
+            polylineOptions: {
+                icon: {
+                    url: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                    scale: 3,
+                    strokeColor: '#63e6be'
+                },
+                strokeColor: '#63e6be',
+                strokeOpacity: 1,
+                strokeWeight: 3,
+                clickable: true,
+                draggable: true,
+                editable: true
+            },
+            polygonOptions: {
+                strokeColor: '#ffd43b',
+                strokeOpacity: 1,
+                strokeWeight: 3,
+                fillColor: '#ffff00',
+                fillOpacity: 0.4,
+                clickable: true,
+                draggable: true,
+                editable: true
+            },
+            rectangleOptions: {
+                strokeColor: '#0000ff',
+                strokeOpacity: 0.8,
+                strokeWeight: 3,
+                fillColor: '#0000ff',
+                fillOpacity: 0.4,
+                clickable: true,
+                draggable: true,
+                editable: true
+            }
+        });
+
+        drawingManager.setMap(map);
+        
+
+        // event listeners for google drawing tools.
+        google.maps.event.addListener(drawingManager, 'circlecomplete', function(circle) {
+            var toastElement = new bootstrap.Toast(document.getElementById('circleToast'), {
+                autohide: true,
+                delay: 3000
+            });
+            document.querySelector('#circleToast .toast-body').textContent = `Circle drawn with radius: ${circle.getRadius().toFixed(2)}`;
+            toastElement.show();
+        });
+
+        google.maps.event.addListener(drawingManager, 'rectanglecomplete', function(rectangle) {
+            var toastElement = new bootstrap.Toast(document.getElementById('rectangleToast'), {
+                autohide: true,
+                delay: 3000
+            });
+            var bounds = rectangle.getBounds();
+            document.querySelector('#rectangleToast .toast-body').textContent = 'Rectangle drawn with bounds: ' + bounds.toString();
+            toastElement.show();
+        });
+
+        google.maps.event.addListener(circle, 'radius_changed', function() {
+            var radiusInMeters = circle.getRadius();
+            var radiusInFt = radiusInMeters * 3.28084;
+            alert('Radius in feet: ' + radiusInFt.toFixed(2));
+
+        });
+
+        google.maps.event.addListener(circle, 'center_changed', function() {
+            alert('Circle moved to: ' + circle.getCenter().toUrlValue());
+        });
+
+        google.maps.event.addListener(rectangle, 'bounds_changed', function() {
+            var bounds = rectangle.getBounds();
+            alert('Rectangle bounds changed to: ' + bounds.toUrlValue());
+        });
+
+
     } // end of initMap()
 
     
@@ -200,5 +309,31 @@
         white-space: nowrap; /* This prevents text from wrapping */
     }
 </style>
+
+
+<!-- TOASTS -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="circleToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <strong class="mr-auto">Circle Drawn</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        Circle drawn with radius: [radius]
+      </div>
+    </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="rectangleToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <strong class="mr-auto">Rectangle Drawn</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        Rectangle drawn with bounds: [bounds]
+      </div>
+    </div>
+</div>
 
 {% endblock %}

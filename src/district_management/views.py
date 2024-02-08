@@ -83,3 +83,15 @@ def get_coordinates_for_named_locations(named_locations):
 @login_required
 def school_level_analytics(request):    
     return render(request, 'district_management/school_level_analytics.html')
+
+@login_required
+def district_level_analytics(request):    
+    return render(request, 'district_management/district_level_analytics.html')
+
+@login_required
+def district_overview(request):
+    return render(request, 'district_management/district_overview.html')
+
+@login_required
+def district_leaderboards(request):
+    return render(request, 'district_management/district_leaderboards.html')

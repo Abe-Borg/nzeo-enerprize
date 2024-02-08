@@ -1,0 +1,219 @@
+{% extends "base_nav_top_sidebar.html" %}
+{% load static %}
+
+{% block center-panel-content %} 
+<div class="container mt-4">
+    <h4 class = "tabs-title">Numbers at-a-Glance</h4>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="site_users_tab" data-toggle="tab" href="#site_users" role="tab" aria-controls="site_users" aria-selected="true">
+          Users
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="school_districts_tab" data-toggle="tab" href="#school_districts" role="tab" aria-controls="school_districts" aria-selected="false">
+          School Districts
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="schools_tab" data-toggle="tab" href="#schools" role="tab" aria-controls="schools" aria-selected="false">
+          Schools
+        </a>
+      </li>
+      <li class="nav-item"> 
+        <a class="nav-link" id="equipment-tab" data-toggle="tab" href="#equipment" role="tab" aria-controls="equipment" aria-selected="false">School Equipment</a>
+      </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <!-- Users Tab Content -->
+      <div class="tab-pane fade show active" id="site_users" role="tabpanel" aria-labelledby="site_users_tab">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead>
+              <!--Column Labels-->
+              <tr>
+                <th scope="col" class = "small-heading">#</th>
+                <th scope="col" class = "small-heading">Username</th>
+                <th scope="col" class = "small-heading">District</th>
+                <th scope="col" class = "small-heading">School</th>
+                <th scope="col" class = "small-heading">Job Title</th>
+                <th scope="col" class = "small-heading">Email Address</th>
+                <th scope="col" class = "small-heading">First Name</th>
+                <th scope="col" class = "small-heading">Last Name</th>
+                <th scope="col" class = "small-heading">User Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!--Row Elems-->
+              <tr>
+                <th scope="row" class = "small-heading">1</th>
+                <td class = "small-heading">balmer.stacy.fresno</td>
+                <td class = "small-heading">Fresno USD</td>
+                <td class = "small-heading">Ahwahnee Middle</td>
+                <td class = "small-heading">French Teacher</td>
+                <td class = "small-heading">stacy@gmail.com</td>
+                <td class = "small-heading">Stacy</td>
+                <td class = "small-heading">Balmer</td>
+                <td class = "small-heading">School Staff</td>
+              </tr>
+              <tr>
+                <th scope="row" class = "small-heading">2</th>
+                <td class = "small-heading">holly.alice.fresno</td>
+                <td class = "small-heading">Fresno USD</td>
+                <td class = "small-heading">N/A</td>
+                <td class = "small-heading">District Admin</td>
+                <td class = "small-heading">alice@gmail.com</td>
+                <td class = "small-heading">Alice</td>
+                <td class = "small-heading">Holly</td>
+                <td class = "small-heading">District Staff</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- School Districts Tab Content -->
+      <div class="tab-pane fade" id="school_districts" role="tabpanel" aria-labelledby="school_districts_tab">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th scope="col" class = "small-heading">#</th>
+                <th scope="col" class = "small-heading">Name</th>
+                <th scope="col" class = "small-heading">Num. of Schools</th>
+                <th scope="col" class = "small-heading">Num. of Students</th>
+                <th scope="col" class = "small-heading">Bldg. Area (all schools)</th>
+                <th scope="col" class = "small-heading">% Disenfranchised (students)</th>
+                <th scope="col" class = "small-heading">% Low Income (students)</th>
+                <th scope="col" class = "small-heading">Year-to-Date kBTU Savings</th>
+                <th scope="col" class = "small-heading">Year-to-Date CO2e Savings</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row" class = "small-heading">1</th>
+                <td class = "small-heading">Fresno USD</td>
+                <td class = "small-heading">37</td>
+                <td class = "small-heading">74,000</td>
+                <td class = "small-heading">250,000</td>
+                <td class = "small-heading">15</td>
+                <td class = "small-heading">25%</td>
+                <td class = "small-heading">1,500,000</td>
+                <td class = "small-heading">15,600,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Schools Tab Content -->
+      <div class="tab-pane fade" id="schools" role="tabpanel" aria-labelledby="schools_tab">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th scope="col " class = "small-heading">#</th>
+                <th scope="col" class = "small-heading">School Name</th>
+                <th scope="col" class = "small-heading">District</th>
+                <th scope="col" class = "small-heading">Area (sqft)</th>
+                <th scope="col" class = "small-heading">Student Pop.</th>
+                <th scope="col" class = "small-heading">% Disenfranchised</th>
+                <th scope="col" class = "small-heading">% Low Income</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row" class = "small-heading">1</th>
+                <td class = "small-heading">Lori Ann Infant Program</td>
+                <td class = "small-heading">Fresno USD</td>
+                <td class = "small-heading">30,000</td>
+                <td class = "small-heading">220</td>
+                <td class = "small-heading">15%</td>
+                <td class = "small-heading">25%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Equipment Tab -->
+      <div class="tab-pane fade" id="equipment" role="tabpanel" aria-labelledby="equipment_tab">
+        <div class="alert alert-primary mt-4" role="alert">
+          See School Home Pages for Detailed Equipment Lists and Equipment Attributes. Access School Home Pages through CLIMAPP.
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+    function setupPagination(tableId, itemsPerPage) {
+  var $tableBody = $('#' + tableId + ' tbody');
+  var $items = $tableBody.find('tr');
+  var numPages = Math.ceil($items.length / itemsPerPage);
+
+  // Clear existing pagination if it exists
+  var $existingPagination = $('#' + tableId + '-pagination');
+  if ($existingPagination.length) {
+    $existingPagination.remove();
+  }
+
+  // Create and insert pagination only if we have more than one page
+  if (numPages > 1) {
+    var $pagination = $('<nav aria-label="Page navigation" id="' + tableId + '-pagination"><ul class="pagination"></ul></nav>').insertAfter($tableBody.parent());
+
+    // Initial page setup
+    $items.hide().slice(0, itemsPerPage).show(); // Only show the first page items
+    $pagination.find('.pagination').append('<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>');
+    for (var i = 1; i <= numPages; i++) {
+        $pagination.find('.pagination').append('<li class="page-item ' + (i === 1 ? 'active' : '') + '"><a class="page-link" href="#">' + i + '</a></li>');
+    }
+    $pagination.find('.pagination').append('<li class="page-item ' + (numPages === 1 ? 'disabled' : '') + '"><a class="page-link" href="#">Next</a></li>');
+
+    // Pagination click event
+    $pagination.on('click', 'a.page-link', function(e) {
+        e.preventDefault();
+        var $this = $(this);
+        var $pagination = $this.closest('nav').find('.pagination');
+        var currentPage = parseInt($pagination.find('.active a').text(), 10);
+        var newPage = $this.text();
+
+        // Determine new page number and range of items to show
+        if ($this.parent().hasClass('disabled')) {
+            return false;
+        } else if (newPage === 'Previous') {
+            newPage = currentPage - 1;
+        } else if (newPage === 'Next') {
+            newPage = currentPage + 1;
+        } else {
+            newPage = parseInt(newPage, 10);
+        }
+
+        var startItem = (newPage - 1) * itemsPerPage;
+        var endItem = startItem + itemsPerPage;
+
+        // Show the proper items
+        $items.hide().slice(startItem, endItem).show();
+
+        // Update the active state of the pagination links
+        $pagination.find('.page-item').removeClass('active').removeClass('disabled');
+        $pagination.find('a.page-link').filter(function() {
+            return $(this).text() === newPage.toString();
+        }).parent().addClass('active');
+
+        // Optionally, disable the Previous/Next buttons
+        $pagination.find('li:first-child a').parent().toggleClass('disabled', newPage === 1);
+        $pagination.find('li:last-child a').parent().toggleClass('disabled', newPage === numPages);
+    });
+  }
+}
+
+$(document).ready(function() {
+  setupPagination('table1', 10); // Setup pagination for the first table
+  setupPagination('table2', 10); // Setup pagination for the second table
+});
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'nzeo_management/nzeo_admin_home.js' %}"></script>
+{% endblock %}

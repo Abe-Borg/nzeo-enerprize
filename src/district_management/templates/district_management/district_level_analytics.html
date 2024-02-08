@@ -1,6 +1,79 @@
-{% extends "base_minimal.html" %}
+{% extends "base_nav_top_sidebar.html" %}
 {% load static %}
 
-{% block main_body %}
-    <h1>page under construction</h1>
+{% block center-panel-content %} 
+
+
+<div class="container mt-4">
+    <h4 class = "tabs-title">Utility Bill Manual Entry</h4>
+    <form>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Total Usage (kWh)</label>
+          <input type="email" class="form-control" id="exampleInputEmail1">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Total Electric Charges ($)</label>
+          <input type="password" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Meter Number</label>
+            <input type="password" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Service For: </label>
+            <input type="password" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Service Agreement ID: </label>
+            <input type="password" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Rate Schedule</label>
+            <input type="password" class="form-control" id="exampleInputPassword1">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form><br><br>
+
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Select Year</th>
+      <th scope="col">Select Month</th>
+      <th scope="col">Electric Consumption (kWh)</th>
+      <th scope="col">Electric Cost ($)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>2021</td><td>Jan</td><td>36404</td><td>$9,942.00</td></tr>
+    <tr><td>2021</td><td>Feb</td><td>33111</td><td>$9,599.00</td></tr>
+    <!-- Repeat for other months -->
+    <tr><td>2021</td><td>Dec</td><td>37815</td><td>$11,713.00</td></tr>
+    <tr><td colspan="2">Total</td><td>534894</td><td>$171,549.00</td></tr>
+  </tbody>
+</table><br>
+<img src="{% static 'barchart1.png' %}" alt="Monthly Electric Consumption (kWh)" class="img-fluid"><br><br>
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Select Year</th>
+        <th scope="col">Select Month</th>
+        <th scope="col">Gas Consumption (therms)</th>
+        <th scope="col">Gas Cost ($)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>2021</td><td>Jan</td><td>1929</td><td>$2,745.31</td></tr>
+      <tr><td>2021</td><td>Feb</td><td>2210</td><td>$3,164.58</td></tr>
+      <!-- Repeat for other months -->
+      <tr><td>2021</td><td>Dec</td><td>312</td><td>$3,092.29</td></tr>
+      <tr><td colspan="2">Total</td><td>10322</td><td>$17,638.78</td></tr>
+    </tbody>
+  </table><br>
+  <img src="{% static 'barchart2.png' %}" alt="Monthly Gas Cost ($)" class="img-fluid"><br><br>
+  
+
+</div>
+      
 {% endblock %}
