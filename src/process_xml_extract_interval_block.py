@@ -43,4 +43,5 @@ def extract_interval_block(input_file_path, output_file_path):
         f.write(entries_xml)
 
 
+# run script
 extract_interval_block(input_file, output_file)

@@ -1,12 +1,14 @@
 from django import forms
 
-def Upload_XML_Form(request):
-    # form function to let user upload an XML file
-    # handle file upload
-    if request.method == 'POST':
-        form = Upload_XML_Form(request.POST, request.FILES)
-        if form.is_valid():
-            handle_uploaded_file(request.FILES['file'])
-            return HttpResponseRedirect('/success/url/')
-    else:
-        form = Upload_XML_Form()
+class upload_xml_form(forms.Form):  
+    xml_file = forms.FileField(label='XML File')
+    destination_directory = forms.CharField(label='Destination Directory')
+    PLOT_CHOICES = [
+        ('line_plot', 'Line Plot'),
+        ('scatter_plot', 'Scatter Plot'),
+        ('histogram', 'Histogram'),
+        ('bar_plot', 'Bar Plot'),
+        ('area_plot', 'Area Plot'),
+        ('heatmap', 'Heatmap'),
+    ]
+    plot_type = forms.ChoiceField(label='Plot Type', choices=PLOT_CHOICES)

@@ -1,0 +1,47 @@
+<h1>School Analytics Page</h1><br>
+<h2>Analysis of XML Green Button Data for a Year (monthly analysis in development)</h2>
+<!-- form to upload xml -->
+<form method="post" enctype="multipart/formd-data">
+    {% csrf_token %}
+    <input type="file" name="xml_file" accept=".xml">
+    <button type="submit">Upload XML Green Button Interval Data</button>
+</form>
+
+<!-- area to plot visualizations using matplotlib -->
+<select id="plot_type">
+    <option value="line_plot">Line Plot</option>
+    <option value="scatter_plot">Scatter Plot</option>
+    <option value = "histogram">Histogram</option>
+    <option value="bar_plot">Bar Plot</option>
+    <option value="area_plot">Area Plot</option>
+    <option value="heatmap">Heatmap</option>
+</select>
+
+<div id="plot_area">
+    <h2>Plot Area</h2>
+    <div id="selected_plot_type">
+        <h3>Plot 1</h3>
+        <img src="{% static 'plots/img/some_image.png' %}" alt="selected_plot_type">
+    </div>
+</div>
+
+<script>
+    document.getElementById('plot_type').addEventListener('change', function() {
+        var plot_type = this.value;
+        
+        // Example of constructing a URL to fetch the plot image based on the selected plot type
+        // This assumes you have a Django view set up to handle URLs like '/get-plot/<plot_type>/'
+        // and return a dynamically generated plot image.
+        var imgSrc = `/get-plot/${plot_type}/`; // This needs to be set up in your Django URLs and views
+        
+        var selected_plot_type = document.getElementById('selected_plot_type');
+        var img = selected_plot_type.querySelector('img') || document.createElement('img');
+        img.src = imgSrc;
+        img.alt = 'selected_plot_type';
+        
+        if (!selected_plot_type.querySelector('img')) {
+            selected_plot_type.innerHTML = ''; // Clear the plot area if needed
+            selected_plot_type.appendChild(img); // Append the new or updated image tag
+        }
+    });  
+</script>

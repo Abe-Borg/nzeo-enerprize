@@ -78,3 +78,8 @@ def get_coordinates_for_named_locations(named_locations):
             continue 
     return marker_data
 
+
+@login_required
+def school_level_analytics(request):    
+    context = {}
+    return render(request, 'district_management/school_level_analytics.html', context)
