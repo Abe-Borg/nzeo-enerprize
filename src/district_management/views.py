@@ -4,6 +4,7 @@ import googlemaps
 from district_management.models import SchoolDistrict
 from school_management.models import School
 gmaps = googlemaps.Client(key='AIzaSyANW4JtLihHDKEiBkkknOHOn6CCX-WwthA')
+from plots.forms import UploadXMLForm
 
 
 @login_required
@@ -81,5 +82,5 @@ def get_coordinates_for_named_locations(named_locations):
 
 @login_required
 def school_level_analytics(request):    
-    context = {}
-    return render(request, 'district_management/school_level_analytics.html', context)
+    form = UploadXMLForm()
+    return render(request, 'district_management/school_level_analytics.html', {'form': form})

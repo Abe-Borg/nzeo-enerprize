@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from django.http import HttpResponse
 from io import BytesIO
 from matplotlib.dates import DateFormatter, AutoDateLocator
-from . forms import upload_xml_form
+from . forms import UploadXMLForm
 from io import BytesIO
 from . views import xml_to_dataframe
 from lxml import etree
@@ -41,8 +41,8 @@ def upload_xml_file(request):
         # Inform the user or your system that the file was processed successfully
         return HttpResponse(f"File {xml_file.name} uploaded and processed successfully.")
     else:
-        form = upload_xml_form()
-        return render(request, 'your_template_name.html', {'form': form})
+        form = UploadXMLForm()
+        return render(request, 'district_management/school_level_analytics.html', {'form': form})
 
         
 
@@ -252,7 +252,7 @@ def create_heatmap(pkl_filepath: str, plot_filepath: str = None, buf: BytesIO = 
 
     plt.figure(figsize=FIGSIZE)
     plt.imshow(df, cmap='hot', interpolation='nearest')
-    plt.title(title)
+    plt.title("Energy Usage Heatmap")
 
     if buf:
         plt.savefig(buf, format='png')

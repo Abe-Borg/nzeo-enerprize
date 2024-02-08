@@ -34,13 +34,15 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1',  '161.35.239.38', 'nzeo-enerprize.com
 
 INSTALLED_APPS = [
     'chatnzeo',
-    'enerprize_api',
-    'school_management',
     'district_management',
+    'documents',
+    'enerprize_api',
     'maps',
     'nzeo_management',
-    'documents',
+    'plots',
+    'school_management',
     'users',
+    'utilityapi_api',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

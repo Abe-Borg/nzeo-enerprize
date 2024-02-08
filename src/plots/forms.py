@@ -1,6 +1,6 @@
 from django import forms
 
-class upload_xml_form(forms.Form):  
+class UploadXMLForm(forms.Form):  
     xml_file = forms.FileField(label='XML File')
     destination_directory = forms.CharField(label='Destination Directory')
     PLOT_CHOICES = [

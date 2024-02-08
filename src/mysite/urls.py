@@ -35,6 +35,7 @@ urlpatterns = [
     path('enerprize-api/', include('enerprize_api.urls')),
     path('maps/', include('maps.urls')),
     path('nzeo-management/', include('nzeo_management.urls')),
+    path('plots/', include('plots.urls')),
     path('school_management/', include('school_management.urls')),
     path('error_page/', error_page, name='error_page'),
     path('change_password/', change_password, name='change_password'),

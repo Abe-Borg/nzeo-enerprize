@@ -8,5 +8,6 @@ urlpatterns = [
     path('bar-plot', views.get_bar_plot, name='bar-plot'),
     path('area-plot', views.get_area_plot, name='area-plot'),
     path('heatmap', views.get_heatmap, name='heatmap'),
+    path('upload-xml/', views.upload_xml_file, name = 'upload-xml-file'),
 ]
 

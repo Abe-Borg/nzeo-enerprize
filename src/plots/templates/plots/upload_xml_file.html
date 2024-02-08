@@ -1,7 +1,7 @@
 <h1>School Analytics Page</h1><br>
 <h2>Analysis of XML Green Button Data for a Year (monthly analysis in development)</h2>
 <!-- form to upload xml -->
-<form method="post" enctype="multipart/formd-data">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="file" name="xml_file" accept=".xml">
     <button type="submit">Upload XML Green Button Interval Data</button>
@@ -29,19 +29,26 @@
     document.getElementById('plot_type').addEventListener('change', function() {
         var plot_type = this.value;
         
-        // Example of constructing a URL to fetch the plot image based on the selected plot type
-        // This assumes you have a Django view set up to handle URLs like '/get-plot/<plot_type>/'
-        // and return a dynamically generated plot image.
-        var imgSrc = `/get-plot/${plot_type}/`; // This needs to be set up in your Django URLs and views
+        // Map the plot_type value to the corresponding URL pattern
+        var plotUrlMap = {
+            "line_plot": "{% url 'line-plot' %}",
+            "scatter_plot": "{% url 'scatter-plot' %}",
+            "histogram": "{% url 'histogram' %}",
+            "bar_plot": "{% url 'bar-plot' %}",
+            "area_plot": "{% url 'area-plot' %}",
+            "heatmap": "{% url 'heatmap' %}",
+        };
+        
+        var imgSrc = plotUrlMap[plot_type]; 
         
         var selected_plot_type = document.getElementById('selected_plot_type');
         var img = selected_plot_type.querySelector('img') || document.createElement('img');
         img.src = imgSrc;
-        img.alt = 'selected_plot_type';
+        img.alt = plot_type;
         
         if (!selected_plot_type.querySelector('img')) {
-            selected_plot_type.innerHTML = ''; // Clear the plot area if needed
-            selected_plot_type.appendChild(img); // Append the new or updated image tag
+            selected_plot_type.innerHTML = '';
+            selected_plot_type.appendChild(img);
         }
     });  
 </script>
