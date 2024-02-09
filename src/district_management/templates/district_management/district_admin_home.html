@@ -230,45 +230,6 @@
         });
 
         drawingManager.setMap(map);
-        
-
-        // event listeners for google drawing tools.
-        google.maps.event.addListener(drawingManager, 'circlecomplete', function(circle) {
-            var toastElement = new bootstrap.Toast(document.getElementById('circleToast'), {
-                autohide: true,
-                delay: 3000
-            });
-            document.querySelector('#circleToast .toast-body').textContent = `Circle drawn with radius: ${circle.getRadius().toFixed(2)}`;
-            toastElement.show();
-        });
-
-        google.maps.event.addListener(drawingManager, 'rectanglecomplete', function(rectangle) {
-            var toastElement = new bootstrap.Toast(document.getElementById('rectangleToast'), {
-                autohide: true,
-                delay: 3000
-            });
-            var bounds = rectangle.getBounds();
-            document.querySelector('#rectangleToast .toast-body').textContent = 'Rectangle drawn with bounds: ' + bounds.toString();
-            toastElement.show();
-        });
-
-        google.maps.event.addListener(circle, 'radius_changed', function() {
-            var radiusInMeters = circle.getRadius();
-            var radiusInFt = radiusInMeters * 3.28084;
-            alert('Radius in feet: ' + radiusInFt.toFixed(2));
-
-        });
-
-        google.maps.event.addListener(circle, 'center_changed', function() {
-            alert('Circle moved to: ' + circle.getCenter().toUrlValue());
-        });
-
-        google.maps.event.addListener(rectangle, 'bounds_changed', function() {
-            var bounds = rectangle.getBounds();
-            alert('Rectangle bounds changed to: ' + bounds.toUrlValue());
-        });
-
-
     } // end of initMap()
 
     
@@ -309,31 +270,5 @@
         white-space: nowrap; /* This prevents text from wrapping */
     }
 </style>
-
-
-<!-- TOASTS -->
-<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-    <div id="circleToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header">
-        <strong class="mr-auto">Circle Drawn</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-      <div class="toast-body">
-        Circle drawn with radius: [radius]
-      </div>
-    </div>
-</div>
-
-<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-    <div id="rectangleToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header">
-        <strong class="mr-auto">Rectangle Drawn</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-      <div class="toast-body">
-        Rectangle drawn with bounds: [bounds]
-      </div>
-    </div>
-</div>
 
 {% endblock %}
