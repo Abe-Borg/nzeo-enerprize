@@ -45,19 +45,20 @@
   
 
 <script>
-    district_southwest_lat = parseFloat("{{southwest_lat}}");
-    district_southwest_lng = parseFloat("{{southwest_lng}}");
-    district_northeast_lat = parseFloat("{{northeast_lat}}");
-    district_northeast_lng = parseFloat("{{northeast_lng}}");
-    district_geo_lat = parseFloat("{{ district_geo_lat }}");
-    district_geo_long = parseFloat("{{ district_geo_long }}");
-    map_zoom_level = parseInt("{{ map_zoom_level }}");
-    district_name = "{{ district_name }}";
+    
 
-    var map;
     function initMap() {
+        const district_southwest_lat = parseFloat("{{southwest_lat}}");
+        const district_southwest_lng = parseFloat("{{southwest_lng}}");
+        const district_northeast_lat = parseFloat("{{northeast_lat}}");
+        const district_northeast_lng = parseFloat("{{northeast_lng}}");
+        const district_geo_lat = parseFloat("{{ district_geo_lat }}");
+        const district_geo_long = parseFloat("{{ district_geo_long }}");
+        const map_zoom_level = parseInt("{{ map_zoom_level }}");
+        const district_name = "{{ district_name }}";
+        
         // The bounds of the area
-        var allowedBounds = new google.maps.LatLngBounds(
+        const allowedBounds = new google.maps.LatLngBounds(
             new google.maps.LatLng(district_southwest_lat, district_southwest_lng),
             new google.maps.LatLng(district_northeast_lat, district_northeast_lng)
         );
@@ -72,7 +73,7 @@
             }
         };
         // Creating the map
-        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
         // Create markers for each school location
         var school_markers = JSON.parse(document.getElementById('marker-data').textContent);
@@ -85,25 +86,17 @@
 
             // add modals to each school marker
             marker.addListener('click', function() {
+                // Set the map's zoom and center it on the marker's position
                 map.setZoom(16);
                 map.setCenter(marker.getPosition());
+
+                // Update the modal content with school details
                 document.getElementById('schoolModalLabel').textContent = school.name;
                 document.querySelector('#schoolModal .modal-body').innerHTML = '<p>' + school.description + '</p>'; 
-                document.getElementById('visitSchoolPage').setAttribute('href', school.url); 
-                
+                document.getElementById('visitSchoolPage').setAttribute('href', school.url);
+
                 // Show the modal
                 $('#schoolModal').modal('show');
-
-                // add listener
-                marker.addListener('click', function() {
-                    // Update modal content
-                    $('#schoolModalLabel').text(school.name);
-                    $('#schoolModal .modal-body').html('<p>' + school.description + '</p>');
-                    $('#visitSchoolPage').attr('href', school.url);
-
-                    // Show the modal
-                    $('#schoolModal').modal('show');
-                });
             });
         });
         
@@ -127,6 +120,7 @@
         searchBox.addListener('places_changed', function() {
             var places = searchBox.getPlaces();
             if (places.length == 0) {
+                console.error("No places found.");
                 return;
             }
             // if a marker already exists, remove it
