@@ -2,11 +2,32 @@
 {% load i18n %}
 
 {% block content %}
-    {{ block.super }}
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var totalAreaNode = document.createTextNode("Total Area (sqft): {{ total_area }}");
-            document.querySelector('.actions').appendChild(totalAreaNode);
+{{ block.super }}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Your existing script to add the total area
+    var totalAreaNode = document.createTextNode("Total Area (sqft): {{ total_area }}");
+    document.querySelector('.actions').appendChild(totalAreaNode);
+    
+    // Script to keep the filter sidebar collapsed
+    const sidebar = document.querySelector('.sidebar');
+    if (sidebar) {
+        sidebar.classList.remove('open');
+        const filterHeader = sidebar.querySelector('.filter-header');
+        if (filterHeader) {
+            filterHeader.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+            });
+        }
+    }
+    // Handling Grappelli 
+    const toggleButton = document.querySelector('.grp-collapse-handler');
+    if (toggleButton) {
+        toggleButton.classList.add('collapsed');
+        toggleButton.addEventListener('click', function() {
+            this.classList.toggle('collapsed');
         });
-    </script>
+    }
+});
+</script>
 {% endblock %}

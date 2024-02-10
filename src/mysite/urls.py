@@ -23,6 +23,7 @@ from . views import create_account, error_page, change_password, change_email, r
 
 
 urlpatterns = [
+    path('grappelli/', include('grappelli.urls')), 
     path('admin/', admin.site.urls),
     path('create-account/', create_account, name='create_account'),
     path('accounts/', include('django.contrib.auth.urls')),
