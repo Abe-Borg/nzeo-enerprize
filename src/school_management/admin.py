@@ -201,7 +201,6 @@ class DistrictFilter(admin.SimpleListFilter):
             return queryset.filter(school_district__id=self.value())
         return queryset
 
-
 @admin.register(Building)
 class BuildingAdmin(admin.ModelAdmin):
     list_display = ('building_name', 'building_type', 'building_area_sqft')
@@ -230,8 +229,6 @@ class BuildingAdmin(admin.ModelAdmin):
         
         return response
     
-
-
 @admin.register(Equipment)
 class EquipmentAdmin(admin.ModelAdmin):
     list_display = ('equipment_tag','equipment_model', 'equipment_type', 'equipment_manufacturer')
@@ -281,7 +278,6 @@ class SchoolAdmin(admin.ModelAdmin):
     display_school_student_percent_disadvantaged.admin_order_field = 'school_student_percent_disadvantaged'
     display_school_student_percent_english_learners.admin_order_field = 'school_student_percent_english_learners'
     display_school_area.admin_order_field = 'school_area_sqft'
-
 
 admin.site.register(PerformanceMetrics)
 admin.site.register(Meter)

@@ -86,6 +86,18 @@ class Building(models.Model):
     building_geo_long = models.FloatField(default=0.0)
     building_age = models.IntegerField(default=0)
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # Save the building instance first
+
+        # Now calculate the sum of all building areas for the related school
+        total_area = Building.objects.filter(
+            building_school=self.building_school
+        ).aggregate(sum=models.Sum('building_area_sqft'))['sum'] or 0
+
+        # Update the school_area_sqft field of the related School instance
+        self.building_school.school_area_sqft = total_area
+        self.building_school.save()
+
     def __str__(self):
         # return everything
         return 'School: '+ str(self.building_school) + ' ' + 'Building Name: ' + str(self.building_name)
