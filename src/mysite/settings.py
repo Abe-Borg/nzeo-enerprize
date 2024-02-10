@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'school_management',
     'users',
     # 'utilityapi_api',
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
