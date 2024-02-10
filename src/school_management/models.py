@@ -366,3 +366,32 @@ class Meter(models.Model):
     meter_interval_timezone = models.CharField(max_length=100, choices = INTERVAL_TIME_ZONES, default = 'us_pacific')
     meter_type = models.CharField(max_length=100, choices = METER_TYPE, default = 'meter_type')
     meter_building = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Associated Building")
+
+
+class UtilityBill(models.Model):
+    """
+    Represents utility bills for a school, as part of the school management application.
+    This model is designed to store and manage detailed information about utility bills, including the billing period, total cost, and consumption of electricity, gas, water, and other utilities. It is essential for tracking and analyzing the school's utility expenses and consumption patterns over time, which is crucial for budgeting, cost management, and sustainability efforts.
+    Fields:
+    - school: The school to which the utility bills are related (ForeignKey).
+    - meter_uid: The unique identifier of the meter associated with the utility bill (ForeignKey).
+    - bill_start_date: The start date of the billing period.
+    - bill_end_date: The end date of the billing period.
+    - bill_total_cost: The total cost of the utility bill in dollars.
+    - bill_elec_consumption_kwh: The total electrical consumption in kilowatt-hours.
+    - bill_gas_consumption_mmbtu: The total gas consumption in million British Thermal Units (MMBTU).
+    - bill_water_consumption_gallons: The total water consumption in gallons.
+    - bill_other_consumption: The total consumption of other utilities.
+    """
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    meter_uid = models.ForeignKey(Meter, on_delete=models.CASCADE)
+    bill_start_date = models.DateField()
+    bill_end_date = models.DateField()
+    bill_total_cost = models.DecimalField(default=0)
+    bill_elec_consumption_kwh = models.DecimalField(default=0)
+    bill_gas_consumption_mmbtu = models.DecimalField(default=0)
+    bill_water_consumption_gallons = models.DecimalField(default=0)
+    
+    def __str__(self):
+        # school, bill elect consumption, bill gas consumption, bill water consumption, total cost
+        return str(self.school) + ' ' + str(self.bill_elec_consumption_kwh) + ' ' + str(self.bill_gas_consumption_mmbtu) + ' ' + str(self.bill_water_consumption_gallons) + ' ' + str(self.bill_total_cost)

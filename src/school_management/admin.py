@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from district_management.models import SchoolDistrict
-from .models import School, Building, Equipment, PerformanceMetrics, Meter
+from .models import School, Building, Equipment, PerformanceMetrics, Meter, UtilityBill
 from django.utils.translation import gettext_lazy as _
 from django.utils.html import format_html
 
@@ -267,6 +267,7 @@ class SchoolAdmin(admin.ModelAdmin):
 
 admin.site.register(PerformanceMetrics)
 admin.site.register(Meter)
+admin.site.register(UtilityBill)
 
 
 
