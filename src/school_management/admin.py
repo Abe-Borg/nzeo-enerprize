@@ -256,8 +256,8 @@ class SchoolAdmin(admin.ModelAdmin):
     display_school_area.short_description = "AREA (sqft)"
     display_school_district.short_description = "DISTRICT"
     display_school_student_population.short_description = "STUDENT POPULATION"
-    display_school_student_percent_disadvantaged.short_description = "% DISENFRANCHISED"
-    display_school_student_percent_english_learners.short_description = "% LOW INCOME"
+    display_school_student_percent_disadvantaged.short_description = "% DISADVANTAGED"
+    display_school_student_percent_english_learners.short_description = "% ENGLISH LEARNERS"
 
     display_school_student_population.admin_order_field = 'school_student_population'
     display_school_student_percent_disadvantaged.admin_order_field = 'school_student_percent_disadvantaged'

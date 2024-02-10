@@ -366,26 +366,3 @@ class Meter(models.Model):
     meter_interval_timezone = models.CharField(max_length=100, choices = INTERVAL_TIME_ZONES, default = 'us_pacific')
     meter_type = models.CharField(max_length=100, choices = METER_TYPE, default = 'meter_type')
     meter_building = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Associated Building")
-
-
-    # meter_ISO_timestamp = models.CharField(max_length=100, null=True, blank=True)
-    # meter_kw_demand = models.FloatField(default=0.0, null=True, blank=True)
-    # meter_kva_apparent_power = models.FloatField(default=0.0, null=True, blank=True)
-    # meter_kvah_apparent_energy = models.FloatField(default=0.0, null=True, blank=True)
-    # meter_kvar_reactive_power = models.FloatField(default=0.0, null=True, blank=True)
-    # meter_kvarh_reactive_energy = models.FloatField(default=0.0, null=True, blank=True)
-    # meter_therms_natural_gas_energy = models.FloatField(default=0.0, null=True, blank=True)
-    # meter_ccf_natural_gas_volume = models.FloatField(default=0.0, null=True, blank=True) # in hundreds of cubic feet
-    # meter_mcf_natural_gas_volume = models.FloatField(default=0.0, null=True, blank=True) # in thousands of cubic feet
-    # meter_gal_water_volume = models.FloatField(default=0.0, null=True, blank=True)
-    # meter_m3_water_volume = models.FloatField(default=0.0, null=True, blank=True) # in cubic meters
-    # meter_days = models.IntegerField(default=0, null=True, blank=True)
-    # meter_months = models.IntegerField(default=0, null=True, blank=True)
-    # meter_percent = models.FloatField(default=0.0, null=True, blank=True)
-    # meter_poles = models.IntegerField(default=0, null=True, blank=True) # number of lamp poles (used in certain outdoor lighting taffifs)
-    # meter_lamps = models.IntegerField(default=0, null=True, blank=True) # number of lamps (used in certain outdoor lighting taffifs)
-    # meter_metering_devices = models.IntegerField(default=0, null=True, blank=True) # number of metering devices (Number of metering devices (e.g. electric meters)
-    # meter_currency = models.CharField(max_length=100, null=True, blank=True) # US Dollars
-
-
-
