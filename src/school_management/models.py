@@ -387,11 +387,10 @@ class UtilityBill(models.Model):
     meter_uid = models.ForeignKey(Meter, on_delete=models.CASCADE)
     bill_start_date = models.DateField()
     bill_end_date = models.DateField()
-    bill_total_cost = models.DecimalField(default=0)
-    bill_elec_consumption_kwh = models.DecimalField(default=0)
-    bill_gas_consumption_mmbtu = models.DecimalField(default=0)
-    bill_water_consumption_gallons = models.DecimalField(default=0)
+    bill_total_cost = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    bill_elec_consumption_kwh = models.DecimalField(max_digits = 10, decimal_places = 2,  default=0.00)
+    bill_gas_consumption_mmbtu = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    bill_water_consumption_gallons = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     
     def __str__(self):
-        # school, bill elect consumption, bill gas consumption, bill water consumption, total cost
         return str(self.school) + ' ' + str(self.bill_elec_consumption_kwh) + ' ' + str(self.bill_gas_consumption_mmbtu) + ' ' + str(self.bill_water_consumption_gallons) + ' ' + str(self.bill_total_cost)
