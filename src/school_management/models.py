@@ -78,7 +78,6 @@ class Building(models.Model):
         ('technology_hub', 'Technology Hub'),
         ('vocational_training', 'Vocational Training Center')
     )
-
     building_school = models.ForeignKey(School, on_delete=models.CASCADE)
     building_name = models.CharField(max_length=100, default='building_name')
     building_type = models.CharField(max_length=100, choices=BUILDING_TYPES)

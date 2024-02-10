@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+from django.db.models import Sum
 from district_management.models import SchoolDistrict
 from .models import School, Building, Equipment, PerformanceMetrics, Meter, UtilityBill
 from django.utils.translation import gettext_lazy as _
@@ -205,14 +205,32 @@ class DistrictFilter(admin.SimpleListFilter):
 @admin.register(Building)
 class BuildingAdmin(admin.ModelAdmin):
     list_display = ('building_name', 'building_type', 'building_area_sqft')
+    list_filter = ('building_school', 'building_type', AreaRangeFilter, BuildingAgeRangeFilter)
+    ordering = ('building_type', 'building_area_sqft') 
 
     def get_school_name(self, obj):
         return obj.building_school.school_name
-
     get_school_name.short_description = 'School Name'
+
+    def changelist_view(self, request, extra_context=None):
+        # Aggregate the sum of building_area_sqft for the current queryset
+        response = super().changelist_view(request, extra_context=extra_context)
+        
+        try:
+            # response.context_data can be None in case of an invalid request (e.g., a bad search query),
+            # so we need to check if it is not None before we try to access it.
+            if response.context_data:
+                qs = response.context_data['cl'].queryset
+                total_area = qs.aggregate(Sum('building_area_sqft'))['building_area_sqft__sum']
+                # Add the total_area to the context.
+                response.context_data['total_area'] = total_area
+        except (AttributeError, KeyError):
+            # In case of an exception, we just ignore it and the total area won't be shown.
+            pass
+        
+        return response
     
-    list_filter = ('building_school', 'building_type', AreaRangeFilter, BuildingAgeRangeFilter)
-    ordering = ('building_type', 'building_area_sqft')  # Sort by school and then by name
+
 
 @admin.register(Equipment)
 class EquipmentAdmin(admin.ModelAdmin):
