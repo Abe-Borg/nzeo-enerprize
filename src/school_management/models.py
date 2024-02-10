@@ -256,44 +256,43 @@ class Equipment(models.Model):
 class PerformanceMetrics(models.Model):
     """
     Represents various performance metrics related to energy usage and sustainability for a school, as part of the school management application.
-    This model is crucial for tracking and analyzing the school's environmental impact and energy efficiency. It encompasses a wide range of metrics including CO2 emissions, energy use intensity (EUI), cost of energy intensity (ECI), renewable energy usage, and more. These metrics are essential for assessing the school's performance in terms of energy consumption, cost, and environmental sustainability.
+    This model is crucial for tracking and analyzing the school's environmental impact and energy efficiency. 
+    It encompasses a wide range of metrics including CO2 emissions, energy use intensity (EUI), cost of energy intensity (ECI), 
+    renewable energy usage, and more. These metrics are essential for assessing the school's performance in terms of energy consumption, 
+    cost, and environmental sustainability.
     Fields:
-    - school: The school to which these performance metrics are related (ForeignKey).
-    - emmissions_co2: The amount of CO2 emissions in a specified unit.
-    - CUI_co2_sqft: Carbon Usage Intensity per square foot.
-    - EUI_kbtu_sqft: Energy Use Intensity in kBTU per square foot.
-    - EUI_kbtu_student: Energy Use Intensity in kBTU per student.
-    - renewables_kwh: Renewable energy usage in kilowatt-hours.
-    - peak_demand_kw: Peak electrical demand in kilowatts.
-    - elec_consumption_kwh: Total electrical consumption in kilowatt-hours.
-    - gas_consumption_mmbtu: Total gas consumption in million British Thermal Units (MMBTU).
-    - total_consumption_mmbtu: Total energy consumption in MMBTU.
-    - ECI_dollar_sqft: Energy Cost Intensity per square foot.
-    - ECI_dollar_student: Energy Cost Intensity per student.
-    - total_cost_dollar: Total energy cost in dollars.
-    - year_to_date_kbtu_savings: Year-to-date savings in kBTU.
-    - year_to_date_co2_savings: Year-to-date CO2 savings.
-    The `__str__` method returns a string representation of the performance metrics, encompassing key data points for easy identification and analysis.
     """
     school = models.ForeignKey(School, on_delete=models.CASCADE)
-    emmissions_co2 = models.IntegerField()
-    CUI_co2_sqft = models.IntegerField()
-    EUI_kbtu_sqft = models.IntegerField()
-    EUI_kbtu_student = models.IntegerField()
-    renewables_kwh = models.IntegerField()
-    peak_demand_kw = models.IntegerField()
-    elec_consumption_kwh = models.IntegerField()
-    gas_consumption_mmbtu = models.IntegerField()
-    total_consumption_mmbtu = models.IntegerField()
-    ECI_dollar_sqft = models.IntegerField()
-    ECI_dollar_student = models.IntegerField()
-    total_cost_dollar = models.IntegerField()
-    year_to_date_kbtu_savings = models.IntegerField()
-    year_to_date_co2_savings = models.IntegerField()
+    elec_energy_intensity_kwh_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    gas_energy_intensity_kbtu_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    energy_use_intensity_combined_kbtu_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # sum of energy use and gross area (gas and electric)
+    
+    elec_energy_intensity_kwh_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    gas_energy_intensity_kbtu_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    energy_use_intensity_combined_kbtu_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # sum of energy use and student population (gas and electric)
+    
+    elec_energy_cost_index_dollar_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    gas_energy_cost_index_dollar_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    energy_cost_index_combined_dollar_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # sum of energy cost and gross area (gas and electric)
+    
+    elec_energy_cost_index_dollar_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    gas_energy_cost_index_dollar_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    energy_cost_index_combined_dollar_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # sum of energy cost and student population (gas and electric)
 
-    def __str__(self):
-        return str(self.school) + ' ' + str(self.emmissions_co2) + ' ' + str(self.CUI_co2_sqft) + ' ' + str(self.EUI_kbtu_sqft) + ' ' + str(self.EUI_kbtu_student) + ' ' + str(self.renewables_kwh) + ' ' + str(self.peak_demand_kw) + ' ' + str(self.elec_consumption_kwh) + ' ' + str(self.gas_consumption_mmbtu) + ' ' + str(self.total_consumption_mmbtu) + ' ' + str(self.ECI_dollar_sqft) + ' ' + str(self.ECI_dollar_student) + ' ' + str(self.total_cost_dollar) + ' ' + str(self.year_to_date_kbtu_savings) + ' ' + str(self.year_to_date_co2_savings)
+    lbs_natural_gas_nh4 = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    lbs_co2_per_lb_nh4 = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    
+    scope1_co2e_gas_lbs = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    scope2_co2e_elec_lbs = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
 
+    cui_scope1_gas_lbs_co2e_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    cui_scope2_elec_lbs_co2e_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    cui_total_lbs_co2e_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+
+    cui_scope1_gas_lbs_co2e_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    cui_scope2_elec_lbs_co2e_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    cui_total_lbs_co2e_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    
 
 class Meter(models.Model):
     """ 
@@ -382,26 +381,24 @@ class Meter(models.Model):
 class UtilityBill(models.Model):
     """
     Represents utility bills for a school, as part of the school management application.
-    This model is designed to store and manage detailed information about utility bills, including the billing period, total cost, and consumption of electricity, gas, water, and other utilities. It is essential for tracking and analyzing the school's utility expenses and consumption patterns over time, which is crucial for budgeting, cost management, and sustainability efforts.
+    This model is designed to store and manage detailed information about utility bills, 
+    including the billing period, total cost, and consumption of electricity, gas. It is essential 
+    for tracking and analyzing the school's utility expenses and consumption patterns over time, 
+    which is crucial for budgeting, cost management, and sustainability efforts.
     Fields:
-    - school: The school to which the utility bills are related (ForeignKey).
-    - meter_uid: The unique identifier of the meter associated with the utility bill (ForeignKey).
-    - bill_start_date: The start date of the billing period.
-    - bill_end_date: The end date of the billing period.
-    - bill_total_cost: The total cost of the utility bill in dollars.
-    - bill_elec_consumption_kwh: The total electrical consumption in kilowatt-hours.
-    - bill_gas_consumption_mmbtu: The total gas consumption in million British Thermal Units (MMBTU).
-    - bill_water_consumption_gallons: The total water consumption in gallons.
-    - bill_other_consumption: The total consumption of other utilities.
+
     """
     school = models.ForeignKey(School, on_delete=models.CASCADE)
-    meter_uid = models.ForeignKey(Meter, on_delete=models.CASCADE)
-    bill_start_date = models.DateField()
-    bill_end_date = models.DateField()
-    bill_total_cost = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    bill_elec_consumption_kwh = models.DecimalField(max_digits = 10, decimal_places = 2,  default=0.00)
-    bill_gas_consumption_mmbtu = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    bill_water_consumption_gallons = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    service_agreement_id = models.IntegerField(default=0)
+    meter_id = models.CharField(max_length=100, default='meter_id')
+    bill_start_date = models.DateField(default='2021-01-01')
+    bill_end_date = models.DateField(default='2021-01-01')
+    total_electric_charges = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    total_gas_charges = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    elec_consumption_kwh = models.DecimalField(max_digits = 10, decimal_places = 2,  default=0.00)
+    gas_consumption_therms = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    peak_demand_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    peak_demand_kwh = models.IntegerField(default=0)
     
     def __str__(self):
         return str(self.school) + ' ' + str(self.bill_elec_consumption_kwh) + ' ' + str(self.bill_gas_consumption_mmbtu) + ' ' + str(self.bill_water_consumption_gallons) + ' ' + str(self.bill_total_cost)
