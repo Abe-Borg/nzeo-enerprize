@@ -235,7 +235,7 @@ class EquipmentAdmin(admin.ModelAdmin):
 @admin.register(School)
 class SchoolAdmin(admin.ModelAdmin):
     # Your other admin options here
-    list_display = ('school_name','display_school_district', 'display_school_area', 'display_school_student_population', 'display_school_student_percent_disenfrachised', 'display_school_student_percent_low_income')
+    list_display = ('school_name','display_school_district', 'display_school_area', 'display_school_student_population', 'display_school_student_percent_disadvantaged', 'display_school_student_percent_english_learners')
     list_filter = (DistrictFilter,)
 
     def display_school_district(self, obj):
@@ -247,21 +247,21 @@ class SchoolAdmin(admin.ModelAdmin):
     def display_school_student_population(self, obj):
         return format_html("<span>{}</span>", obj.school_student_population)
     
-    def display_school_student_percent_disenfrachised(self, obj):
-        return format_html("<span>{}</span>", obj.school_student_percent_disenfrachised)
+    def display_school_student_percent_disadvantaged(self, obj):
+        return format_html("<span>{}</span>", obj.school_student_percent_disadvantaged)
     
-    def display_school_student_percent_low_income(self, obj):
-        return format_html("<span>{}</span>", obj.school_student_percent_low_income)
+    def display_school_student_percent_english_learners(self, obj):
+        return format_html("<span>{}</span>", obj.school_student_percent_english_learners)
         
     display_school_area.short_description = "AREA (sqft)"
     display_school_district.short_description = "DISTRICT"
     display_school_student_population.short_description = "STUDENT POPULATION"
-    display_school_student_percent_disenfrachised.short_description = "% DISENFRANCHISED"
-    display_school_student_percent_low_income.short_description = "% LOW INCOME"
+    display_school_student_percent_disadvantaged.short_description = "% DISENFRANCHISED"
+    display_school_student_percent_english_learners.short_description = "% LOW INCOME"
 
     display_school_student_population.admin_order_field = 'school_student_population'
-    display_school_student_percent_disenfrachised.admin_order_field = 'school_student_percent_disenfrachised'
-    display_school_student_percent_low_income.admin_order_field = 'school_student_percent_low_income'
+    display_school_student_percent_disadvantaged.admin_order_field = 'school_student_percent_disadvantaged'
+    display_school_student_percent_english_learners.admin_order_field = 'school_student_percent_english_learners'
     display_school_area.admin_order_field = 'school_area_sqft'
 
 

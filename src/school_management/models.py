@@ -20,15 +20,12 @@ class School(models.Model):
     school_area_sqft = models.IntegerField() # dynamically calculated
     school_address = models.CharField(max_length=100) # geo coordinates are calculated form address.
     school_student_population = models.IntegerField(default=0)
-    school_student_percent_disenfrachised = models.IntegerField(default=0)
-    school_student_percent_low_income = models.IntegerField(default=0)
+    school_student_percent_disadvantaged = models.IntegerField(default=0)
+    school_student_percent_english_learners = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.school_name)
     
-    def print_all(self):
-        return str(self.school_district) + ' ' + str(self.school_name) + ' ' + str(self.school_area_sqft) + ' ' + str(self.school_address) + ' ' + str(self.school_student_population) + ' ' + str(self.school_student_percent_disenfrachised) + ' ' + str(self.school_student_percent_low_income)
-
 
 class Building(models.Model):
     """
