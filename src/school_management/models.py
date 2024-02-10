@@ -398,7 +398,5 @@ class UtilityBill(models.Model):
     elec_consumption_kwh = models.DecimalField(max_digits = 10, decimal_places = 2,  default=0.00)
     gas_consumption_therms = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     peak_demand_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    peak_demand_kwh = models.IntegerField(default=0)
+    off_peak_demand_kwh = models.IntegerField(default=0)
     
-    def __str__(self):
-        return str(self.school) + ' ' + str(self.bill_elec_consumption_kwh) + ' ' + str(self.bill_gas_consumption_mmbtu) + ' ' + str(self.bill_water_consumption_gallons) + ' ' + str(self.bill_total_cost)
