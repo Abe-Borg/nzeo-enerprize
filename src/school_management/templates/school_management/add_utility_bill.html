@@ -29,54 +29,176 @@
             <hr>
             <form method = "post">
               {% csrf_token %}
-              <div class="form-group">
-                <input class="form-control" type="text" name="{{ form.username.name }}" placeholder="Username" id="{{ form.username.id_for_label }}" autocomplete="username" {% if form.username.value %} value="{{ form.username.value }}"{% endif %} />
-                {% if form.username.errors %}
-                  <div class="form-error error-message-box">
-                    {{ form.username.errors }}
-                  </div>
-                {% endif %}
-                <br>
-                <small>Username Format: lastname.firstname.district | Example: smith.john.clovis</small>
-              </div>
-
-
-              <!-- District Selection -->
-              <div class="form-group">
+                <!-- Utilty selection -->
+                <div class="form-group">
+                    <label for="{{ form.utility_type.id_for_label }}">Utility Type:</label>
+                    {{ form.utility_type }}
+                </div>
+                <!-- District Selection -->
+                <div class="form-group">
                 <label for="user_district">District:</label>
                 <select class="form-control" name="user_district" id="user_district" required>
-                  <option value="">Select District</option>
-                  {% for district in districts %}
+                    <option value="">Select District</option>
+                    {% for district in districts %}
                     <option value="{{ district.id }}">{{ district.district_name | capfirst }}</option>
-                  {% endfor %}
+                    {% endfor %}
                 </select>
-              </div>
-  
-              <!-- School Selection -->
-              <div class="form-group">
+                </div>
+                <!-- School Selection -->
+                <div class="form-group">
                 <label for="user_school">School:</label>
-                <select class="form-control" name="user_school" id="user_school" disabled>
-                  <option value="">Select School</option>
-                  <!-- Options will be populated based on district selection -->
+                <select class="form-control" name="user_school" id="user_school" disabled required>
+                    <option value="">Select School</option>
+                    <!-- Options will be populated based on district selection -->
                 </select>
-              </div>
-              
-              <!-- Utilty selection -->
-              <div class="form-group">
-                <label for="user_school">Utility Type:</label>
-                <select class="form-control" name="utility_type" id="user_school" disabled>
-                  <option value="">Select Utility Type</option>
-                  <!-- Options will be populated based on district selection -->
-                </select>
-              </div>
-  
-              <button class="btn btn-lg btn-block btn-primary" role="button" type="submit">
-                Create account
-              </button>
-              <small>By clicking 'Create Account' you agree to our <a href="#">Terms of Use</a>
-              </small>
+                </div>
+                <!-- service agreement id-->
+                <div class="form-group {% if form.service_agreement_id.errors %} has-error{% endif %}">
+                    <label for="service_agreement_id">Service Agreement ID:</label>
+                    <input type="text" class="form-control" name="service_agreement_id" id="service_agreement_id" required>
+                    <div class="error-message-box">
+                        {% for error in form.service_agreement_id.errors %}
+                            <p class="form-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- meter id -->
+                <div class="form-group {% if form.meter_id.errors %} has-error{% endif %}">
+                    <label for="meter_id">Meter ID:</label>
+                    <input type="text" class="form-control" name="meter_id" id="meter_id" required>
+                    <div class="error-message-box">
+                        {% for error in form.meter_id.errors %}
+                            <p class="form-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Utility Bill Start Date -->
+                <div class="form-group {% if form.utility_bill_date.errors %} has-error{% endif %}">
+                    <label for="utility_bill_date">Utility Bill Date:</label>
+                    <input type="date" class="form-control" name="utility_bill_date" id="utility_bill_date" required>
+                    <div class="error-message-box">
+                        {% for error in form.utility_bill_date.errors %}
+                            <p class="form-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- Utility Bill End Date -->
+                <div class="form-group {% if form.utility_bill_end_date.errors %} has-error{% endif %}">
+                    <label for="utility_bill_end_date">Utility Bill End Date:</label>
+                    <input type="date" class="form-control" name="utility_bill_end_date" id="utility_bill_end_date" required>
+                    <div class="error-message-box">
+                        {% for error in form.utility_bill_end_date.errors %}
+                            <p class="form-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- total electric charges  $-->
+                <div class="form-group {% if form.utility_bill_amount.errors %} has-error{% endif %}">
+                  <label for="utility_bill_amount">Total Electric Charges:</label>
+                  <input type="number" class="form-control" name="utility_bill_amount" id="total_electric_charges">
+                  <div class="error-message-box">
+                    {% for error in form.utility_bill_amount.errors %}
+                      <p class="form-error">{{ error }}</p>
+                    {% endfor %}
+                    </div>
+                </div>
+                <!-- total gas charges $ -->
+                <div class="form-group {% if form.utility_bill_amount.errors %} has-error{% endif %}">
+                    <label for="utility_bill_amount">Total Gas Charges:</label>
+                    <input type="number" class="form-control" name="utility_bill_amount" id="total_gas_charges">
+                    <div class="error-message-box">
+                        {% for error in form.utility_bill_amount.errors %}
+                        <p class="form-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- electric consumption_kWh-->
+                <div class="form-group {% if form.electric_consumption_kWh.errors %} has-error{% endif %}">
+                    <label for="electric_consumption_kWh">Electric Consumption (kWh):</label>
+                    <input type="number" class="form-control" name="electric_consumption_kWh" id="electric_consumption_kWh">
+                    <div class="error-message-box">
+                        {% for error in form.electric_consumption_kWh.errors %}
+                            <p class="form-error
+                            ">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- gas consumption_therms-->
+                <div class="form-group {% if form.gas_consumption_therms.errors %} has-error{% endif %}">
+                    <label for="gas_consumption_therms">Gas Consumption (Therms):</label>
+                    <input type="number" class="form-control" name="gas_consumption_therms" id="gas_consumption_therms">
+                    <div class="error-message-box">
+                        {% for error in form.gas_consumption_therms.errors %}
+                            <p class="form-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- peak demand kWh-->
+                <div class="form-group {% if form.peak_demand.errors %} has-error{% endif %}">
+                    <label for="peak_demand">Peak Demand (kW):</label>
+                    <input type="number" class="form-control" name="peak_demand" id="peak_demand">
+                    <div class="error-message-box">
+                        {% for error in form.peak_demand.errors %}
+                            <p class="form-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- off peak demand -->
+                <div class="form-group {% if form.off_peak_demand.errors %} has-error{% endif %}">
+                    <label for="off_peak_demand">Off Peak Demand (kW):</label>
+                    <input type="number" class="form-control" name="off_peak_demand" id="off_peak_demand">
+                    <div class="error-message-box">
+                        {% for error in form.off_peak_demand.errors %}
+                            <p class="form-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+                <p>Do you have solar generation or solar energy credits data to enter?</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="solar_generation_checkbox">
+                    <label class="form-check-label" for="solar_generation_checkbox">
+                        Yes, I have solar generation or solar energy credits data to enter.
+                    </label>
+                </div>
+                <br>
+                <!-- solar generation kWh -->
+                <div class="form-group {% if form.solar_generation_kWh.errors %} has-error{% endif %}">
+                    <label for="solar_generation_kWh">Solar Generation (kWh):</label>
+                    <input type="number" class="form-control" name="solar_generation_kWh" id="solar_generation_kWh">
+                    <div class="error-message-box">
+                        {% for error in form.solar_generation_kWh.errors %}
+                            <p class="form-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- solar energy credits $ -->
+                <div class="form-group {% if form.solar_energy_credits.errors %} has-error{% endif %}">
+                    <label for="solar_energy_credits">Solar Energy Credits:</label>
+                    <input type="number" class="form-control" name="solar_energy_credits" id="solar_energy_credits">
+                    <div class="error-message-box">
+                        {% for error in form.solar_energy_credits.errors %}
+                            <p class="form-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+                <!-- upload utility bill -->
+                <div class="form-group {% if form.utility_bill_file.errors %} has-error{% endif %}">
+                    <label for="utility_bill_file">Upload Utility Bill:</label>
+                    <input type="file" class="form-control-file" name="utility_bill_file" id="utility_bill_file" required>
+                    <div class="error-message-box">
+                        {% for error in form.utility_bill_file.errors %}
+                            <p class="form-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+                <button type="submit" name="action" value="save_and_add_another" class="btn btn-secondary">Save and Add Another</button>
+                <button type="submit" name="action" value="save_and_return" class="btn btn-primary">Save and Return to Overview</button>              
             </form>
-  
+ 
           </div>
         </div>
       </div>

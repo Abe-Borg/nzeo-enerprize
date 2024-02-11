@@ -23,13 +23,13 @@ def add_utility_bill(request):
         form = UtilityBillForm(request.POST)
         if form.is_valid():
             utility_bill = form.save(commit=False)
-            utility_bill.user = request.user
-            utility_bill.save()
             if 'action' in request.POST:
                 if request.POST['action'] == 'save_and_add_another':
-                    return redirect('add_utility_bill')  # Redirect to the form page again
+                    utility_bill.save()
+                    return redirect('add_utility_bill')
                 elif request.POST['action'] == 'save_and_return':
-                    return redirect('nzeo_admin_home')  # Replace 'overview_dashboard' with your actual overview dashboard URL name
+                    utility_bill.save()
+                    return redirect('nzeo_admin_home') 
     else:
         form = UtilityBillForm()
     return render(request, 'add_utility_bill.html', {'form': form})
