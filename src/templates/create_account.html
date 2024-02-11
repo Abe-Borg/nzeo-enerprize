@@ -101,7 +101,7 @@
               <select class="form-control" name="user_district" id="user_district" required>
                 <option value="">Select District</option>
                 {% for district in districts %}
-                  <option value="{{ district.id }}">{{ district.district_name }}</option>
+                  <option value="{{ district.id }}">{{ district.district_name | capfirst }}</option>
                 {% endfor %}
               </select>
             </div>

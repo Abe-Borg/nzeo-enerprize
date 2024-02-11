@@ -1,0 +1,119 @@
+{% extends "base_sise_navbar.html" %}
+{% load static %}
+
+{% block main_container_nzeo_staff %}
+<style>
+    /* Custom CSS for smaller error messages */
+    .form-error {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        padding: .75rem 1.25rem;
+        margin-bottom: 1rem;
+        border: 1px solid transparent;
+        border-radius: .25rem;
+        font-size: 0.875rem; 
+    }
+    .error-message-box {
+      padding: 0.25rem; 
+      margin-bottom: 0.1rem; 
+    }
+</style>
+
+<div class="main-container fullscreen">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-xl-5 col-lg-6 col-md-7">
+          <div class="text-center">
+            <h1 class="h2">Enter a Utility Bill</h1>
+            <hr>
+            <form method = "post">
+              {% csrf_token %}
+              <div class="form-group">
+                <input class="form-control" type="text" name="{{ form.username.name }}" placeholder="Username" id="{{ form.username.id_for_label }}" autocomplete="username" {% if form.username.value %} value="{{ form.username.value }}"{% endif %} />
+                {% if form.username.errors %}
+                  <div class="form-error error-message-box">
+                    {{ form.username.errors }}
+                  </div>
+                {% endif %}
+                <br>
+                <small>Username Format: lastname.firstname.district | Example: smith.john.clovis</small>
+              </div>
+
+
+              <!-- District Selection -->
+              <div class="form-group">
+                <label for="user_district">District:</label>
+                <select class="form-control" name="user_district" id="user_district" required>
+                  <option value="">Select District</option>
+                  {% for district in districts %}
+                    <option value="{{ district.id }}">{{ district.district_name | capfirst }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+  
+              <!-- School Selection -->
+              <div class="form-group">
+                <label for="user_school">School:</label>
+                <select class="form-control" name="user_school" id="user_school" disabled>
+                  <option value="">Select School</option>
+                  <!-- Options will be populated based on district selection -->
+                </select>
+              </div>
+              
+              <!-- Utilty selection -->
+              <div class="form-group">
+                <label for="user_school">Utility Type:</label>
+                <select class="form-control" name="utility_type" id="user_school" disabled>
+                  <option value="">Select Utility Type</option>
+                  <!-- Options will be populated based on district selection -->
+                </select>
+              </div>
+  
+              <button class="btn btn-lg btn-block btn-primary" role="button" type="submit">
+                Create account
+              </button>
+              <small>By clicking 'Create Account' you agree to our <a href="#">Terms of Use</a>
+              </small>
+            </form>
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const districtSelect = document.getElementById('user_district');
+    const schoolSelect = document.getElementById('user_school');
+
+    districtSelect.addEventListener('change', function() {
+    const districtId = this.value;
+    schoolSelect.innerHTML = '<option value="">Select School</option>'; 
+
+    if (districtId) {
+        schoolSelect.disabled = false;
+
+        // Fetch schools for the selected district
+        console.log(`Fetching schools for district ID: ${districtId}`);
+        fetch(`/enerprize-api/get-schools-for-district/${districtId}/`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);  // Check what data is received
+            data.schools.forEach(school => {
+            const option = document.createElement('option');
+            option.value = school.id;
+            option.textContent = school.school_name;
+            schoolSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+    } else {
+        // Disable school dropdown if no district is selected
+        schoolSelect.disabled = true;
+    }
+    });
+});
+</script>
+{% endblock %}

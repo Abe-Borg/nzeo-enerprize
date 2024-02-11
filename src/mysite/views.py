@@ -14,9 +14,9 @@ def redirect_after_login(request):
     elif user.groups.filter(name='District-Staff').exists():
         return redirect('district_admin_home')
     elif user.groups.filter(name='School-Staff').exists():
-        return redirect('school_home') # redirects to view function
+        return redirect('school_home')
     else:
-        return redirect('error_page') 
+        return redirect('error_page')
 
 
 def create_account(request):
