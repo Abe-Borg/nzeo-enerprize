@@ -21,16 +21,13 @@ def redirect_after_login(request):
 
 def create_account(request):
     districts = SchoolDistrict.objects.all()
-
     if request.method == 'POST':    
         form = CustomUserCreationForm(request.POST)
-
         if form.is_valid():
             form.save()
             return redirect('login')
     else:
         form = CustomUserCreationForm()
-
     context = {
         'form': form,
         'districts': districts,

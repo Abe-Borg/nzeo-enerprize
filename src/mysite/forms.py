@@ -40,7 +40,6 @@ class CustomUserCreationForm(UserCreationForm):
 
         if email and confirm_email and email != confirm_email:
             self.add_error('confirm_email', "Emails must match")
-
         return cleaned_data
 
 

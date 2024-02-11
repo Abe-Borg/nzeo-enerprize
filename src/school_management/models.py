@@ -255,14 +255,52 @@ class Equipment(models.Model):
 
 class PerformanceMetrics(models.Model):
     """
-    Represents various performance metrics related to energy usage and sustainability for a school, as part of the school management application.
-    This model is crucial for tracking and analyzing the school's environmental impact and energy efficiency. 
-    It encompasses a wide range of metrics including CO2 emissions, energy use intensity (EUI), cost of energy intensity (ECI), 
-    renewable energy usage, and more. These metrics are essential for assessing the school's performance in terms of energy consumption, 
-    cost, and environmental sustainability.
+    Represents various performance metrics related to energy usage and sustainability for 
+    a school within the school management application context. This model plays a pivotal 
+    role in tracking and analyzing the school's environmental impact and energy efficiency, 
+    thereby facilitating informed decisions towards achieving sustainability goals.
+
+    The model encapsulates a broad spectrum of metrics crucial for assessing the school's 
+    performance concerning energy consumption, cost, and environmental sustainability. 
+    These metrics include, but are not limited to, carbon dioxide (CO2) emissions, energy use 
+    intensity (EUI), cost of energy intensity (ECI), renewable energy usage, and more. 
+    Such comprehensive data collection enables a holistic view of the school's energy 
+    profile and its adherence to sustainability practices.
+
+    Relationships:
+        - school: ForeignKey relation to the School model, denoting the school associated with 
+        these performance metrics.
+
     Fields:
+        - elec_energy_intensity_kwh_sqft: Electric energy intensity in kWh per square foot.
+        - gas_energy_intensity_kbtu_sqft: Gas energy intensity in kBTU per square foot.
+        - energy_use_intensity_combined_kbtu_sqft: Combined energy use intensity in kBTU per square foot (sum of electric and gas).
+        - elec_energy_intensity_kwh_student: Electric energy intensity in kWh per student.
+        - gas_energy_intensity_kbtu_student: Gas energy intensity in kBTU per student.
+        - energy_use_intensity_combined_kbtu_student: Combined energy use intensity in kBTU per student (sum of electric and gas).
+        - elec_energy_cost_index_dollar_sqft: Electric energy cost index in dollars per square foot.
+        - gas_energy_cost_index_dollar_sqft: Gas energy cost index in dollars per square foot.
+        - energy_cost_index_combined_dollar_sqft: Combined energy cost index in dollars per square foot (sum of electric and gas).
+        - elec_energy_cost_index_dollar_student: Electric energy cost index in dollars per student.
+        - gas_energy_cost_index_dollar_student: Gas energy cost index in dollars per student.
+        - energy_cost_index_combined_dollar_student: Combined energy cost index in dollars per student (sum of electric and gas).
+        - lbs_natural_gas_nh4: Pounds of NH4 from natural gas consumption.
+        - lbs_co2_per_lb_nh4: Pounds of CO2 emissions per pound of NH4 produced.
+        - scope1_co2e_gas_lbs: Scope 1 CO2e emissions in pounds from gas energy use.
+        - scope2_co2e_elec_lbs: Scope 2 CO2e emissions in pounds from electric energy use.
+        - cui_scope1_gas_lbs_co2e_sqft: Carbon Use Intensity (CUI) for Scope 1 gas emissions in lbs CO2e per square foot.
+        - cui_scope2_elec_lbs_co2e_sqft: Carbon Use Intensity (CUI) for Scope 2 electric emissions in lbs CO2e per square foot.
+        - cui_total_lbs_co2e_sqft: Total Carbon Use Intensity (CUI) in lbs CO2e per square foot.
+        - cui_scope1_gas_lbs_co2e_student: Carbon Use Intensity (CUI) for Scope 1 gas emissions in lbs CO2e per student.
+        - cui_scope2_elec_lbs_co2e_student: Carbon Use Intensity (CUI) for Scope 2 electric emissions in lbs CO2e per student.
+        - cui_total_lbs_co2e_student: Total Carbon Use Intensity (CUI) in lbs CO2e per student.
+        - net_elec_consumption_kwh: Net electricity consumption in kWh, considering both utility bills and solar generation.
+        - net_cost_dollars: Net cost in dollars, accounting for electric costs from utility bills and solar energy credits.
+
+        The model provides a foundation for schools to monitor, analyze, and improve their energy and 
+        sustainability profiles, promoting a greener, more sustainable future.
     """
-    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    school = models.ForeignKey(School, on_delete=models.CASCADE) # school associated with the performance metrics
     elec_energy_intensity_kwh_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     gas_energy_intensity_kbtu_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     energy_use_intensity_combined_kbtu_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # sum of energy use and gross area (gas and electric)
@@ -282,8 +320,8 @@ class PerformanceMetrics(models.Model):
     lbs_natural_gas_nh4 = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     lbs_co2_per_lb_nh4 = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     
-    scope1_co2e_gas_lbs = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    scope2_co2e_elec_lbs = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    scope1_co2e_gas_lbs = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # Lbs of CO2e from Energy Use Gas (methane - CH4)
+    scope2_co2e_elec_lbs = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # Lbs of CO2e from Energy Use Elec (CAMX grid)
 
     cui_scope1_gas_lbs_co2e_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     cui_scope2_elec_lbs_co2e_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
@@ -292,7 +330,11 @@ class PerformanceMetrics(models.Model):
     cui_scope1_gas_lbs_co2e_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     cui_scope2_elec_lbs_co2e_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     cui_total_lbs_co2e_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    
+
+    # solar energy metrics
+    net_elec_consumption_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # Electric consumption (from utility bills) - Solar generation
+    net_cost_dollars = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # Electric cost (from utility bills) - Solar energy credits
+
 
 class Meter(models.Model):
     """ 
@@ -380,17 +422,53 @@ class Meter(models.Model):
 
 class UtilityBill(models.Model):
     """
-    Represents utility bills for a school, as part of the school management application.
-    This model is designed to store and manage detailed information about utility bills, 
-    including the billing period, total cost, and consumption of electricity, gas. It is essential 
-    for tracking and analyzing the school's utility expenses and consumption patterns over time, 
-    which is crucial for budgeting, cost management, and sustainability efforts.
-    Fields:
+    Represents utility bills for a school within the context of a school management application. 
+    This model is crafted to encapsulate and manage comprehensive data regarding utility bills, 
+    focusing on electricity and gas services. It serves as a fundamental component for recording 
+    and evaluating the school's utility expenses and consumption patterns over specified periods. 
+    The insights derived from this data are instrumental for effective budgeting, cost management, 
+    and advancing sustainability initiatives.
 
+    By maintaining records of utility bills, the model facilitates a systematic approach to 
+    understanding and optimizing utility usage and costs. This is vital for schools aiming to 
+    reduce operational expenses and enhance their environmental stewardship through smarter 
+    energy consumption and utility management practices.
+
+    Relationships:
+        - school: ForeignKey relation to the School model, indicating the school 
+        to which the utility bill pertains.
+
+    Fields:
+        - service_agreement_id: An integer field representing the service agreement ID with the utility provider.
+        - meter_id: A string field storing the meter ID associated with the utility service, facilitating the 
+          tracking of consumption data.
+        - bill_start_date: A DateField marking the start of the billing period.
+        - bill_end_date: A DateField indicating the end of the billing period.
+        - total_electric_charges: A DecimalField capturing the total charges for electricity usage within 
+          the billing period, measured in the local currency.
+        - total_gas_charges: A DecimalField recording the total charges for gas consumption within 
+          the billing period, measured in the local currency.
+        - elec_consumption_kwh: A DecimalField quantifying the electricity consumed during the billing 
+          period, measured in kilowatt-hours (kWh).
+        - gas_consumption_therms: A DecimalField quantifying the gas consumed during the billing period, 
+          measured in therms.
+        - peak_demand_kwh: A DecimalField measuring the peak electricity demand during the billing period, 
+          in kilowatt-hours (kWh).
+        - off_peak_demand_kwh: An IntegerField measuring the off-peak electricity demand, providing 
+          insights into consumption patterns outside the peak hours.
+
+    The UtilityBill model underscores the application's capability to monitor utility usage and expenditures 
+    meticulously. It empowers schools to make data-driven decisions aimed at minimizing costs and 
+    fostering sustainability.
     """
+    UTILITY_TYPE = (
+        ('natural_gas', 'Natural Gas'),
+        ('electric', 'Electric'),
+    )
     school = models.ForeignKey(School, on_delete=models.CASCADE)
     service_agreement_id = models.IntegerField(default=0)
     meter_id = models.CharField(max_length=100, default='meter_id')
+    utility_type = models.CharField(max_length=100, choices = UTILITY_TYPE, default = 'electric')
     bill_start_date = models.DateField(default='2021-01-01')
     bill_end_date = models.DateField(default='2021-01-01')
     total_electric_charges = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
@@ -399,4 +477,53 @@ class UtilityBill(models.Model):
     gas_consumption_therms = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     peak_demand_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     off_peak_demand_kwh = models.IntegerField(default=0)
+    solar_generation_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    solar_energy_credits = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+
+
+# class SolarEnergy(models.Model):
+#     """
+#     Represents the solar energy generation and associated credits for a school, serving as a critical 
+#     component within the school management application. This model is specifically designed to capture 
+#     and manage data pertaining to solar energy production and the financial benefits realized 
+#     through solar energy credits. It is instrumental in tracking the school's progress towards 
+#     sustainability and renewable energy goals, complementing the utility bill and performance metrics 
+#     by providing a detailed account of the renewable energy contributions.
+
+#     The `SolarEnergy` model plays a pivotal role in enabling schools to monitor 
+#     their renewable energy production, understand the financial impact of their solar 
+#     installations, and assess the overall efficiency and effectiveness of their sustainability 
+#     initiatives. By quantifying solar generation and credits, the model facilitates a 
+#     comprehensive view of the school's energy profile, including both consumption and generation, 
+#     thereby supporting informed decision-making towards energy independence and environmental stewardship.
+
+#     Relationships:
+#         - school: ForeignKey relation to the School model, denoting the school for which solar 
+#           energy data is recorded. This linkage ensures that solar energy generation and 
+#           credits can be accurately associated with the respective school, allowing for 
+#           integrated analysis and reporting across utility bills and performance metrics.
+#     Fields:
+#         - date: A DateField capturing the specific date for which solar generation data is recorded, 
+#           enabling precise tracking of solar energy production over time.
+#         - solar_generation_kwh: A DecimalField measuring the quantity of electricity generated 
+#           through solar power on the specified date, expressed in kilowatt-hours (kWh). 
+#           This metric is essential for evaluating the performance of solar energy systems 
+#           and their contribution to the school's energy needs.
+#         - solar_energy_credits: A DecimalField reflecting the monetary value of energy 
+#           credits earned through solar generation, measured in the local currency. 
+#           These credits represent the financial returns from feeding excess solar energy 
+#           back into the power grid or from other incentive programs, highlighting the 
+#           economic benefits of investing in solar energy.
+
+#     The `SolarEnergy` model underscores the application's commitment to promoting 
+#     renewable energy sources by providing schools with the tools needed to quantify, 
+#     monitor, and optimize their solar energy production and utilization. It enables a holistic 
+#     approach to energy management, encompassing not only the consumption of traditional 
+#     utility services but also the generation and financial advantages of renewable energy systems.
+#     """
+#     school = models.ForeignKey(School, on_delete=models.CASCADE)
+#     date = models.DateField()
+#     solar_generation_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+#     solar_energy_credits = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+
     
