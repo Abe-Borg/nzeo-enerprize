@@ -33,22 +33,16 @@
           </div>
           <br>
           <h1 class="h2">Create account</h1>
-          <!-- <button class="btn btn-lg btn-block btn-primary">
-            <img alt="Google" src="{% static 'assets/img/logo-google.svg' %}" class="rounded align-top mr-2" />Continue with Google
-          </button> -->
           <hr>
-
           <form method = "post">
             {% csrf_token %}
             <div class="form-group">
-              <input class="form-control" type="text" name="{{ form.username.name }}" placeholder="Username" id="{{ form.username.id_for_label }}" autocomplete="username" {% if form.username.value %} value="{{ form.username.value }}"{% endif %} />
+              <input class="form-control" type="text" name="{{ form.username.name }}" placeholder="Username, Example: smith.john.clovis" id="{{ form.username.id_for_label }}" autocomplete="username" {% if form.username.value %} value="{{ form.username.value }}"{% endif %} />
               {% if form.username.errors %}
                 <div class="form-error error-message-box">
                   {{ form.username.errors }}
                 </div>
               {% endif %}
-              <br>
-              <small>Username Format: lastname.firstname.district | Example: smith.john.clovis</small>
             </div>
             <!--email-->
             <div class="form-group">
@@ -93,11 +87,9 @@
                   <li>Cannot be a commonly used password.</li>
                   <li>Cannot be entirely numeric.</li>
               </ul>
-            </div>
-
+            </div><br>
             <!-- District Selection -->
             <div class="form-group">
-              <label for="user_district">District:</label>
               <select class="form-control" name="user_district" id="user_district" required>
                 <option value="">Select District</option>
                 {% for district in districts %}
@@ -105,28 +97,23 @@
                 {% endfor %}
               </select>
             </div>
-
             <!-- School Selection -->
             <div class="form-group">
-              <label for="user_school">School (Optional):</label>
               <select class="form-control" name="user_school" id="user_school" disabled>
-                <option value="">Select School</option>
+                <option value="">Select School (optional)</option>
                 <!-- Options will be populated based on district selection -->
               </select>
             </div>
-            
             <!-- Job Title (Optional) -->
             <div class="form-group">
               <input class="form-control" type="text" name="job_title" placeholder="Job Title (Optional)">
             </div>
-
             <button class="btn btn-lg btn-block btn-primary" role="button" type="submit">
               Create account
             </button>
             <small>By clicking 'Create Account' you agree to our <a href="#">Terms of Use</a>
             </small>
           </form>
-
         </div>
       </div>
     </div>
