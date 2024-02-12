@@ -18,6 +18,9 @@
       padding: 0.25rem; 
       margin-bottom: 0.1rem; 
     }
+    .has-error input, .has-error select {
+    border-color: #d9534f; 
+    }
 </style>
 
 <div class="main-container fullscreen">
@@ -36,8 +39,8 @@
                 </div>
                 <!-- District Selection -->
                 <div class="form-group">
-                <label for="user_district">District:</label>
-                <select class="form-control" name="user_district" id="user_district" required>
+                <label>District:</label>
+                <select class="form-control" name="bill_district" id="bill_district" required>
                     <option value="">Select District</option>
                     {% for district in districts %}
                     <option value="{{ district.id }}">{{ district.district_name | capfirst }}</option>
@@ -46,16 +49,17 @@
                 </div>
                 <!-- School Selection -->
                 <div class="form-group">
-                <label for="user_school">School:</label>
-                <select class="form-control" name="user_school" id="user_school" disabled required>
-                    <option value="">Select School</option>
-                    <!-- Options will be populated based on district selection -->
-                </select>
+                    <label for="{{ form.school.id_for_label }}">School:</label>
+                    <select class="form-control" name="bill_school" id="bill_school" disabled required>
+                        <option value="">Select School</option>
+                        <!-- Options will be populated based on district selection -->
+                    </select>
                 </div>
                 <!-- service agreement id-->
                 <div class="form-group {% if form.service_agreement_id.errors %} has-error{% endif %}">
-                    <label for="service_agreement_id">Service Agreement ID:</label>
-                    <input type="text" class="form-control" name="service_agreement_id" id="service_agreement_id" required>
+                    <label for="{{ form.service_agreement_id.id_for_label }}">Service Agreement ID:</label>
+                    {{ form.service_agreement_id }}
+                    <!-- <input type="text" class="form-control" name="service_agreement_id" id="service_agreement_id" required> -->
                     <div class="error-message-box">
                         {% for error in form.service_agreement_id.errors %}
                             <p class="form-error">{{ error }}</p>
@@ -64,7 +68,7 @@
                 </div>
                 <!-- meter id -->
                 <div class="form-group {% if form.meter_id.errors %} has-error{% endif %}">
-                    <label for="meter_id">Meter ID:</label>
+                    <label for= "{{ form.meter_id.id_for_label }}">Meter ID:</label>
                     <input type="text" class="form-control" name="meter_id" id="meter_id" required>
                     <div class="error-message-box">
                         {% for error in form.meter_id.errors %}
@@ -72,53 +76,52 @@
                         {% endfor %}
                     </div>
                 </div>
-
                 <!-- Utility Bill Start Date -->
-                <div class="form-group {% if form.utility_bill_date.errors %} has-error{% endif %}">
-                    <label for="utility_bill_date">Utility Bill Date:</label>
-                    <input type="date" class="form-control" name="utility_bill_date" id="utility_bill_date" required>
+                <div class="form-group {% if form.bill_start_date.errors %} has-error{% endif %}">
+                    <label for="{{ form.bill_start_date.id_for_label }}">Utility Bill Date:</label>
+                    <input type="date" class="form-control" name="bill_start_date" id="bill_start_date" required>
                     <div class="error-message-box">
-                        {% for error in form.utility_bill_date.errors %}
+                        {% for error in form.bill_start_date.errors %}
                             <p class="form-error">{{ error }}</p>
                         {% endfor %}
                     </div>
                 </div>
                 <!-- Utility Bill End Date -->
-                <div class="form-group {% if form.utility_bill_end_date.errors %} has-error{% endif %}">
-                    <label for="utility_bill_end_date">Utility Bill End Date:</label>
-                    <input type="date" class="form-control" name="utility_bill_end_date" id="utility_bill_end_date" required>
+                <div class="form-group {% if form.bill_end_date.errors %} has-error{% endif %}">
+                    <label for="{{ form.bill_end_date.id_for_label }}">Utility Bill End Date:</label>
+                    <input type="date" class="form-control" name="bill_end_date" id="bill_end_date" required>
                     <div class="error-message-box">
-                        {% for error in form.utility_bill_end_date.errors %}
+                        {% for error in form.bill_end_date.errors %}
                             <p class="form-error">{{ error }}</p>
                         {% endfor %}
                     </div>
                 </div>
                 <!-- total electric charges  $-->
-                <div class="form-group {% if form.utility_bill_amount.errors %} has-error{% endif %}">
-                  <label for="utility_bill_amount">Total Electric Charges:</label>
-                  <input type="number" class="form-control" name="utility_bill_amount" id="total_electric_charges">
+                <div class="form-group {% if form.total_electric_charges.errors %} has-error{% endif %}">
+                  <label for="{{ form.total_electric_charges.id_for_label }}">Total Electric Charges:</label>
+                  <input type="number" class="form-control" name="total_electric_charges" id="total_electric_charges">
                   <div class="error-message-box">
-                    {% for error in form.utility_bill_amount.errors %}
+                    {% for error in form.total_electric_charges.errors %}
                       <p class="form-error">{{ error }}</p>
                     {% endfor %}
                     </div>
                 </div>
                 <!-- total gas charges $ -->
-                <div class="form-group {% if form.utility_bill_amount.errors %} has-error{% endif %}">
-                    <label for="utility_bill_amount">Total Gas Charges:</label>
-                    <input type="number" class="form-control" name="utility_bill_amount" id="total_gas_charges">
+                <div class="form-group {% if form.total_gas_charges.errors %} has-error{% endif %}">
+                    <label for="{{ form.total_gas_charges.id_for_label }}">Total Gas Charges:</label>
+                    <input type="number" class="form-control" name="total_gas_charges" id="total_gas_charges">
                     <div class="error-message-box">
-                        {% for error in form.utility_bill_amount.errors %}
+                        {% for error in form.total_gas_charges.errors %}
                         <p class="form-error">{{ error }}</p>
                         {% endfor %}
                     </div>
                 </div>
                 <!-- electric consumption_kWh-->
-                <div class="form-group {% if form.electric_consumption_kWh.errors %} has-error{% endif %}">
-                    <label for="electric_consumption_kWh">Electric Consumption (kWh):</label>
-                    <input type="number" class="form-control" name="electric_consumption_kWh" id="electric_consumption_kWh">
+                <div class="form-group {% if form.elec_consumption_kwh.errors %} has-error{% endif %}">
+                    <label for="{{ form.elec_consumption_kwh.id_for_label }}">Electric Consumption (kWh):</label>
+                    <input type="number" class="form-control" name="elec_consumption_kwh" id="elec_consumption_kwh">
                     <div class="error-message-box">
-                        {% for error in form.electric_consumption_kWh.errors %}
+                        {% for error in form.elec_consumption_kwh.errors %}
                             <p class="form-error
                             ">{{ error }}</p>
                         {% endfor %}
@@ -126,7 +129,7 @@
                 </div>
                 <!-- gas consumption_therms-->
                 <div class="form-group {% if form.gas_consumption_therms.errors %} has-error{% endif %}">
-                    <label for="gas_consumption_therms">Gas Consumption (Therms):</label>
+                    <label for="{{ form.gas_consumption_therms.id_for_label }}">Gas Consumption (Therms):</label>
                     <input type="number" class="form-control" name="gas_consumption_therms" id="gas_consumption_therms">
                     <div class="error-message-box">
                         {% for error in form.gas_consumption_therms.errors %}
@@ -135,21 +138,21 @@
                     </div>
                 </div>
                 <!-- peak demand kWh-->
-                <div class="form-group {% if form.peak_demand.errors %} has-error{% endif %}">
-                    <label for="peak_demand">Peak Demand (kW):</label>
-                    <input type="number" class="form-control" name="peak_demand" id="peak_demand">
+                <div class="form-group {% if form.peak_demand_kwh.errors %} has-error{% endif %}">
+                    <label for="{{ form.peak_demand_kwh.id_for_label }}">Peak Demand (kW):</label>
+                    <input type="number" class="form-control" name="peak_demand_kwh" id="peak_demand_kwh">
                     <div class="error-message-box">
-                        {% for error in form.peak_demand.errors %}
+                        {% for error in form.peak_demand_kwh.errors %}
                             <p class="form-error">{{ error }}</p>
                         {% endfor %}
                     </div>
                 </div>
                 <!-- off peak demand -->
-                <div class="form-group {% if form.off_peak_demand.errors %} has-error{% endif %}">
-                    <label for="off_peak_demand">Off Peak Demand (kW):</label>
-                    <input type="number" class="form-control" name="off_peak_demand" id="off_peak_demand">
+                <div class="form-group {% if form.off_peak_demand_kwh.errors %} has-error{% endif %}">
+                    <label for="{{ form.off_peak_demand_kwh.id_for_label }}">Off Peak Demand (kW):</label>
+                    <input type="number" class="form-control" name="off_peak_demand_kwh" id="off_peak_demand_kwh">
                     <div class="error-message-box">
-                        {% for error in form.off_peak_demand.errors %}
+                        {% for error in form.off_peak_demand_kwh.errors %}
                             <p class="form-error">{{ error }}</p>
                         {% endfor %}
                     </div>
@@ -164,32 +167,21 @@
                 </div>
                 <br>
                 <!-- solar generation kWh -->
-                <div class="form-group {% if form.solar_generation_kWh.errors %} has-error{% endif %}">
-                    <label for="solar_generation_kWh">Solar Generation (kWh):</label>
-                    <input type="number" class="form-control" name="solar_generation_kWh" id="solar_generation_kWh">
+                <div class="form-group {% if form.solar_generation_kwh.errors %} has-error{% endif %}">
+                    <label for="{{ form.solar_generation_kwh.id_for_label }}">Solar Generation (kWh):</label>
+                    <input type="number" class="form-control" name="solar_generation_kwh" id="solar_generation_kwh" disabled>
                     <div class="error-message-box">
-                        {% for error in form.solar_generation_kWh.errors %}
+                        {% for error in form.solar_generation_kwh.errors %}
                             <p class="form-error">{{ error }}</p>
                         {% endfor %}
                     </div>
                 </div>
                 <!-- solar energy credits $ -->
                 <div class="form-group {% if form.solar_energy_credits.errors %} has-error{% endif %}">
-                    <label for="solar_energy_credits">Solar Energy Credits:</label>
-                    <input type="number" class="form-control" name="solar_energy_credits" id="solar_energy_credits">
+                    <label for="{{ form.solar_energy_credits.id_for_label }}">Solar Energy Credits:</label>
+                    <input type="number" class="form-control" name="solar_energy_credits" id="solar_energy_credits" disabled>
                     <div class="error-message-box">
                         {% for error in form.solar_energy_credits.errors %}
-                            <p class="form-error">{{ error }}</p>
-                        {% endfor %}
-                    </div>
-                </div>
-                <br>
-                <!-- upload utility bill -->
-                <div class="form-group {% if form.utility_bill_file.errors %} has-error{% endif %}">
-                    <label for="utility_bill_file">Upload Utility Bill:</label>
-                    <input type="file" class="form-control-file" name="utility_bill_file" id="utility_bill_file" required>
-                    <div class="error-message-box">
-                        {% for error in form.utility_bill_file.errors %}
                             <p class="form-error">{{ error }}</p>
                         {% endfor %}
                     </div>
@@ -207,35 +199,54 @@
   
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const districtSelect = document.getElementById('user_district');
-    const schoolSelect = document.getElementById('user_school');
+    const districtSelect = document.getElementById('bill_district');
+    const schoolSelect = document.getElementById('bill_school');
 
     districtSelect.addEventListener('change', function() {
-    const districtId = this.value;
-    schoolSelect.innerHTML = '<option value="">Select School</option>'; 
+        const districtId = this.value;
+        schoolSelect.innerHTML = '<option value="">Select School</option>'; 
 
-    if (districtId) {
-        schoolSelect.disabled = false;
+        if (districtId) {
+            schoolSelect.disabled = false;
 
-        // Fetch schools for the selected district
-        console.log(`Fetching schools for district ID: ${districtId}`);
-        fetch(`/enerprize-api/get-schools-for-district/${districtId}/`)
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);  // Check what data is received
-            data.schools.forEach(school => {
-            const option = document.createElement('option');
-            option.value = school.id;
-            option.textContent = school.school_name;
-            schoolSelect.appendChild(option);
-            });
-        })
-        .catch(error => console.error('Error:', error));
-    } else {
-        // Disable school dropdown if no district is selected
-        schoolSelect.disabled = true;
-    }
+            // Fetch schools for the selected district
+            console.log(`Fetching schools for district ID: ${districtId}`);
+            fetch(`/enerprize-api/get-schools-for-district/${districtId}/`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                data.schools.forEach(school => {
+                const option = document.createElement('option');
+                option.value = school.id;
+                option.textContent = school.school_name;
+                schoolSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        } else {
+            // Disable school dropdown if no district is selected
+            schoolSelect.disabled = true;
+        }
     });
+});
+
+document.getElementById('solar_generation_checkbox').addEventListener('change', function() {
+    const solarGenerationKWh = document.getElementById('solar_generation_kWh');
+    const solarEnergyCredits = document.getElementById('solar_energy_credits');
+    const isChecked = this.checked;
+
+    solarGenerationKWh.disabled = !isChecked; // Disable or enable based on checkbox
+    solarEnergyCredits.disabled = !isChecked;
+
+    if (isChecked) {
+        solarGenerationKWh.required = true;
+        solarEnergyCredits.required = true;
+    } else {
+        solarGenerationKWh.required = false;
+        solarEnergyCredits.required = false;
+        solarGenerationKWh.value = ''; 
+        solarEnergyCredits.value = ''; 
+    }
 });
 </script>
 {% endblock %}
