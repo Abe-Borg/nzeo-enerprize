@@ -28,6 +28,9 @@ class SchoolDistrict(models.Model):
     district_bb_southwest_lng = models.FloatField()
     district_bb_northeast_lat = models.FloatField()
     district_bb_northeast_lng = models.FloatField()
+    electricity_account_number = models.CharField(max_length=100, blank=True, null=True)
+    gas_account_number = models.CharField(max_length=100, blank=True, null=True)
+    solar_accout_number = models.CharField(max_length=100, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.district_name = self.district_name.lower()

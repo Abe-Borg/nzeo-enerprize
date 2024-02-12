@@ -2,6 +2,12 @@
 {% load static %}
 
 {% block main_container_nzeo_staff %}
+<style>
+    .text-center h1 {
+        margin-top: 3rem;
+    }
+</style>
+
 
 <div class="main-container fullscreen">
     <div class="container">
@@ -37,13 +43,17 @@
                         <!-- Options will be populated based on district selection -->
                     </select>
                 </div>
+                <!-- Account Number-->
+                <div class="form-group">
+                    <input class="form-control" type="text" name="{{ form.account_number.name }}" placeholder="Service Agreement ID" id="{{ form.service_agreement_id.id_for_label }}"/>
+                </div>
                 <!-- service agreement id-->
                 <div class="form-group">
                     <input class="form-control" type="text" name="{{ form.service_agreement_id.name }}" placeholder="Service Agreement ID" id="{{ form.service_agreement_id.id_for_label }}"/>
                 </div>
-                <!-- meter id -->
+                <!-- electricity meter id -->
                 <div class="form-group">
-                    <input type="text" class="form-control" name= "{{ form.meter_id.name }}" placeholder="Meter ID" id="{{ form.meter_id.id_for_label }}" required>
+                    <input type="text" class="form-control" name= "{{ form.meter_id.name }}" placeholder="Electricity Meter ID" id="{{ form.meter_id.id_for_label }}" required>
                 </div>
                 <!-- Utility Bill Start Date -->
                 <div class="form-group">
@@ -54,53 +64,22 @@
                 <div class="form-group">
                     <label for="{{ form.bill_end_date.id_for_label }}">Utility Bill End Date:</label>
                     <input type="date" class="form-control" name="bill_end_date" id="bill_end_date" required>
-                    <div class="error-message-box">
-                        {% for error in form.bill_end_date.errors %}
-                            <p class="form-error">{{ error }}</p>
-                        {% endfor %}
-                    </div>
                 </div>
                 <!-- total electric charges  $-->
                 <div class="form-group" >
-                  <input type="number" class="form-control" placeholder = "Total Electric Charges $" name="{{ form.total_electric_charges.name }}" id="{{ form.total_electric_charges.id_for_label }}">
+                  <input type="number" class="form-control" placeholder = "Total Electric Charges $" name="{{ form.total_electric_charges.name }}" id="{{ form.total_electric_charges.id_for_label }}" disabled>
                 </div>
                 <!-- total gas charges $ -->
                 <div class="form-group">
-                    <input type="number" class="form-control" placeholder="Total Gas Charges $" name="{{ form.total_gas_charges.name }}" id="{{ form.total_gas_charges.id_for_label }}">
+                    <input type="number" class="form-control" placeholder="Total Gas Charges $" name="{{ form.total_gas_charges.name }}" id="{{ form.total_gas_charges.id_for_label }}" disabled>
                 </div>
                 <!-- electric consumption_kWh-->
                 <div class="form-group">
-                    <input type="number" class="form-control" placeholder="Electric Consumption (kWh)" name="{{ form.elec_consumption_kwh.name }}" id="{{ form.elec_consumption_kwh.id_for_label }}">
+                    <input type="number" class="form-control" placeholder="Electric Consumption (kWh)" name="{{ form.elec_consumption_kwh.name }}" id="{{ form.elec_consumption_kwh.id_for_label }}" disabled>
                 </div>
                 <!-- gas consumption_therms-->
-                <div class="form-group {% if form.gas_consumption_therms.errors %} has-error{% endif %}">
-                    <label for="{{ form.gas_consumption_therms.id_for_label }}">Gas Consumption (Therms):</label>
-                    <input type="number" class="form-control" name="gas_consumption_therms" id="gas_consumption_therms">
-                    <div class="error-message-box">
-                        {% for error in form.gas_consumption_therms.errors %}
-                            <p class="form-error">{{ error }}</p>
-                        {% endfor %}
-                    </div>
-                </div>
-                <!-- peak demand kWh-->
-                <div class="form-group {% if form.peak_demand_kwh.errors %} has-error{% endif %}">
-                    <label for="{{ form.peak_demand_kwh.id_for_label }}">Peak Demand (kW):</label>
-                    <input type="number" class="form-control" name="peak_demand_kwh" id="peak_demand_kwh">
-                    <div class="error-message-box">
-                        {% for error in form.peak_demand_kwh.errors %}
-                            <p class="form-error">{{ error }}</p>
-                        {% endfor %}
-                    </div>
-                </div>
-                <!-- off peak demand -->
-                <div class="form-group {% if form.off_peak_demand_kwh.errors %} has-error{% endif %}">
-                    <label for="{{ form.off_peak_demand_kwh.id_for_label }}">Off Peak Demand (kW):</label>
-                    <input type="number" class="form-control" name="off_peak_demand_kwh" id="off_peak_demand_kwh">
-                    <div class="error-message-box">
-                        {% for error in form.off_peak_demand_kwh.errors %}
-                            <p class="form-error">{{ error }}</p>
-                        {% endfor %}
-                    </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" placeholder="Gas Consumption (Therms)" name="{{ form.gas_consumption_therms.name }}" id="{{ form.gas_consumption_therms.id_for_label }}" disabled>
                 </div>
                 <br>
                 <div class="form-check">
@@ -111,24 +90,12 @@
                 </div>
                 <br>
                 <!-- solar generation kWh -->
-                <div class="form-group {% if form.solar_generation_kwh.errors %} has-error{% endif %}">
-                    <label for="{{ form.solar_generation_kwh.id_for_label }}">Solar Generation (kWh):</label>
-                    <input type="number" class="form-control" name="solar_generation_kwh" id="solar_generation_kwh" disabled>
-                    <div class="error-message-box">
-                        {% for error in form.solar_generation_kwh.errors %}
-                            <p class="form-error">{{ error }}</p>
-                        {% endfor %}
-                    </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" placeholder="Solar Generation (kWh)" name="{{ form.solar_generation_kwh.name }}" id="{{ form.solar_generation_kwh.id_for_label }}" disabled>
                 </div>
                 <!-- solar energy credits $ -->
                 <div class="form-group {% if form.solar_energy_credits.errors %} has-error{% endif %}">
-                    <label for="{{ form.solar_energy_credits.id_for_label }}">Solar Energy Credits $:</label>
-                    <input type="number" class="form-control" name="solar_energy_credits" id="solar_energy_credits" disabled>
-                    <div class="error-message-box">
-                        {% for error in form.solar_energy_credits.errors %}
-                            <p class="form-error">{{ error }}</p>
-                        {% endfor %}
-                    </div>
+                    <input type="number" class="form-control" placeholder="Solar Energy Credits $" name="{{ form.solar_energy_credits.name }}" id="{{ form.solar_energy_credits.id_for_label }}" disabled>
                 </div>
                 <br>
                 <button type="submit" name="action" value="save_and_add_another" class="btn btn-secondary">Save and Add Another</button>
@@ -144,7 +111,107 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const districtSelect = document.getElementById('bill_district');
-    const schoolSelect = document.getElementById('bill_school');
+    const schoolSelect = document.getElementById("{{ form.school.id_for_label }}");
+
+    // Function to fetch schools based on the selected district
+    function fetchSchools(districtId) {
+        schoolSelect.innerHTML = '<option value="">Select School</option>';
+        if (districtId) {
+            schoolSelect.disabled = false;
+            fetch(`/enerprize-api/get-schools-for-district/${districtId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    data.schools.forEach(school => {
+                        const option = document.createElement('option');
+                        option.value = school.id;
+                        option.textContent = school.school_name;
+                        schoolSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        } else {
+            schoolSelect.disabled = true;
+        }
+    }
+    // Fetch all districts on page load
+    fetch('/enerprize-api/get-all-districts/')
+        .then(response => response.json())
+        .then(data => {
+            data.districts.forEach(district => {
+                const option = document.createElement('option');
+                option.value = district.id;
+                option.textContent = district.district_name;
+                districtSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error fetching districts:', error));
+
+    // Add change event listener to district select
+    districtSelect.addEventListener('change', function() {
+        fetchSchools(this.value);
+    });
+});
+
+document.getElementById('solar_generation_checkbox').addEventListener('change', function() {
+    const solarGenerationKWh = document.getElementById("{{ form.solar_generation_kwh.id_for_label }}");
+    const solarEnergyCredits = document.getElementById("{{ form.solar_energy_credits.id_for_label }}");
+    const isChecked = this.checked;
+
+    solarGenerationKWh.disabled = !isChecked;
+    solarEnergyCredits.disabled = !isChecked;
+
+    if (isChecked) {
+        solarGenerationKWh.required = true;
+        solarEnergyCredits.required = true;
+    } else {
+        solarGenerationKWh.required = false;
+        solarEnergyCredits.required = false;
+        solarGenerationKWh.value = ''; 
+        solarEnergyCredits.value = '';  
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const utilityTypeSelect = document.getElementById("{{ form.utility_type.id_for_label }}");
+    const totalGasChargesInput = document.getElementById("{{ form.total_gas_charges.id_for_label}");
+    const gasConsumptionInput = document.getElementById("{{ form.gas_consumption_therms.id_for_label }}");
+    const totalElectricChargesInput = document.getElementById("{{ form.total_electric_charges.id_for_label }}");
+    const electricConsumptionInput = document.getElementById("{{ form.elec_consumption_kwh.id_for_label }}");
+    const electricPeakDemandInput = document.getElementById("{{ form.peak_demand_kwh.id_for_label }}");
+    const electricOffPeakDemandInput = document.getElementById("{{ form.off_peak_demand_kwh.id_for_label }}");
+
+    // Call this function both on change and on initial load
+    function updateFieldAccessibility() {
+        if (utilityTypeSelect.value === 'natural_gas') {
+            totalGasChargesInput.disabled = false;
+            gasConsumptionInput.disabled = false;
+            totalElectricChargesInput.disabled = true;
+            electricConsumptionInput.disabled = true;
+            electricPeakDemandInput.disabled = true;
+            electricOffPeakDemandInput.disabled = true;
+        } else if (utilityTypeSelect.value === 'electric') {
+            totalGasChargesInput.disabled = true;
+            gasConsumptionInput.disabled = true;
+            totalElectricChargesInput.disabled = false;
+            electricConsumptionInput.disabled = false;
+            electricPeakDemandInput.disabled = false;
+            electricOffPeakDemandInput.disabled = false;
+        }
+    }
+
+    // Attach the event listener and call the function on initial load
+    utilityTypeSelect.addEventListener('change', updateFieldAccessibility);
+    updateFieldAccessibility(); // Call on initial load
+});
+</script>
+{% endblock %}
+
+
+
+
+<!-- document.addEventListener('DOMContentLoaded', function() {
+    const districtSelect = document.getElementById('bill_district');
+    const schoolSelect = document.getElementById("{{ form.school.id_for_label }}");
 
     districtSelect.addEventListener('change', function() {
         const districtId = this.value;
@@ -172,25 +239,4 @@ document.addEventListener('DOMContentLoaded', function() {
             schoolSelect.disabled = true;
         }
     });
-});
-
-document.getElementById('solar_generation_checkbox').addEventListener('change', function() {
-    const solarGenerationKWh = document.getElementById('solar_generation_kwh');
-    const solarEnergyCredits = document.getElementById('solar_energy_credits');
-    const isChecked = this.checked;
-
-    solarGenerationKWh.disabled = !isChecked;
-    solarEnergyCredits.disabled = !isChecked;
-
-    if (isChecked) {
-        solarGenerationKWh.required = true;
-        solarEnergyCredits.required = true;
-    } else {
-        solarGenerationKWh.required = false;
-        solarEnergyCredits.required = false;
-        solarGenerationKWh.value = ''; 
-        solarEnergyCredits.value = ''; 
-    }
-});
-</script>
-{% endblock %}
+}); -->

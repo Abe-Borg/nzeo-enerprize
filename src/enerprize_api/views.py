@@ -4,6 +4,7 @@ from school_management.models import School
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
+from district_management.models import SchoolDistrict
 
 
 def get_schools_for_district(request, district_id):
@@ -11,3 +12,7 @@ def get_schools_for_district(request, district_id):
     school_list = list(schools)
     return JsonResponse({'schools': school_list})
 
+def get_all_districts(request):
+    districts = SchoolDistrict.objects.all().values('id', 'district_name')
+    district_list = list(districts)
+    return JsonResponse({'districts': district_list})

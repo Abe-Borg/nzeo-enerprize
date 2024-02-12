@@ -1,5 +1,6 @@
 from django.db import models
 from district_management.models import SchoolDistrict
+from .models import Meter
 
 
 class School(models.Model):
@@ -22,9 +23,29 @@ class School(models.Model):
     school_student_population = models.IntegerField(default=0)
     school_student_percent_disadvantaged = models.IntegerField(default=0)
     school_student_percent_english_learners = models.IntegerField(default=0)
+    school_electricity_account_number = models.ForeignKey(SchoolDistrict.electricity_account_number, on_delete=models.SET_NULL, related_name='electricity_account_number')
+    school_gas_account_number = models.ForeignKey(SchoolDistrict.gas_account_number, on_delete=models.SET_NULL, related_name='gas_account_number')
+    school_solar_account_number = models.ForeignKey(SchoolDistrict.solar_account_number, on_delete=models.SET_NULL, related_name='solar_account_number')
 
     def __str__(self):
         return str(self.school_name)
+    
+
+class SchoolHasElectricityMeter(models.Model):
+    """
+    Represents an electricity meter associated with a school within the school management application.
+    This model captures detailed information about the electricity meter installed at a school, including the meter number, service agreement ID, and other relevant attributes. This information is essential for tracking electricity consumption and costs, as well as for integrating with utility bill data and performance metrics.
+    Fields:
+    - school: The school to which the electricity meter belongs (ForeignKey).
+    - meter_id: The unique identifier for the electricity meter.
+    The `__str__` method returns a string representation of the electricity meter, including its association with a school and the meter number.
+    """
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    meter_id = models.ForeignKey(Meter, on_delete=models.SET_NULL, null=True, blank=True, default=None, verbose_name="Associated Meter") # meter_id is a foreign key to the Meter model
+    service_agreement_id = models.ForeignKey(SchoolDistrict.electricity_account_number, on_delete=models.SET_NULL, related_name='electricity_account_number')
+
+    def __str__(self):
+        return str(self.school) + ' - ' + str(self.meter_number) + ' '
     
 
 class Building(models.Model):
@@ -338,7 +359,7 @@ class PerformanceMetrics(models.Model):
 
 class Meter(models.Model):
     """ 
-    a model that stores the data returned from the UtilityAPI call.
+    a model that stores data related to a utility meter. 
     """
     METER_TYPE = (
         ('natural_gas', 'Natural Gas'),
@@ -405,7 +426,7 @@ class Meter(models.Model):
     meter_utility_service_id = models.IntegerField()
     meter_utility_billing_account = models.IntegerField()
     meter_utility_service_address = models.CharField(max_length=100)
-    meter_utility_meter_number = models.IntegerField() # not sure if this is a duplicate of meter_uid
+    meter_utility_meter_number = models.IntegerField()
     meter_utility_tariff_name = models.CharField(max_length=100)
     meter_interval_start = models.DateTimeField()
     meter_interval_end = models.DateTimeField()
@@ -418,6 +439,7 @@ class Meter(models.Model):
     meter_interval_timezone = models.CharField(max_length=100, choices = INTERVAL_TIME_ZONES, default = 'us_pacific')
     meter_type = models.CharField(max_length=100, choices = METER_TYPE, default = 'meter_type')
     meter_building = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Associated Building")
+    meter_school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Associated School")
 
 
 class UtilityBill(models.Model):
@@ -464,10 +486,12 @@ class UtilityBill(models.Model):
     UTILITY_TYPE = (
         ('natural_gas', 'Natural Gas'),
         ('electric', 'Electric'),
+        ('solar', 'Solar'),
     )
     school = models.ForeignKey(School, on_delete=models.CASCADE)
-    service_agreement_id = models.IntegerField(default=0)
-    meter_id = models.CharField(max_length=100)
+    account_number = models.ForeignKey(SchoolDistrict.electricity_account_number, on_delete=models.SET_NULL, related_name='electricity_account_number')
+    service_agreement_id = models.ForeignKey(default=0)
+    meter_id = models.ForeignKey(Meter, on_delete=models.SET_NULL, null=True, blank=True, default=None, verbose_name="Associated Meter")
     utility_type = models.CharField(max_length=100, choices = UTILITY_TYPE)
     bill_start_date = models.DateField()
     bill_end_date = models.DateField()
