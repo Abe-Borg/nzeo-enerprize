@@ -1,154 +1,6 @@
 from django.db import models
 from district_management.models import SchoolDistrict
-
-UTILITY_TYPE = (
-        ('natural_gas', 'Natural Gas'),
-        ('electric', 'Electric'),
-        ('solar', 'Solar'),
-)
-UTILITY_PROVIDERS = (
-    ('pg_e', 'Pacific Gas & Electric'),
-    ('sce', 'Souther CA Edison'),
-)
-INTERVAL_TIME_ZONES = (
-    ('us_pacific', 'US/Pacific'),
-)
-BUILDING_TYPES = (
-    ('classroom', 'Classroom Building'),
-    ('laboratory', 'Laboratory'),
-    ('library', 'Library'),
-    ('restrooms', 'Restrooms'),
-    ('cafeteria', 'Cafeteria'),
-    ('gymnasium', 'Gymnasium'),
-    ('auditorium', 'Auditorium'),
-    ('administrative', 'Administrative'),
-    ('maintenance', 'Maintenance'),
-    ('storage', 'Storage'),
-    ('parking', 'Parking'),
-    ('sports', 'Sports'),
-    ('playground', 'Playground'),
-    ('outdoor', 'Outdoor'),
-    ('other', 'Other'),
-    ('arts', 'Arts'),
-    ('music', 'Music'),
-    ('theater', 'Theater'),
-    ('workshop', 'Workshop'),
-    ('kitchen', 'Kitchen'),
-    ('health', 'Health'),
-    ('counseling', 'Counseling'),
-    ('security', 'Security'),
-    ('energy_plant', 'Energy Plant'),
-    ('commons', 'Student Commons/Common Area'),
-    ('computer_lab', 'Computer Lab'),
-    ('science_center', 'Science Center'),
-    ('art_studio', 'Art Studio'),
-    ('language_lab', 'Language Lab'),
-    ('greenhouse', 'Greenhouse'),
-    ('childcare', 'Childcare Center'),
-    ('outdoor_classroom', 'Outdoor Classroom'),
-    ('student_center', 'Student Center'),
-    ('technology_hub', 'Technology Hub'),
-    ('vocational_training', 'Vocational Training Center')
-)
-ELECTRICAL_EQUIPMENT_TYPES = (
-    ('circuit_breaker', 'Circuit Breaker'),
-    ('transformer', 'Transformer'),
-    ('voltage_regulator', 'Voltage Regulator'),
-    ('electric_meter', 'Electric Meter'),
-    ('solar_panel', 'Solar Panel'),
-    ('generator', 'Generator'),
-    ('surge_protector', 'Surge Protector'),
-    ('ups', 'UPS (Uninterruptible Power Supply)'),
-    ('conduit_fittings', 'Conduit Fittings'),
-    ('junction_box', 'Junction Box'),
-    ('lighting_control', 'Lighting Control System'),
-    ('battery_storage', 'Battery Storage'),
-    ('inverter', 'Inverter'),
-    ('power_distribution_unit', 'Power Distribution Unit'),
-    ('energy_management_system', 'Energy Management System'),
-    ('smart_meter', 'Smart Meter'),
-    ('ev_charging_station', 'EV Charging Station'),
-    ('security_camera', 'Security Camera'),
-    ('network_switch', 'Network Switch'),
-    ('fire_alarm_panel', 'Fire Alarm Panel')
-)
-MECHANICAL_EQUIPMENT_TYPES = (
-    ('hvac_unit', 'HVAC Unit'),
-    ('boiler', 'Boiler'),
-    ('compressor', 'Compressor'),
-    ('heat_exchanger', 'Heat Exchanger'),
-    ('pump', 'Pump'),
-    ('fan_coil_unit', 'Fan Coil Unit'),
-    ('air_handling_unit', 'Air Handling Unit'),
-    ('chiller', 'Chiller'),
-    ('ductwork_components', 'Ductwork Components'),
-    ('cooling_tower', 'Cooling Tower'),
-    ('fire_suppression_system', 'Fire Suppression System'),
-    ('gas_detection_system', 'Gas Detection System'),
-    ('irrigation_system', 'Irrigation System'),
-    ('exhaust_fan', 'Exhaust Fan'),
-    ('vibration_isolator', 'Vibration Isolator'),
-    ('filtration_system', 'Filtration System'),
-    ('humidifier', 'Humidifier'),
-    ('dehumidifier', 'Dehumidifier'),
-    ('air_purifier', 'Air Purifier'),
-    ('roof_top_unit', 'Rooftop Unit')
-)
-PLUMBING_EQUIPMENT_TYPES = (
-    ('water_heater', 'Water Heater'),
-    ('pump', 'Pump'),
-    ('valve', 'Valve'),
-    ('pipe_fittings', 'Pipe Fittings'),
-    ('pressure_reducing_valve', 'Pressure Reducing Valve'),
-    ('backflow_preventer', 'Backflow Preventer'),
-    ('water_softener', 'Water Softener'),
-    ('drainage_system', 'Drainage System'),
-    ('faucet', 'Faucet'),
-    ('toilet', 'Toilet'),
-    ('irrigation_controller', 'Irrigation Controller'),
-    ('sump_pump', 'Sump Pump'),
-    ('greywater_system', 'Greywater System'),
-    ('rainwater_harvesting_system', 'Rainwater Harvesting System'),
-    ('sewage_pump', 'Sewage Pump'),
-    ('water_recycling_system', 'Water Recycling System'),
-    ('water_filtration', 'Water Filtration System'),
-    ('sensor_faucet', 'Sensor Faucet'),
-    ('emergency_shower', 'Emergency Shower'),
-    ('eye_wash_station', 'Eye Wash Station')
-)
-MANUFACTURERS = (
-    ('siemens', 'Siemens'),
-    ('general_electric', 'General Electric'),
-    ('honeywell', 'Honeywell'),
-    ('trane', 'Trane'),
-    ('carrier', 'Carrier'),
-    ('bosch', 'Bosch'),
-    ('abb', 'ABB'),
-    ('schneider_electric', 'Schneider Electric'),
-    ('mitsubishi_electric', 'Mitsubishi Electric'),
-    ('johnson_controls', 'Johnson Controls'),
-    ('daikin', 'Daikin'),
-    ('emerson', 'Emerson'),
-    ('hitachi', 'Hitachi'),
-    ('toshiba', 'Toshiba'),
-    ('rheem', 'Rheem'),
-    ('kohler', 'Kohler'),
-    ('moen', 'Moen'),
-    ('delta', 'Delta'),
-    ('grohe', 'Grohe'),
-    ('american_standard', 'American Standard'),
-    ('lennox', 'Lennox'),
-    ('york', 'York'),
-    ('goodman', 'Goodman'),
-    ('lg', 'LG'),
-    ('fujitsu', 'Fujitsu'),
-    ('bryant', 'Bryant'),
-    ('armstrong', 'Armstrong'),
-    ('panasonic', 'Panasonic'),
-    ('frigidaire', 'Frigidaire'),
-    ('maytag', 'Maytag')
-)
-
+import school_management.school_management_constants as smc
 
 class School(models.Model):
     school_district = models.ForeignKey(SchoolDistrict, on_delete=models.CASCADE)
@@ -166,15 +18,15 @@ class School(models.Model):
 class UtilityProviderAccountNumber(models.Model):
     # per district, per utility. a district can have multiple account numbers. 1 account number per utility per district
     account_number = models.CharField(max_length = 100, primary_key=True)
-    utility_provider = models.CharField(max_length=100, choices = UTILITY_PROVIDERS)
-    utility_type = models.CharField(max_length = 100, choices = UTILITY_TYPE)
+    utility_provider = models.CharField(max_length=100, choices = smc.UTILITY_PROVIDERS)
+    utility_type = models.CharField(max_length = 100, choices = smc.UTILITY_TYPE)
     account_district = models.ForeignKey(SchoolDistrict, on_delete=models.SET_NULL, null=True, blank=True, default=None)
     
 
 class ServiceAgreement(models.Model):
     # per school, per utility
     service_agreement_id = models.CharField(max_length = 100 , primary_key=True)
-    utility_type = models.CharField(max_length = 100, choices = UTILITY_TYPE)
+    utility_type = models.CharField(max_length = 100, choices = smc.UTILITY_TYPE)
     school = models.ForeignKey(School, on_delete=models.CASCADE)
     utility_provider_account_number = models.ForeignKey(UtilityProviderAccountNumber, on_delete=models.SET_NULL, null=True, blank=True, default=None, verbose_name="Associated Utility Provider Account Number")
 
@@ -182,7 +34,7 @@ class ServiceAgreement(models.Model):
 class Building(models.Model):
     building_school = models.ForeignKey(School, on_delete=models.CASCADE)
     building_name = models.CharField(max_length=100, default='building_name')
-    building_type = models.CharField(max_length=100, choices=BUILDING_TYPES)
+    building_type = models.CharField(max_length=100, choices=smc.BUILDING_TYPES)
     building_area_sqft = models.IntegerField()
     building_geo_lat = models.FloatField(default=0.0)
     building_geo_long = models.FloatField(default=0.0)
@@ -209,8 +61,8 @@ class Equipment(models.Model):
     equipment_school = models.ForeignKey(School, on_delete=models.CASCADE)
     equipment_building = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True, blank=True, default = None, verbose_name="Associated Building")
     equipment_tag = models.CharField(max_length=100, default='equipment_tag')
-    equipment_type = models.CharField(max_length=100, choices = ELECTRICAL_EQUIPMENT_TYPES + MECHANICAL_EQUIPMENT_TYPES + PLUMBING_EQUIPMENT_TYPES)
-    equipment_manufacturer = models.CharField(max_length=100, choices = MANUFACTURERS)
+    equipment_type = models.CharField(max_length=100, choices = smc.ELECTRICAL_EQUIPMENT_TYPES + smc.MECHANICAL_EQUIPMENT_TYPES + smc.PLUMBING_EQUIPMENT_TYPES)
+    equipment_manufacturer = models.CharField(max_length=100, choices = smc.MANUFACTURERS)
     equipment_model = models.CharField(max_length=100, default='equipment_model')
     equipment_serial_number = models.CharField(max_length=100, default='equipment_serial_number')
     equipment_install_date = models.DateField()
@@ -273,7 +125,7 @@ class PerformanceMetrics(models.Model):
 
 class Meter(models.Model):
     meter_id = models.IntegerField(primary_key=True)
-    meter_type = models.CharField(max_length=100, choices = UTILITY_TYPE)
+    meter_type = models.CharField(max_length=100, choices = smc.UTILITY_TYPE)
     meter_school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True)
     meter_building = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True, blank=True)
     meter_service_agreement_id = models.ForeignKey(ServiceAgreement, on_delete=models.SET_NULL, null=True, blank=True)
@@ -281,7 +133,7 @@ class Meter(models.Model):
 
 class UtilityBill(models.Model):
     # each utility bill is associated with one service agreement
-    utility_type = models.CharField(max_length=100, choices = UTILITY_TYPE)
+    utility_type = models.CharField(max_length=100, choices = smc.UTILITY_TYPE)
     district = models.ForeignKey(SchoolDistrict, on_delete=models.SET_NULL, null=True)
     school = models.ForeignKey(School, on_delete=models.CASCADE)
     service_agreement_id = models.ForeignKey(ServiceAgreement, on_delete=models.SET_NULL, null= True, default=0)

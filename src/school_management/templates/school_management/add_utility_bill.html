@@ -3,106 +3,140 @@
 
 {% block main_container_nzeo_staff %}
 <style>
-    .text-center h1 {
-        margin-top: 3rem;
-    }
-</style>
+.text-center h1 {
+    margin-top: 2rem;
+}
 
+.text-center .h2 {
+align-items: center;
+justify-content: center;
+}
+
+.icon-button {
+    margin-left: 10px; /* Adjust the space between the title and the icon */
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: inline-flex; /* This will keep the icon and text aligned inline */
+    align-items: center; /* Vertical alignment */
+}
+
+.icon-button i {
+    font-size: 24px; /* Adjust icon size as needed */
+}
+.custom-tooltip {
+    margin-left: 10px; /* Provides additional space for the tooltip text */
+    font-size: 12px; /* Adjust as needed */
+    white-space: nowrap; /* Prevents the tooltip text from wrapping */
+}
+@media (max-width: 768px) {
+    .text-center .h2 {
+        flex-direction: column;
+    }
+    .icon-button {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+    .custom-tooltip {
+        margin-left: 0;
+    }
+}
+</style>
 
 <div class="main-container fullscreen">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-xl-5 col-lg-6 col-md-7">
-          <div class="text-center">
-            <h1 class="h2">Enter a Utility Bill</h1>
-            <hr>
-            <form method = "post">
-              {% csrf_token %}
-                <!-- Utilty selection -->
-                <div class="form-group">
-                    <label for="{{ form.utility_type.id_for_label }}">Select Utility Type</label>
-                    <select class="form-control" name="{{ form.utility_type.name }}" id="{{ form.utility_type.id_for_label }}">
-                        {% for value, display in utility_type_choices %}
-                            <option value="{{ value }}">{{ display }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <!-- District Selection -->
-                <div class="form-group">
-                <select class="form-control" name="bill_district" id="bill_district" required>
-                    <option value="">Select District</option>
-                        {% for district in districts %}
-                    <option value="{{ district.id }}">{{ district.district_name | capfirst }}</option>
-                    {% endfor %}
-                </select>
-                </div>
-                <!-- School Selection -->
-                <div class="form-group">
-                    <select class="form-control" name="{{ form.school.name }}" id="{{ form.school.id_for_label }}" disabled required>
-                        <option value="">Select School</option>
-                        <!-- Options will be populated based on district selection -->
-                    </select>
-                </div>
-                <!-- Account Number-->
-                <div class="form-group">
-                    <input class="form-control" type="text" name="{{ form.account_number.name }}" placeholder="Service Agreement ID" id="{{ form.service_agreement_id.id_for_label }}"/>
-                </div>
-                <!-- service agreement id-->
-                <div class="form-group">
-                    <input class="form-control" type="text" name="{{ form.service_agreement_id.name }}" placeholder="Service Agreement ID" id="{{ form.service_agreement_id.id_for_label }}"/>
-                </div>
-                <!-- electricity meter id -->
-                <div class="form-group">
-                    <input type="text" class="form-control" name= "{{ form.meter_id.name }}" placeholder="Electricity Meter ID" id="{{ form.meter_id.id_for_label }}" required>
-                </div>
-                <!-- Utility Bill Start Date -->
-                <div class="form-group">
-                    <label>Utility Bill Start Date:</label>
-                    <input type="date" class="form-control" name="{{ form.bill_start_date.name }}" id="{{ form.bill_start_date.id_for_label }}" required>
-                </div>
-                <!-- Utility Bill End Date -->
-                <div class="form-group">
-                    <label for="{{ form.bill_end_date.id_for_label }}">Utility Bill End Date:</label>
-                    <input type="date" class="form-control" name="bill_end_date" id="bill_end_date" required>
-                </div>
-                <!-- total electric charges  $-->
-                <div class="form-group" >
-                  <input type="number" class="form-control" placeholder = "Total Electric Charges $" name="{{ form.total_electric_charges.name }}" id="{{ form.total_electric_charges.id_for_label }}" disabled>
-                </div>
-                <!-- total gas charges $ -->
-                <div class="form-group">
-                    <input type="number" class="form-control" placeholder="Total Gas Charges $" name="{{ form.total_gas_charges.name }}" id="{{ form.total_gas_charges.id_for_label }}" disabled>
-                </div>
-                <!-- electric consumption_kWh-->
-                <div class="form-group">
-                    <input type="number" class="form-control" placeholder="Electric Consumption (kWh)" name="{{ form.elec_consumption_kwh.name }}" id="{{ form.elec_consumption_kwh.id_for_label }}" disabled>
-                </div>
-                <!-- gas consumption_therms-->
-                <div class="form-group">
-                    <input type="number" class="form-control" placeholder="Gas Consumption (Therms)" name="{{ form.gas_consumption_therms.name }}" id="{{ form.gas_consumption_therms.id_for_label }}" disabled>
-                </div>
-                <br>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="solar_generation_checkbox">
-                    <label class="form-check-label" for="solar_generation_checkbox">
-                        I have solar generation or solar energy credits data to enter.
-                    </label>
-                </div>
-                <br>
-                <!-- solar generation kWh -->
-                <div class="form-group">
-                    <input type="number" class="form-control" placeholder="Solar Generation (kWh)" name="{{ form.solar_generation_kwh.name }}" id="{{ form.solar_generation_kwh.id_for_label }}" disabled>
-                </div>
-                <!-- solar energy credits $ -->
-                <div class="form-group {% if form.solar_energy_credits.errors %} has-error{% endif %}">
-                    <input type="number" class="form-control" placeholder="Solar Energy Credits $" name="{{ form.solar_energy_credits.name }}" id="{{ form.solar_energy_credits.id_for_label }}" disabled>
-                </div>
-                <br>
-                <button type="submit" name="action" value="save_and_add_another" class="btn btn-secondary">Save and Add Another</button>
-                <button type="submit" name="action" value="save_and_return" class="btn btn-primary">Save and Return to Overview</button>              
-            </form>
- 
-          </div>
+            <div class="text-center">
+                <h1 class="h2">
+                    Enter a Utility Bill
+                    <button type = "button" class = "icon-button" id = "message-question-icon-button">
+                        <i class="fa-regular fa-cloud-arrow-up">Upload Utility Bill</i>
+                    </button>
+                </h1>
+                <hr><br>
+                <form method = "post">
+                {% csrf_token %}
+                    <!-- Utilty selection -->
+                    <div class="form-group">
+                        <select class="form-control" name="{{ form.utility_type.name }}" id="{{ form.utility_type.id_for_label }}">
+                            <option value="" selected disabled>Select Utility Type</option>
+                            {% for value, display in utility_type_choices %}
+                                <option value="{{ value }}">{{ display }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <!-- District Selection -->
+                    <div class="form-group">
+                        <select class="form-control" name="bill_district" id="bill_district" required>
+                            <option value="" selected disabled>Select District</option>
+                                {% for district in districts %}
+                            <option value="{{ district.id }}">{{ district.district_name | capfirst }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <!-- School Selection -->
+                    <div class="form-group">
+                        <select class="form-control" name="{{ form.school.name }}" id="{{ form.school.id_for_label }}" disabled required>
+                            <option value="" selected disabled>Select School</option>
+                            <!-- Options will be populated based on district selection -->
+                        </select>
+                    </div>
+                    <!-- service agreement id-->
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="{{ form.service_agreement_id.name }}" placeholder="Service Agreement ID" id="{{ form.service_agreement_id.id_for_label }}"/>
+                    </div>
+                    <!-- electricity meter id -->
+                    <div class="form-group">
+                        <input type="text" class="form-control" name= "{{ form.meter_id.name }}" placeholder="Electricity Meter ID" id="{{ form.meter_id.id_for_label }}" required>
+                    </div>
+                    <!-- Utility Bill Start Date -->
+                    <div class="form-group">
+                        <label>Utility Bill Start Date:</label>
+                        <input type="date" class="form-control" name="{{ form.bill_start_date.name }}" id="{{ form.bill_start_date.id_for_label }}" required>
+                    </div>
+                    <!-- Utility Bill End Date -->
+                    <div class="form-group">
+                        <label for="{{ form.bill_end_date.id_for_label }}">Utility Bill End Date:</label>
+                        <input type="date" class="form-control" name="bill_end_date" id="bill_end_date" required>
+                    </div>
+                    <!-- total electric charges  $-->
+                    <div class="form-group" >
+                    <input type="number" class="form-control" placeholder = "Total Electric Charges $" name="{{ form.total_electric_charges.name }}" id="{{ form.total_electric_charges.id_for_label }}" disabled>
+                    </div>
+                    <!-- total gas charges $ -->
+                    <div class="form-group">
+                        <input type="number" class="form-control" placeholder="Total Gas Charges $" name="{{ form.total_gas_charges.name }}" id="{{ form.total_gas_charges.id_for_label }}" disabled>
+                    </div>
+                    <!-- electric consumption_kWh-->
+                    <div class="form-group">
+                        <input type="number" class="form-control" placeholder="Electric Consumption (kWh)" name="{{ form.elec_consumption_kwh.name }}" id="{{ form.elec_consumption_kwh.id_for_label }}" disabled>
+                    </div>
+                    <!-- gas consumption_therms-->
+                    <div class="form-group">
+                        <input type="number" class="form-control" placeholder="Gas Consumption (Therms)" name="{{ form.gas_consumption_therms.name }}" id="{{ form.gas_consumption_therms.id_for_label }}" disabled>
+                    </div>
+                    <br>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="solar_generation_checkbox">
+                        <label class="form-check-label" for="solar_generation_checkbox">
+                            I have solar generation or solar energy credits data to enter.
+                        </label>
+                    </div>
+                    <br>
+                    <!-- solar generation kWh -->
+                    <div class="form-group">
+                        <input type="number" class="form-control" placeholder="Solar Generation (kWh)" name="{{ form.solar_generation_kwh.name }}" id="{{ form.solar_generation_kwh.id_for_label }}" disabled>
+                    </div>
+                    <!-- solar energy credits $ -->
+                    <div class="form-group {% if form.solar_energy_credits.errors %} has-error{% endif %}">
+                        <input type="number" class="form-control" placeholder="Solar Energy Credits $" name="{{ form.solar_energy_credits.name }}" id="{{ form.solar_energy_credits.id_for_label }}" disabled>
+                    </div>
+                    <br>
+                    <button type="submit" name="action" value="save_and_add_another" class="btn btn-secondary">Save and Add Another</button>
+                    <button type="submit" name="action" value="save_and_return" class="btn btn-primary">Save and Return to Overview</button>              
+                </form>
+            </div>
         </div>
       </div>
     </div>
