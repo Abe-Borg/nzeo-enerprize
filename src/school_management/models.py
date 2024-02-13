@@ -283,17 +283,17 @@ class UtilityBill(models.Model):
     bill_statement_date = models.DateField()
     bill_start_date = models.DateField()
     bill_end_date = models.DateField()
-    total_usage_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    total_usage_therms = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    total_electric_usage_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     total_electric_charges = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    total_gas_usage_therms = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     total_gas_charges = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     solar_energy_credits = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     total_demand_charge_kw = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     total_solar_generation_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     # FOREIGN KEYS
-    school = models.ForeignKey(School, on_delete=models.CASCADE)
     district = models.ForeignKey(SchoolDistrict, on_delete=models.SET_NULL, null=True)
-    account_number = models.ForeignKey(UtilityProviderAccountNumber, on_delete=models.SET_NULL, null=True)
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    # each utility bill is associated with one service agreement
     service_agreement_id = models.ForeignKey(ServiceAgreement, on_delete=models.SET_NULL, null= True, default=0)
 
 
@@ -301,9 +301,9 @@ class MeterReading(models.Model):
     # per utility bill, per utility type
     elec_consumption_kwh = models.DecimalField(max_digits = 10, decimal_places = 2,  default=0.00)
     gas_consumption_therms = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    peak_demand_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    off_peak_demand_kwh = models.IntegerField(default=0)
-    part_peak_demand_kwh = models.IntegerField(default=0)
+    peak_consumption_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    off_peak_consumption_kwh = models.IntegerField(default=0)
+    part_peak_consumption_kwh = models.IntegerField(default=0)
     demand_charge_kw = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     solar_generation_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     # FOREIGN KEYS
