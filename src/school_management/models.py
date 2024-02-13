@@ -140,6 +140,7 @@ class UtilityBill(models.Model):
     bill_statement_date = models.DateField()
     bill_start_date = models.DateField()
     bill_end_date = models.DateField()
+
     total_electric_usage_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     total_electric_charges = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     total_gas_usage_therms = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
@@ -147,7 +148,10 @@ class UtilityBill(models.Model):
     solar_energy_credits = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     total_demand_charge_kw = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     total_solar_generation_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    
+    total_off_peak_consumption_kwh = models.IntegerField(default=0)
+    total_peak_consumption_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    total_part_peak_consumption_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+
 
 class MeterReading(models.Model):
     meter_id = models.ForeignKey(Meter, on_delete=models.CASCADE)

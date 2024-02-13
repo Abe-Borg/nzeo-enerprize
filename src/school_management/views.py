@@ -28,8 +28,8 @@ def add_utility_bill(request):
             if 'action' in request.POST:
                 if request.POST['action'] == 'save_and_add_another':
                     return redirect('add_utility_bill')
-                elif request.POST['action'] == 'save_and_return':
-                    return redirect('nzeo_admin_home') 
+                elif request.POST['action'] == 'save_bill':
+                    return redirect('nzeo_admin_home')
     else:
         form = UtilityBillForm()
     return render(request, 'school_management/add_utility_bill.html', {'form': form, 'utility_type_choices': utility_type_choices})
