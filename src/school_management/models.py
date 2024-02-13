@@ -284,15 +284,17 @@ class UtilityBill(models.Model):
     bill_start_date = models.DateField()
     bill_end_date = models.DateField()
     total_usage_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    total_usage_therms = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     total_electric_charges = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     total_gas_charges = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     solar_energy_credits = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    total_demand_charge_kw = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    total_solar_generation_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     # FOREIGN KEYS
     school = models.ForeignKey(School, on_delete=models.CASCADE)
     district = models.ForeignKey(SchoolDistrict, on_delete=models.SET_NULL, null=True)
     account_number = models.ForeignKey(UtilityProviderAccountNumber, on_delete=models.SET_NULL, null=True)
-    service_agreement_id = models.ForeignKey(ServiceAgreement, on_delete=models.SET_NULL, default=0)
-    meter_id = models.ForeignKey(Meter, on_delete=models.SET_NULL, null=True, blank=True, default=None)
+    service_agreement_id = models.ForeignKey(ServiceAgreement, on_delete=models.SET_NULL, null= True, default=0)
 
 
 class MeterReading(models.Model):
