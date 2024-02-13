@@ -7,40 +7,6 @@
     margin-top: 2rem;
 }
 
-.text-center .h2 {
-align-items: center;
-justify-content: center;
-}
-
-.icon-button {
-    margin-left: 10px; /* Adjust the space between the title and the icon */
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: inline-flex; /* This will keep the icon and text aligned inline */
-    align-items: center; /* Vertical alignment */
-}
-
-.icon-button i {
-    font-size: 24px; /* Adjust icon size as needed */
-}
-.custom-tooltip {
-    margin-left: 10px; /* Provides additional space for the tooltip text */
-    font-size: 12px; /* Adjust as needed */
-    white-space: nowrap; /* Prevents the tooltip text from wrapping */
-}
-@media (max-width: 768px) {
-    .text-center .h2 {
-        flex-direction: column;
-    }
-    .icon-button {
-        margin-left: 0;
-        margin-top: 10px;
-    }
-    .custom-tooltip {
-        margin-left: 0;
-    }
-}
 </style>
 
 <div class="main-container fullscreen">
@@ -71,7 +37,7 @@ justify-content: center;
                         <select class="form-control" name="bill_district" id="bill_district" required>
                             <option value="" selected disabled>Select District</option>
                                 {% for district in districts %}
-                            <option value="{{ district.id }}">{{ district.district_name | capfirst }}</option>
+                            <option value="{{ district.id }}">{{ district.district_name }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -146,19 +112,24 @@ justify-content: center;
 document.addEventListener('DOMContentLoaded', function() {
     const districtSelect = document.getElementById('bill_district');
     const schoolSelect = document.getElementById("{{ form.school.id_for_label }}");
-
-    // Function to fetch schools based on the selected district
+    
     function fetchSchools(districtId) {
-        schoolSelect.innerHTML = '<option value="">Select School</option>';
+        // Clear all existing options except the first "Select School" placeholder
+        schoolSelect.options.length = 0;
+
+        // Create and append the "Select School" placeholder option
+        const placeholderOption = new Option("Select School", "");
+        placeholderOption.disabled = true;
+        placeholderOption.selected = true;
+        schoolSelect.appendChild(placeholderOption);
+
         if (districtId) {
             schoolSelect.disabled = false;
             fetch(`/enerprize-api/get-schools-for-district/${districtId}/`)
                 .then(response => response.json())
                 .then(data => {
                     data.schools.forEach(school => {
-                        const option = document.createElement('option');
-                        option.value = school.id;
-                        option.textContent = school.school_name;
+                        const option = new Option(school.school_name, school.id);
                         schoolSelect.appendChild(option);
                     });
                 })
