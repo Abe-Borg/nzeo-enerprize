@@ -1,11 +1,10 @@
 import os
 import django
 import random
-from school_management.models import School, UtilityProviderAccountNumber, ServiceAgreement
-from district_management.models import SchoolDistrict
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
+from school_management.models import School, UtilityProviderAccountNumber, ServiceAgreement
+from district_management.models import SchoolDistrict
 
 def generate_service_agreement_id():
     return str(random.randint(1000000000, 9999999999))

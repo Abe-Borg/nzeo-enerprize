@@ -4,6 +4,7 @@ from district_management.models import SchoolDistrict
 from .models import School, Building, Equipment, PerformanceMetrics, Meter, MeterReading, UtilityBill, UtilityProviderAccountNumber, ServiceAgreement
 from django.utils.translation import gettext_lazy as _
 from django.utils.html import format_html
+from django.db.models import F
 
 class AreaRangeFilter(admin.SimpleListFilter):
     # Human-readable title which will be displayed in the right admin sidebar just above the filter options.
@@ -290,7 +291,41 @@ class UtilityProviderAccountNumberAdmin(admin.ModelAdmin):
 
 admin.site.register(UtilityProviderAccountNumber, UtilityProviderAccountNumberAdmin)
 
-admin.site.register(ServiceAgreement)
+
+
+# Custom filter for the district
+class DistrictListFilter(admin.SimpleListFilter):
+    title = 'district'  # or use _('district') for i18n
+    parameter_name = 'district'
+
+    def lookups(self, request, model_admin):
+        # Return a list of tuples. The first element in each tuple is the coded value for the option that will appear in the URL query. 
+        # The second element is the human-readable name for the option that will appear in the right sidebar.
+        districts = School.objects.order_by('school_district__district_name').distinct().values_list('school_district__district_name', flat=True)
+        return [(district, district) for district in districts]
+
+    def queryset(self, request, queryset):
+        # Filter the queryset based on the value provided in the query string and retrievable via `self.value()`.
+        if self.value():
+            return queryset.filter(school__school_district__district_name=self.value())
+        return queryset
+
+# Custom admin for ServiceAgreement
+@admin.register(ServiceAgreement)
+class ServiceAgreementAdmin(admin.ModelAdmin):
+    list_display = ('service_agreement_id', 'utility_type', 'school', 'utility_provider_account_number', 'get_school_district')
+    list_filter = ('utility_type', 'school', DistrictListFilter)
+
+    def get_school_district(self, obj):
+        return obj.school.school_district.district_name
+    get_school_district.admin_order_field = 'school__school_district__district_name'  # Allows column order sorting
+    get_school_district.short_description = 'School District'  # Renames column head
+
+    search_fields = ['school__school_name', 'utility_provider_account_number__account_number']
+
+
+
+
 admin.site.register(MeterReading)
 
 
