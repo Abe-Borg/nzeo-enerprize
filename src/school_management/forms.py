@@ -9,7 +9,7 @@ class UtilityBillForm(forms.ModelForm):
             'bill_start_date', 'bill_end_date', 'total_electric_usage_kwh', 
             'total_electric_charges', 'total_gas_usage_therms',  
             'total_gas_charges', 'solar_energy_credits', 'total_demand_charge_kw', 
-            'total_solar_generation_kwh',  
+            'total_solar_generation_kwh',   
         ]
 
     def __init__(self, *args, **kwargs):

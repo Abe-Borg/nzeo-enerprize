@@ -6,7 +6,15 @@
 .text-center h1 {
     margin-top: 2rem;
 }
+.meter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust the space between elements as needed */
+}
 
+.meter-group .btn-danger {
+    margin-left: auto; /* Aligns the delete button to the right */
+}
 </style>
 
 <div class="main-container fullscreen">
@@ -60,40 +68,72 @@
                     </div>
                     <!-- meter id -->
                     <div class="form-group">
-                        <select class = "form-control" name="? not sure what to put here" id="{{ form.service_agreement_id.id_for_label }}" required>
-                            <option value="" selected disabled>Select Meter ID></option>
-                            {% for meter in  %}
-                                <option value="{{ service_agreement.id }}">{{ service_agreement.service_agreement_id }}</option>
-                                <!-- Options will be populated based on school selection -->
-                            {% endfor %}
-                        </select>
-                        <input type="text" class="form-control" name= "{{ form.meter_id.name }}" placeholder="Electricity Meter ID" id="{{ form.meter_id.id_for_label }}" required>
+                        <div class="form-group" id="meter-selection-placeholder">
+                            <select class="form-control" name="meter_id" id="meter_id" required>
+                                <option value="" selected disabled>Select Meter</option>
+                                <!-- Dynamically populated based on utility type and school -->                                
+                            </select> 
+                        </div>                    
                     </div>
+                    <!-- Meter Reading Form Placeholder -->
+                    <div class="form-group" id="meter-reading-form-placeholder">
+                    <p>Dynamically inserted meter reading form will go here</p>
+                        <div id="meters-container">
+                            <p>Dynamically added meter selections and reading forms will go here</p>
+                        </div>
+                        <button type="button" id="add-meter-btn" class="btn btn-primary" title="Add another meter">
+                            <i class="fa fa-plus"></i>
+                        </button><p>Add Another Meter</p>
+                    </div>
+                    <!-- the user should have the option to dynamically add meters to the utility bill. these meters are pre-existing and are fetched from the db based on the utility bill type.-->
+                    
                     <!-- Utility Bill Start Date -->
                     <div class="form-group">
                         <label>Utility Bill Start Date:</label>
                         <input type="date" class="form-control" name="{{ form.bill_start_date.name }}" id="{{ form.bill_start_date.id_for_label }}" required>
                     </div>
-                    <!-- Utility Bill End Date -->
+                    <!-- Utility Bill End Date --> 
                     <div class="form-group">
                         <label for="{{ form.bill_end_date.id_for_label }}">Utility Bill End Date:</label>
                         <input type="date" class="form-control" name="bill_end_date" id="bill_end_date" required>
                     </div>
-                    <!-- total electric charges  $-->
+                    <!-- total_electric_usage_kwh  $-->
                     <div class="form-group" >
-                    <input type="number" class="form-control" placeholder = "Total Electric Charges $" name="{{ form.total_electric_charges.name }}" id="{{ form.total_electric_charges.id_for_label }}" disabled>
+                        <input type="number" class="form-control" name="{{ form.total_electric_usage_kwh.name }}" placeholder = "Total Electric Usage kWh (auto-calculated)" id="{{ form.total_electric_usage_kwh.id_for_label }}" disabled>
+                        <!--this will be the sum of elec_consumption_kwh of each electric MeterReding included in this bill-->
                     </div>
-                    <!-- total gas charges $ -->
+                    <!-- total_electric_charges $, this is a direct input from the bill-->
+                    <div class="form-group" >
+                        <input type="number" class="form-control" placeholder = "Total Electric Charges $" name="{{ form.total_electric_charges.name }}" id="{{ form.total_electric_charges.id_for_label }}" disabled>
+                    </div>
+                    <!-- total_gas_usage_therms  $-->
+                    <div class="form-group">
+                        <input type="number" class="form-control" name="{{ form.total_gas_usage_therms.name }}" placeholder = "Total Gas Usage Therms (auto-calculated)" id="{{ form.total_gas_usage_therms.id_for_label }}" disabled>
+                        <!--this will be the sum of gas_consumption_therms of each gas MeterReding included in this bill-->
+                    </div>
+                    <!-- total_gas_charges $ this is a direct input from the bill-->
                     <div class="form-group">
                         <input type="number" class="form-control" placeholder="Total Gas Charges $" name="{{ form.total_gas_charges.name }}" id="{{ form.total_gas_charges.id_for_label }}" disabled>
                     </div>
-                    <!-- electric consumption_kWh-->
-                    <div class="form-group">
-                        <input type="number" class="form-control" placeholder="Electric Consumption (kWh)" name="{{ form.elec_consumption_kwh.name }}" id="{{ form.elec_consumption_kwh.id_for_label }}" disabled>
+                    <!-- total_demand_charge_kw  $-->
+                    <div class="form-group" >
+                        <input type="number" class="form-control" name="{{ form.total_demand_charge_kw.name }}" placeholder = "Total Demand Charge kW (auto-calculated)" id="{{ form.total_demand_charge_kw.id_for_label }}" disabled>
+                        <!--this will be the sum of demand_charge_kw of each electric MeterReding included in this bill-->
                     </div>
-                    <!-- gas consumption_therms-->
+                    <!-- total_off_peak_consumption_kwh -->
+                    <div class="form-group" >
+                        <input type="number" class="form-control" name="{{ form.total_off_peak_consumption_kwh.name }}" placeholder = "Total Off-Peak Consumption kWh (auto-calculated)" id="{{ form.total_off_peak_consumption_kwh.id_for_label }}" disabled>
+                        <!--this will be the sum of off_peak_consumption_kwh of each electric MeterReding included in this bill-->
+                    </div>
+                    <!-- total_peak_consumption_kwh-->
+                    <div class="form-group" >
+                        <input type="number" class="form-control" name="{{ form.total_peak_consumption_kwh.name }}" placeholder = "Total Peak Consumption kWh (auto-calculated)" id="{{ form.total_peak_consumption_kwh.id_for_label }}" disabled>
+                        <!--this will be the sum of peak_consumption_kwh of each electric MeterReding included in this bill-->
+                    </div>
+                    <!-- total_part_peak_consumption_kwh -->
                     <div class="form-group">
-                        <input type="number" class="form-control" placeholder="Gas Consumption (Therms)" name="{{ form.gas_consumption_therms.name }}" id="{{ form.gas_consumption_therms.id_for_label }}" disabled>
+                        <input type="number" class="form-control" name="{{ form.total_part_peak_consumption_kwh.name }}" placeholder = "Total Part-Peak Consumption kWh (auto-calculated)" id="{{ form.total_part_peak_consumption_kwh.id_for_label }}" disabled>
+                        <!--this will be the sum of part_peak_consumption_kwh of each electric MeterReding included in this bill-->
                     </div>
                     <br>
                     <div class="form-check">
@@ -103,16 +143,22 @@
                         </label>
                     </div>
                     <br>
-                    <!-- Solar Meter(s)-->
+                    <!-- Solar meter id -->
                     <div class="form-group">
-                        <input type="text" class="form-control" name= "{{ form.meter_id.name }}" placeholder="Solar Meter ID" id="{{ form.meter_id.id_for_label }}" required>
+                        <select class="form-control" name="{{ form.district.name }}" id="{{ form.district.id_for_label }}" required>
+                            <option value="" selected disabled>Select Meter (placeholder)</option>
+                            <!-- Dynamically populated based on utility type and school -->                                
+                        </select> 
                     </div>
-                    <!-- solar generation kWh -->
+                    <!-- the user should have the option to dynamically add meters to the utility bill. these meters are pre-existing and are fetched from the db based on the utility bill type.-->
+
+                    <!-- total_solar_generation_kWh -->
+                    <div class="form-group" >
+                        <!--this will be the sum of solar_generation_kwh of each solar MeterReding included in this bill-->
+
+                    </div>
+                    <!-- solar energy credits $ this is a direct entry from a bill-->
                     <div class="form-group">
-                        <input type="number" class="form-control" placeholder="Solar Generation (kWh)" name="{{ form.solar_generation_kwh.name }}" id="{{ form.solar_generation_kwh.id_for_label }}" disabled>
-                    </div>
-                    <!-- solar energy credits $ -->
-                    <div class="form-group {% if form.solar_energy_credits.errors %} has-error{% endif %}">
                         <input type="number" class="form-control" placeholder="Solar Energy Credits $" name="{{ form.solar_energy_credits.name }}" id="{{ form.solar_energy_credits.id_for_label }}" disabled>
                     </div>
                     <br>
@@ -125,7 +171,9 @@
     </div>
   </div>
   
+
 <script>
+// fetch all districts and schools for a selected district
 document.addEventListener('DOMContentLoaded', function() {
     const districtSelect = document.getElementById("{{ form.district.id_for_label }}");
     const schoolSelect = document.getElementById("{{ form.school.id_for_label }}");
@@ -174,6 +222,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// make solar section active based on checkbox
 document.getElementById('solar_generation_checkbox').addEventListener('change', function() {
     const solarGenerationKWh = document.getElementById("{{ form.solar_generation_kwh.id_for_label }}");
     const solarEnergyCredits = document.getElementById("{{ form.solar_energy_credits.id_for_label }}");
@@ -225,40 +274,158 @@ document.addEventListener('DOMContentLoaded', function() {
     utilityTypeSelect.addEventListener('change', updateFieldAccessibility);
     updateFieldAccessibility(); // Call on initial load
 });
+
+// fetch meters and make meterreading menus for data entry
+document.getElementById('{{ form.utility_type.id_for_label }}').addEventListener('change', function() {
+    const utilityType = this.value;
+    const schoolId = document.getElementById('{{ form.school.id_for_label }}').value; // Assuming school is selected by this point
+    fetchMeters(utilityType, schoolId);
+});
+
+function fetchMeters(utilityType, schoolId) {
+    // get-meters-for-school-and-utility-type/<int:school_id>/<int:utility_type_id>/
+    fetch(`/get-meters-for-school-and-utility-type/${schoolId}/${utilityType}/`)
+        .then(response => response.json())
+        .then(data => {
+            const meterSelect = document.createElement('select');
+            meterSelect.className = 'form-control';
+            meterSelect.name = 'meter_id';
+            data.meters.forEach(meter => {
+                const option = new Option(meter.id);
+                meterSelect.appendChild(option);
+            });
+            const meterSelectionPlaceholder = document.getElementById('meter-selection-placeholder');
+            meterSelectionPlaceholder.innerHTML = ''; 
+            meterSelectionPlaceholder.appendChild(meterSelect);
+            
+            meterSelect.addEventListener('change', function() {
+                const meterId = this.value;
+                displayMeterReadingForm(meterId);
+            });
+
+            function displayMeterReadingForm(meterId) {
+                // Assuming there's a placeholder in your HTML for the meter reading form
+                const meterReadingFormPlaceholder = document.getElementById('meter-reading-form-placeholder');
+                
+                meterReadingFormPlaceholder.innerHTML = `
+                <div class="meter-reading-form" data-meter-id="${meterId}">
+                    <label for="elec_consumption_kwh_${meterId}">Electric Consumption (kWh):</label>
+                    <input type="number" class="form-control" name="elec_consumption_kwh_${meterId}" id="elec_consumption_kwh_${meterId}" step="0.01" placeholder="0.00">
+                    
+                    <label for="gas_consumption_therms_${meterId}">Gas Consumption (Therms):</label>
+                    <input type="number" class="form-control" name="gas_consumption_therms_${meterId}" id="gas_consumption_therms_${meterId}" step="0.01" placeholder="0.00">
+                    
+                    <label for="peak_consumption_kwh_${meterId}">Peak Consumption (kWh):</label>
+                    <input type="number" class="form-control" name="peak_consumption_kwh_${meterId}" id="peak_consumption_kwh_${meterId}" step="0.01" placeholder="0.00">
+                    
+                    <label for="off_peak_consumption_kwh_${meterId}">Off-Peak Consumption (kWh):</label>
+                    <input type="number" class="form-control" name="off_peak_consumption_kwh_${meterId}" id="off_peak_consumption_kwh_${meterId}" placeholder="0">
+                    
+                    <label for="part_peak_consumption_kwh_${meterId}">Part-Peak Consumption (kWh):</label>
+                    <input type="number" class="form-control" name="part_peak_consumption_kwh_${meterId}" id="part_peak_consumption_kwh_${meterId}" placeholder="0">
+                    
+                    <label for="demand_charge_kw_${meterId}">Demand Charge (kW):</label>
+                    <input type="number" class="form-control" name="demand_charge_kw_${meterId}" id="demand_charge_kw_${meterId}" step="0.01" placeholder="0.00">
+                    
+                    <label for="solar_generation_kwh_${meterId}">Solar Generation (kWh):</label>
+                    <input type="number" class="form-control" name="solar_generation_kwh_${meterId}" id="solar_generation_kwh_${meterId}" step="0.01" placeholder="0.00">
+                </div>
+            `;
+            }
+
+        })
+        .catch(error => console.error('Error fetching meters:', error));
+}
+
+
+// dynamic meter addition
+document.getElementById('add-meter-btn').addEventListener('click', function() {
+    addMeterSelection();
+});
+
+
+function addMeterSelection() {
+    const meterIndex = document.querySelectorAll('.meter-selection').length; // To keep track of how many meters have been added
+    
+    // Create a container for the entire meter group (selection, reading form, and delete button)
+    const meterGroup = document.createElement('div');
+    meterGroup.className = 'form-group meter-group';
+    
+    // Create the meter selection dropdown
+    const meterSelect = document.createElement('select');
+    meterSelect.className = 'form-control meter-selection';
+    meterSelect.name = `meter_id_${meterIndex}`;
+    meterSelect.innerHTML = `<option value="" selected disabled>Select Meter</option>`;
+    // Populate this dropdown with meter options as per your utility type requirement
+    
+    // Append meter selection to the meter group
+    meterGroup.appendChild(meterSelect);
+
+    // Create a placeholder for the meter reading form
+    const meterReadingPlaceholder = document.createElement('div');
+    meterReadingPlaceholder.id = `meter-reading-form-placeholder-${meterIndex}`;
+    meterReadingPlaceholder.className = 'meter-reading-form-placeholder';
+    
+    // Append reading form placeholder to the meter group
+    meterGroup.appendChild(meterReadingPlaceholder);
+
+    // Create the delete button for the meter
+    const deleteButton = document.createElement('button');
+    deleteButton.type = 'button';
+    deleteButton.className = 'btn btn-danger btn-sm delete-meter-btn';
+    deleteButton.innerHTML = '<i class="fa fa-minus"></i>';
+    deleteButton.onclick = function() {
+        // Remove the entire meter group when delete button is clicked
+        meterGroup.remove();
+    };
+    
+    // Append delete button to the meter group
+    meterGroup.appendChild(deleteButton);
+
+    // Append the meter group to the meters container
+    const container = document.getElementById('meters-container');
+    container.appendChild(meterGroup);
+
+    // Set up a change event listener for the new meter selection to display its reading form
+    meterSelect.addEventListener('change', function() {
+        const meterId = this.value;
+        displayMeterReadingForm(meterId, meterReadingPlaceholder.id);
+    });
+}
+
+
+// Adjusted displayMeterReadingForm function to accept the placeholder ID
+function displayMeterReadingForm(meterId, placeholderId) {
+    const meterReadingFormPlaceholder = document.getElementById(placeholderId);
+    // Dynamically create and insert the meter reading form associated with the selected meter
+    // Similar to the previously provided displayMeterReadingForm function
+    meterReadingFormPlaceholder.innerHTML = `
+        <div class="meter-reading-form" data-meter-id="${meterId}">
+            <label for="elec_consumption_kwh_${meterId}">Electric Consumption (kWh):</label>
+            <input type="number" class="form-control" name="elec_consumption_kwh_${meterId}" id="elec_consumption_kwh_${meterId}" step="0.01" placeholder="0.00">
+            
+            <label for="gas_consumption_therms_${meterId}">Gas Consumption (Therms):</label>
+            <input type="number" class="form-control" name="gas_consumption_therms_${meterId}" id="gas_consumption_therms_${meterId}" step="0.01" placeholder="0.00">
+            
+            <label for="peak_consumption_kwh_${meterId}">Peak Consumption (kWh):</label>
+            <input type="number" class="form-control" name="peak_consumption_kwh_${meterId}" id="peak_consumption_kwh_${meterId}" step="0.01" placeholder="0.00">
+            
+            <label for="off_peak_consumption_kwh_${meterId}">Off-Peak Consumption (kWh):</label>
+            <input type="number" class="form-control" name="off_peak_consumption_kwh_${meterId}" id="off_peak_consumption_kwh_${meterId}" placeholder="0">
+            
+            <label for="part_peak_consumption_kwh_${meterId}">Part-Peak Consumption (kWh):</label>
+            <input type="number" class="form-control" name="part_peak_consumption_kwh_${meterId}" id="part_peak_consumption_kwh_${meterId}" placeholder="0">
+            
+            <label for="demand_charge_kw_${meterId}">Demand Charge (kW):</label>
+            <input type="number" class="form-control" name="demand_charge_kw_${meterId}" id="demand_charge_kw_${meterId}" step="0.01" placeholder="0.00">
+            
+            <label for="solar_generation_kwh_${meterId}">Solar Generation (kWh):</label>
+            <input type="number" class="form-control" name="solar_generation_kwh_${meterId}" id="solar_generation_kwh_${meterId}" step="0.01" placeholder="0.00">
+        </div>
+    `;
+}
+
+
 </script>
 {% endblock %}
 
-
-
-
-<!-- document.addEventListener('DOMContentLoaded', function() {
-    const districtSelect = document.getElementById('bill_district');
-    const schoolSelect = document.getElementById("{{ form.school.id_for_label }}");
-
-    districtSelect.addEventListener('change', function() {
-        const districtId = this.value;
-        schoolSelect.innerHTML = '<option value="">Select School</option>'; 
-
-        if (districtId) {
-            schoolSelect.disabled = false;
-
-            // Fetch schools for the selected district
-            console.log(`Fetching schools for district ID: ${districtId}`);
-            fetch(`/enerprize-api/get-schools-for-district/${districtId}/`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                data.schools.forEach(school => {
-                const option = document.createElement('option');
-                option.value = school.id;
-                option.textContent = school.school_name;
-                schoolSelect.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Error:', error));
-        } else {
-            // Disable school dropdown if no district is selected
-            schoolSelect.disabled = true;
-        }
-    });
-}); -->
