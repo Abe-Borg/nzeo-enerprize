@@ -248,17 +248,21 @@ class EquipmentAdmin(admin.ModelAdmin):
     list_filter = ('equipment_school', 'equipment_building', 'equipment_type', 'equipment_manufacturer', InstallDateRangeFilter, WarrantyExpirationDateRangeFilter, ElecKwDemandFilter, GasBtuhDemandFilter, GeneratesElecKwFilter, StorageKBtuFilter, StorageKWhFilter)
     ordering = ('equipment_model', 'equipment_type', 'equipment_manufacturer')
 
+
 @admin.register(School)
 class SchoolAdmin(admin.ModelAdmin):
-    # Your other admin options here
-    list_display = ('school_name','display_school_district', 'display_school_area', 'display_school_student_population', 'display_school_student_percent_disadvantaged', 'display_school_student_percent_english_learners')
+    list_display = (
+        'school_name','display_school_district', 'display_calculated_school_area', 
+        'display_school_student_population', 'display_school_student_percent_disadvantaged', 
+        'display_school_student_percent_english_learners')
     list_filter = (DistrictFilter,)
 
     def display_school_district(self, obj):
         return format_html("<span>{}</span>", obj.school_district)
     
-    def display_school_area(self, obj):
-        return format_html("<span>{}</span>", obj.school_area_sqft)
+    def display_calculated_school_area(self, obj):
+        calculated_area = obj.calculate_school_area_sqft()
+        return format_html("<span>{}</span>", calculated_area)
     
     def display_school_student_population(self, obj):
         return format_html("<span>{}</span>", obj.school_student_population)
@@ -269,7 +273,7 @@ class SchoolAdmin(admin.ModelAdmin):
     def display_school_student_percent_english_learners(self, obj):
         return format_html("<span>{}</span>", obj.school_student_percent_english_learners)
         
-    display_school_area.short_description = "AREA (sqft)"
+    display_calculated_school_area.short_description = "AREA (sqft)"
     display_school_district.short_description = "DISTRICT"
     display_school_student_population.short_description = "STUDENT POPULATION"
     display_school_student_percent_disadvantaged.short_description = "% DISADVANTAGED"
@@ -278,11 +282,12 @@ class SchoolAdmin(admin.ModelAdmin):
     display_school_student_population.admin_order_field = 'school_student_population'
     display_school_student_percent_disadvantaged.admin_order_field = 'school_student_percent_disadvantaged'
     display_school_student_percent_english_learners.admin_order_field = 'school_student_percent_english_learners'
-    display_school_area.admin_order_field = 'school_area_sqft'
+
 
 admin.site.register(PerformanceMetrics)
 admin.site.register(Meter)
 admin.site.register(UtilityBill)
+
 
 class UtilityProviderAccountNumberAdmin(admin.ModelAdmin):
     list_display = ('account_number', 'utility_provider', 'utility_type', 'account_district')

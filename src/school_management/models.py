@@ -5,11 +5,14 @@ import school_management.school_management_constants as smc
 class School(models.Model):
     school_district = models.ForeignKey(SchoolDistrict, on_delete=models.CASCADE)
     school_name = models.CharField(max_length=100)
-    school_area_sqft = models.IntegerField() # dynamically calculated
     school_address = models.CharField(max_length=100) # geo coordinates are calculated form address.
     school_student_population = models.IntegerField(default=0)
     school_student_percent_disadvantaged = models.IntegerField(default=0) 
     school_student_percent_english_learners = models.IntegerField(default=0)
+
+    def calculate_school_area_sqft(self):
+        # Summing the area of all related buildings
+        return self.building_set.aggregate(models.Sum('building_area_sqft'))['building_area_sqft__sum'] or 0
 
     def __str__(self):
         return str(self.school_name)
@@ -87,7 +90,7 @@ class Equipment(models.Model):
 
 
 class PerformanceMetrics(models.Model):
-    school = models.ForeignKey(School, on_delete=models.CASCADE) # school associated with the performance metrics
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
     elec_energy_intensity_kwh_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     gas_energy_intensity_kbtu_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     energy_use_intensity_combined_kbtu_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # sum of energy use and gross area (gas and electric)

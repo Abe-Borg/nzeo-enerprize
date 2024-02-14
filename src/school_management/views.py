@@ -36,5 +36,7 @@ def add_utility_bill(request):
 
 
 
-
+@login_required
+def check_calculations(request):
+    return render(request, 'school_management/check_calculations.html')
 
