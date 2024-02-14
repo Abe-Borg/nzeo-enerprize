@@ -1,13 +1,13 @@
 UTILITY_TYPE = (
-        ('natural_gas', 'Natural Gas'),
-        ('electric', 'Electric'),
+        ('Natural Gas', 'Natural Gas'),
+        ('Electric', 'Electric'),
         # ('solar', 'Solar'),
 )
 UTILITY_PROVIDERS = (
-    ('pg_e', 'PGE'),
-    ('sce', 'SCE'),
-    ('socal_gas', 'SoCalG'),
-    ('sdge', 'SDGE'),
+    ('PGE', 'PGE'),
+    ('SCE', 'SCE'),
+    ('SoCalG', 'SoCalG'),
+    ('SDGE', 'SDGE'),
 )
 INTERVAL_TIME_ZONES = (
     ('us_pacific', 'US/Pacific'),

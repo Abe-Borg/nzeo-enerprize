@@ -282,7 +282,14 @@ class SchoolAdmin(admin.ModelAdmin):
 admin.site.register(PerformanceMetrics)
 admin.site.register(Meter)
 admin.site.register(UtilityBill)
-admin.site.register(UtilityProviderAccountNumber)
+
+class UtilityProviderAccountNumberAdmin(admin.ModelAdmin):
+    list_display = ('account_number', 'utility_provider', 'utility_type', 'account_district')
+    list_filter = ('utility_provider', 'utility_type', 'account_district')
+    search_fields = ('account_number', 'utility_provider', 'utility_type')
+
+admin.site.register(UtilityProviderAccountNumber, UtilityProviderAccountNumberAdmin)
+
 admin.site.register(ServiceAgreement)
 admin.site.register(MeterReading)
 
