@@ -4,8 +4,10 @@ UTILITY_TYPE = (
         # ('solar', 'Solar'),
 )
 UTILITY_PROVIDERS = (
-    ('pg_e', 'Pacific Gas & Electric'),
-    ('sce', 'Souther CA Edison'),
+    ('pg_e', 'PGE'),
+    ('sce', 'SCE'),
+    ('socal_gas', 'SoCalG'),
+    ('sdge', 'SDGE'),
 )
 INTERVAL_TIME_ZONES = (
     ('us_pacific', 'US/Pacific'),
