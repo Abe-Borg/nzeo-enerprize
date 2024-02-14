@@ -9,7 +9,6 @@ from django.db.models import F
 class AreaRangeFilter(admin.SimpleListFilter):
     # Human-readable title which will be displayed in the right admin sidebar just above the filter options.
     title = _('building area (sqft)')
-
     # Parameter for the filter that will be used in the URL query.
     parameter_name = 'area'
 
@@ -202,11 +201,12 @@ class DistrictFilter(admin.SimpleListFilter):
             return queryset.filter(school_district__id=self.value())
         return queryset
 
+
 @admin.register(Building)
 class BuildingAdmin(admin.ModelAdmin):
-    list_display = ('building_name', 'building_type', 'building_area_sqft')
+    list_display = ('building_name', 'building_type', 'building_area_sqft', 'building_age', 'building_school')
     list_filter = ('building_school', 'building_type', AreaRangeFilter, BuildingAgeRangeFilter)
-    ordering = ('building_type', 'building_area_sqft') 
+    ordering = ('building_type', 'building_area_sqft', 'building_age', 'building_school') 
 
     def get_school_name(self, obj):
         return obj.building_school.school_name
@@ -215,7 +215,6 @@ class BuildingAdmin(admin.ModelAdmin):
     def changelist_view(self, request, extra_context=None):
         # Aggregate the sum of building_area_sqft for the current queryset
         response = super().changelist_view(request, extra_context=extra_context)
-        
         try:
             # response.context_data can be None in case of an invalid request (e.g., a bad search query),
             # so we need to check if it is not None before we try to access it.
@@ -227,12 +226,11 @@ class BuildingAdmin(admin.ModelAdmin):
         except (AttributeError, KeyError):
             # In case of an exception, we just ignore it and the total area won't be shown.
             pass
-        
         return response
     
 @admin.register(Equipment)
 class EquipmentAdmin(admin.ModelAdmin):
-    list_display = ('equipment_tag','equipment_model', 'equipment_type', 'equipment_manufacturer')
+    list_display = ('equipment_tag','equipment_type', 'equipment_model', 'equipment_manufacturer', 'equipment_install_date', 'equipment_warranty_expiration',  'equipment_serial_number', 'equipment_location', 'equipment_coordinates', 'equipment_notes')
     def get_school_name(self, obj):
         return obj.equipment_school.school_name
     
@@ -246,7 +244,7 @@ class EquipmentAdmin(admin.ModelAdmin):
     get_building_name.short_description = 'Building Name'
     
     list_filter = ('equipment_school', 'equipment_building', 'equipment_type', 'equipment_manufacturer', InstallDateRangeFilter, WarrantyExpirationDateRangeFilter, ElecKwDemandFilter, GasBtuhDemandFilter, GeneratesElecKwFilter, StorageKBtuFilter, StorageKWhFilter)
-    ordering = ('equipment_model', 'equipment_type', 'equipment_manufacturer')
+    ordering = ('equipment_tag', 'equipment_type', 'equipment_model', 'equipment_manufacturer', 'equipment_install_date', 'equipment_warranty_expiration', 'equipment_location')
 
 
 @admin.register(School)
@@ -284,11 +282,6 @@ class SchoolAdmin(admin.ModelAdmin):
     display_school_student_percent_english_learners.admin_order_field = 'school_student_percent_english_learners'
 
 
-admin.site.register(PerformanceMetrics)
-admin.site.register(Meter)
-admin.site.register(UtilityBill)
-
-
 class UtilityProviderAccountNumberAdmin(admin.ModelAdmin):
     list_display = ('account_number', 'utility_provider', 'utility_type', 'account_district')
     list_filter = ('utility_provider', 'utility_type', 'account_district')
@@ -297,7 +290,7 @@ class UtilityProviderAccountNumberAdmin(admin.ModelAdmin):
 admin.site.register(UtilityProviderAccountNumber, UtilityProviderAccountNumberAdmin)
 
 
-
+#################### Service Agreement Admin ####################
 # Custom filter for the district
 class DistrictListFilter(admin.SimpleListFilter):
     title = 'district'  # or use _('district') for i18n
@@ -323,14 +316,17 @@ class ServiceAgreementAdmin(admin.ModelAdmin):
 
     def get_school_district(self, obj):
         return obj.school.school_district.district_name
-    get_school_district.admin_order_field = 'school__school_district__district_name'  # Allows column order sorting
-    get_school_district.short_description = 'School District'  # Renames column head
+    get_school_district.admin_order_field = 'school__school_district__district_name' 
+    get_school_district.short_description = 'School District' 
 
     search_fields = ['school__school_name', 'utility_provider_account_number__account_number']
 
 
 
 
-admin.site.register(MeterReading)
 
+admin.site.register(MeterReading)
+admin.site.register(PerformanceMetrics)
+admin.site.register(Meter)
+admin.site.register(UtilityBill)
 
