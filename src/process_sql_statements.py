@@ -8,7 +8,7 @@ django.setup()
 
 from django.db import connection
 
-FILE_NAME = 'recreate_meter_table.sql'
+FILE_NAME = 'pge_electric_account_numbers.sql'
 
 with connection.cursor() as cursor:
     with open(FILE_NAME, 'r') as file:
