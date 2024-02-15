@@ -71,13 +71,14 @@ class Equipment(models.Model):
     equipment_serial_number = models.CharField(max_length=100, default='equipment_serial_number')
     equipment_install_date = models.DateField()
     equipment_warranty_expiration = models.DateField(auto_now=False, auto_now_add=False)
-    equipment_geo_coordinates = models.JSONField() # location will be dynamically set by user by placing markup on a map.
+    equipment_coordinates = models.JSONField() # location will be dynamically set by user by placing markup on a map.
     equipment_notes = equipment_notes = models.TextField(max_length=200, blank=True, default='equipment_notes')
     equipment_elec_kw_demand = models.IntegerField(default = 0)
     equipment_gas_btuh_demand = models.IntegerField(default = 0)
     equipment_generates_elec_kw = models.IntegerField(default = 0)
     equipment_storage_kwh = models.IntegerField(default = 0)
     equipment_storage_kbtu = models.IntegerField(default = 0)
+    equipment_location = models.CharField(max_length=100, default='equipment_location')
 
 
     def __str__(self):

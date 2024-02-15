@@ -233,35 +233,47 @@ class BuildingAdmin(admin.ModelAdmin):
 class EquipmentAdmin(admin.ModelAdmin):
     list_display = (
         'equipment_tag','equipment_type', 'equipment_model', 'equipment_manufacturer', 
-        'install_date', 'warranty_expiration',  'serial_number', 'geo_coordinates', 'equipment_notes'
+        'install_date', 'warranty_expiration',  'serial_number', 'geo_coordinates', 
+        'elec_kw_demand','gas_btuh_demand',
     )
 
     def install_date(self, obj):
         return obj.equipment_install_date
     install_date.short_description = 'Install Date'
+    install_date.admin_order_field = 'equipment_install_date'
 
     def warranty_expiration(self, obj):
         return obj.equipment_warranty_expiration
     warranty_expiration.short_description = 'Warranty Expiration'
+    warranty_expiration.admin_order_field = 'equipment_warranty_expiration'
 
     def serial_number(self, obj):
         return obj.equipment_serial_number
     serial_number.short_description = 'Serial Number'
+    serial_number.admin_order_field = 'equipment_serial_number'
 
     def geo_coordinates(self, obj):
         return obj.equipment_coordinates
     geo_coordinates.short_description = 'Geo Coordinates'
-    
+    geo_coordinates.admin_order_field = 'equipment_coordinates' 
 
-    
+    def elec_kw_demand(self, obj):
+        return obj.equipment_elec_kw_demand
+    elec_kw_demand.short_description = 'Elec KW Demand'
+    elec_kw_demand.admin_order_field = 'equipment_elec_kw_demand'
+
+    def gas_btuh_demand(self, obj):
+        return obj.equipment_gas_btuh_demand
+    gas_btuh_demand.short_description = 'Gas BTUH Demand'
+    gas_btuh_demand.admin_order_field = 'equipment_gas_btuh_demand'
+        
     list_filter = (
         'equipment_school', 'equipment_building', 'equipment_type', 'equipment_manufacturer', 
         InstallDateRangeFilter, WarrantyExpirationDateRangeFilter, ElecKwDemandFilter, 
         GasBtuhDemandFilter, GeneratesElecKwFilter, StorageKBtuFilter, StorageKWhFilter
     )
     ordering = (
-        'equipment_tag', 'equipment_type', 'equipment_model', 'equipment_manufacturer', 
-        'equipment_install_date', 'equipment_warranty_expiration'
+        'equipment_tag', 'equipment_type', 'equipment_model', 'equipment_manufacturer',
     )
 
 
@@ -303,7 +315,7 @@ class SchoolAdmin(admin.ModelAdmin):
 class UtilityProviderAccountNumberAdmin(admin.ModelAdmin):
     list_display = ('account_number', 'utility_provider', 'utility_type', 'account_district')
     list_filter = ('utility_provider', 'utility_type', 'account_district')
-    search_fields = ('account_number', 'utility_provider', 'utility_type')
+    search_fields = ('account_number', 'utility_provider', 'utility_type') 
 
 admin.site.register(UtilityProviderAccountNumber, UtilityProviderAccountNumberAdmin)
 
