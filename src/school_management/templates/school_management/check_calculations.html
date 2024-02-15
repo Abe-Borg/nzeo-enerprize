@@ -3,210 +3,29 @@
 
 {% block main_container_nzeo_staff %}
 
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
 <div class="main-container fullscreen">
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-xl-5 col-lg-6 col-md-7">
-            <div class="text-center">
-                <h1 class="h2">
-                    Enter a Utility Bill
-                    <button type = "button" class = "icon-button" id = "message-question-icon-button">
-                        <i class="fa-regular fa-cloud-arrow-up">Upload Utility Bill</i>
-                    </button>
-                </h1>
-                <hr><br>
-                <form method = "post">
-                {% csrf_token %}
-                    <!-- District Selection -->
-                    <div class="form-group">
-                        <select class="form-control" name="{{ form.district.name }}" id="{{ form.district.id_for_label }}" required>
-                            <option value="" selected disabled>Select District</option>
-                                {% for district in districts %}
-                                    <option value="{{ district.id }}">{{ district.district_name }}</option>
-                                {% endfor %}
-                        </select> 
-                    </div>
-                    <!-- School Selection -->
-                    <div class="form-group">
-                        <select class="form-control" name="{{ form.school.name }}" id="{{ form.school.id_for_label }}" disabled required>
-                            <option value="" selected disabled>Select School</option>
-                            <!-- Options will be populated based on district selection -->
-                        </select>
-                    </div>
-                    <!-- School Gross Floor Area-->
-                    <div class="form-group">
-                        <span class="form-control" id="school_area_sqft"></span>
-                    </div>
-                    <!-- meter id -->
-                    <div class="form-group">
-                        <div class="form-group" id="meter-selection-placeholder">
-                            <select class="form-control" name="meter_id" id="meter_id" required>
-                                <option value="" selected disabled>Select Meter</option>
-                                <!-- Dynamically populated based on utility type and school -->                                
-                            </select> 
-                        </div>                    
-                    </div>
-                    <!-- Meter Reading Form Placeholder -->
-                    <div class="form-group" id="meter-reading-form-placeholder">
-                        <!-- Dynamically inserted meter reading form will go here -->
-                        <div id="meters-container">
-                            <!-- Dynamically added meter selections and reading forms will go here -->
-                        </div>
-                        <button type="button" id="add-meter-btn" class="btn btn-primary" title="Add another meter">
-                            <i class="fa fa-plus"></i>
-                        </button><p>Add Another Meter</p>
-                    </div>
-                    <!-- the user should have the option to dynamically add meters to the utility bill. these meters are pre-existing and are fetched from the db based on the utility bill type.-->
+        <div class="text-center">
+            <h1 class="h2">
+                Check Calculations
+            </h1>
+            <hr><br>
+            <div>
+                <h4>Sample Calculation 1: Scope 1 Emission Calculation (gas)</h4>
+                <p>How many lbs CO2e are in 300 therms?</p>
+                <ul>300 * {{UNIT_CONVERSIONS['kBTU/therm']}}
                     
-                    <!-- Utility Bill Start Date -->
-                    <div class="form-group">
-                        <label>Utility Bill Start Date:</label>
-                        <input type="date" class="form-control" name="{{ form.bill_start_date.name }}" id="{{ form.bill_start_date.id_for_label }}" required>
-                    </div>
-                    <!-- Utility Bill End Date --> 
-                    <div class="form-group">
-                        <label for="{{ form.bill_end_date.id_for_label }}">Utility Bill End Date:</label>
-                        <input type="date" class="form-control" name="bill_end_date" id="bill_end_date" required>
-                    </div>
-                    <!-- total_electric_usage_kwh  $-->
-                    <div class="form-group" >
-                        <input type="number" class="form-control" name="{{ form.total_electric_usage_kwh.name }}" placeholder = "Total Electric Usage kWh (auto-calculated)" id="{{ form.total_electric_usage_kwh.id_for_label }}" disabled>
-                        <!--this will be the sum of elec_consumption_kwh of each electric MeterReding included in this bill-->
-                    </div>
-                    <!-- total_electric_charges $, this is a direct input from the bill-->
-                    <div class="form-group" >
-                        <input type="number" class="form-control" placeholder = "Total Electric Charges $" name="{{ form.total_electric_charges.name }}" id="{{ form.total_electric_charges.id_for_label }}" disabled>
-                    </div>
-                    <!-- total_gas_usage_therms  $-->
-                    <div class="form-group">
-                        <input type="number" class="form-control" name="{{ form.total_gas_usage_therms.name }}" placeholder = "Total Gas Usage Therms (auto-calculated)" id="{{ form.total_gas_usage_therms.id_for_label }}" disabled>
-                        <!--this will be the sum of gas_consumption_therms of each gas MeterReding included in this bill-->
-                    </div>
-                    <!-- total_gas_charges $ this is a direct input from the bill-->
-                    <div class="form-group">
-                        <input type="number" class="form-control" placeholder="Total Gas Charges $" name="{{ form.total_gas_charges.name }}" id="{{ form.total_gas_charges.id_for_label }}" disabled>
-                    </div>
-                    <!-- total_demand_charge_kw  $-->
-                    <div class="form-group" >
-                        <input type="number" class="form-control" name="{{ form.total_demand_charge_kw.name }}" placeholder = "Total Demand Charge kW (auto-calculated)" id="{{ form.total_demand_charge_kw.id_for_label }}" disabled>
-                        <!--this will be the sum of demand_charge_kw of each electric MeterReding included in this bill-->
-                    </div>
-                    <!-- total_off_peak_consumption_kwh -->
-                    <div class="form-group" >
-                        <input type="number" class="form-control" name="{{ form.total_off_peak_consumption_kwh.name }}" placeholder = "Total Off-Peak Consumption kWh (auto-calculated)" id="{{ form.total_off_peak_consumption_kwh.id_for_label }}" disabled>
-                        <!--this will be the sum of off_peak_consumption_kwh of each electric MeterReding included in this bill-->
-                    </div>
-                    <!-- total_peak_consumption_kwh-->
-                    <div class="form-group" >
-                        <input type="number" class="form-control" name="{{ form.total_peak_consumption_kwh.name }}" placeholder = "Total Peak Consumption kWh (auto-calculated)" id="{{ form.total_peak_consumption_kwh.id_for_label }}" disabled>
-                        <!--this will be the sum of peak_consumption_kwh of each electric MeterReding included in this bill-->
-                    </div>
-                    <!-- total_part_peak_consumption_kwh -->
-                    <div class="form-group">
-                        <input type="number" class="form-control" name="{{ form.total_part_peak_consumption_kwh.name }}" placeholder = "Total Part-Peak Consumption kWh (auto-calculated)" id="{{ form.total_part_peak_consumption_kwh.id_for_label }}" disabled>
-                        <!--this will be the sum of part_peak_consumption_kwh of each electric MeterReding included in this bill-->
-                    </div>
-                    <br>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="solar_generation_checkbox">
-                        <label class="form-check-label" for="solar_generation_checkbox">
-                            I have solar generation or solar energy credits data to enter.
-                        </label>
-                    </div>
-                    <br>
-                    <!-- Solar meter id -->
-                    <div class="form-group">
-                        <select class="form-control" name="{{ form.district.name }}" id="{{ form.district.id_for_label }}" required>
-                            <option value="" selected disabled>Select Meter (placeholder)</option>
-                            <!-- Dynamically populated based on utility type and school -->                                
-                        </select> 
-                    </div>
-                    <!-- the user should have the option to dynamically add meters to the utility bill. these meters are pre-existing and are fetched from the db based on the utility bill type.-->
-
-                    <!-- total_solar_generation_kWh -->
-                    <div class="form-group" >
-                        <!--this will be the sum of solar_generation_kwh of each solar MeterReding included in this bill-->
-
-                    </div>
-                    <!-- solar energy credits $ this is a direct entry from a bill-->
-                    <div class="form-group">
-                        <input type="number" class="form-control" placeholder="Solar Energy Credits $" name="{{ form.solar_energy_credits.name }}" id="{{ form.solar_energy_credits.id_for_label }}" disabled>
-                    </div>
-                    <br>
-                    <button type="button" class="btn btn-danger" onclick="window.history.back()">Cancel</button>
-                    <button type="submit" name="action" value="save_and_add_another" class="btn btn-secondary">Save and Add Another</button>
-                    <button type="submit" name="action" value="save_bill" class="btn btn-primary" onclick="window.history.back()">Save</button>
-                    <a href = "{% url 'utility_bill_list' %}" class="btn btn-success">Check Calculation</a>
-                </form>
+                </ul>
             </div>
         </div>
       </div>
     </div>
 </div>
 
-<script>
-    // fetch all districts and schools for a selected district
-    document.addEventListener('DOMContentLoaded', function() {
-        const districtSelect = document.getElementById("district_id");
-        const schoolSelect = document.getElementById("{school_id");
-        
-        function fetchSchools(districtId) {
-            // Clear all existing options except the first "Select School" placeholder
-            schoolSelect.options.length = 0;
-
-            // Create and append the "Select School" placeholder option
-            const placeholderOption = new Option("Select School", "");
-            placeholderOption.disabled = true;
-            placeholderOption.selected = true;
-            schoolSelect.appendChild(placeholderOption);
-
-            if (districtId) {
-                schoolSelect.disabled = false;
-                fetch(`/enerprize-api/get-schools-for-district/${districtId}/`)
-                    .then(response => response.json())
-                    .then(data => {
-                        data.schools.forEach(school => {
-                            const option = new Option(school.school_name, school.id);
-                            schoolSelect.appendChild(option);
-                        });
-                    })
-                    .catch(error => console.error('Error:', error));
-            } else {
-                schoolSelect.disabled = true;
-            }
-        }
-        // Fetch all districts on page load
-        fetch('/enerprize-api/get-all-districts/')
-            .then(response => response.json())
-            .then(data => {
-                data.districts.forEach(district => {
-                    const option = document.createElement('option');
-                    option.value = district.id;
-                    option.textContent = district.district_name.toUpperCase();
-                    districtSelect.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Error fetching districts:', error));
-
-        // Add change event listener to district select
-        districtSelect.addEventListener('change', function() {
-            fetchSchools(this.value);
-        });
-    });
-
-
-    // get school floor area
-    document.addEventListener('DOMContentLoaded', function() {
-    fetch('get-school-gross-floor-area/${districtId}/')
-        .then(response => response.json())
-        .then(data => {
-            // Assuming 'data' is the fetched number or an object containing the number
-            var schoolAreaSqFt = data.schoolAreaSqFt; // Adjust according to the actual data structure
-            document.getElementById('school_area_sqft').textContent = schoolAreaSqFt;
-        })
-        .catch(error => console.error('Error fetching school area:', error));
-    });
-
-</script>
 
 {% endblock %}
