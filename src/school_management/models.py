@@ -129,7 +129,7 @@ class PerformanceMetrics(models.Model):
 
 class Meter(models.Model):
     meter_id = models.IntegerField(primary_key=True)
-    meter_type = models.CharField(max_length=100, choices = smc.UTILITY_TYPE)
+    meter_type = models.CharField(max_length=100, choices = smc.UTILITY_TYPE + (('Solar', 'Solar'),))
     meter_school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True)
     meter_building = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True, blank=True)
     meter_service_agreement_id = models.ForeignKey(ServiceAgreement, on_delete=models.SET_NULL, null=True, blank=True)
