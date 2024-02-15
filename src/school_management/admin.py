@@ -228,23 +228,41 @@ class BuildingAdmin(admin.ModelAdmin):
             pass
         return response
     
+
 @admin.register(Equipment)
 class EquipmentAdmin(admin.ModelAdmin):
-    list_display = ('equipment_tag','equipment_type', 'equipment_model', 'equipment_manufacturer', 'equipment_install_date', 'equipment_warranty_expiration',  'equipment_serial_number', 'equipment_location', 'equipment_coordinates', 'equipment_notes')
-    def get_school_name(self, obj):
-        return obj.equipment_school.school_name
-    
-    get_school_name.short_description = 'School Name'
+    list_display = (
+        'equipment_tag','equipment_type', 'equipment_model', 'equipment_manufacturer', 
+        'install_date', 'warranty_expiration',  'serial_number', 'geo_coordinates', 'equipment_notes'
+    )
 
-    def get_building_name(self, obj):
-        if obj.equipment_building:
-            return obj.equipment_building.building_name
-        return "No Building"
+    def install_date(self, obj):
+        return obj.equipment_install_date
+    install_date.short_description = 'Install Date'
+
+    def warranty_expiration(self, obj):
+        return obj.equipment_warranty_expiration
+    warranty_expiration.short_description = 'Warranty Expiration'
+
+    def serial_number(self, obj):
+        return obj.equipment_serial_number
+    serial_number.short_description = 'Serial Number'
+
+    def geo_coordinates(self, obj):
+        return obj.equipment_coordinates
+    geo_coordinates.short_description = 'Geo Coordinates'
     
-    get_building_name.short_description = 'Building Name'
+
     
-    list_filter = ('equipment_school', 'equipment_building', 'equipment_type', 'equipment_manufacturer', InstallDateRangeFilter, WarrantyExpirationDateRangeFilter, ElecKwDemandFilter, GasBtuhDemandFilter, GeneratesElecKwFilter, StorageKBtuFilter, StorageKWhFilter)
-    ordering = ('equipment_tag', 'equipment_type', 'equipment_model', 'equipment_manufacturer', 'equipment_install_date', 'equipment_warranty_expiration', 'equipment_location')
+    list_filter = (
+        'equipment_school', 'equipment_building', 'equipment_type', 'equipment_manufacturer', 
+        InstallDateRangeFilter, WarrantyExpirationDateRangeFilter, ElecKwDemandFilter, 
+        GasBtuhDemandFilter, GeneratesElecKwFilter, StorageKBtuFilter, StorageKWhFilter
+    )
+    ordering = (
+        'equipment_tag', 'equipment_type', 'equipment_model', 'equipment_manufacturer', 
+        'equipment_install_date', 'equipment_warranty_expiration'
+    )
 
 
 @admin.register(School)
