@@ -93,7 +93,7 @@ class Equipment(models.Model):
 
 class Meter(models.Model):
     meter_id = models.IntegerField(primary_key=True)
-    meter_type = models.CharField(max_length=100, choices = smc.UTILITY_TYPE + (('Solar', 'Solar'),))
+    meter_type = models.CharField(max_length=100, choices = smc.UTILITY_TYPE + (('net_energy', 'Net Energy Meter'),))
     meter_school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True)
     meter_building = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True, blank=True)
     meter_service_agreement_id = models.ForeignKey(ServiceAgreement, on_delete=models.SET_NULL, null=True, blank=True)
@@ -135,9 +135,9 @@ class MeterReading(models.Model):
 
 class PerformanceMetrics(models.Model):
     school = models.ForeignKey(School, on_delete=models.CASCADE)
-    gas_bill_id = models.ForeignKey(UtilityBill, on_delete=models.SET_NULL, null=True, blank=True, default=None, related_name='gas_bill_id')
-    elec_bill_id = models.ForeignKey(UtilityBill, on_delete=models.SET_NULL, null=True, blank=True, default=None, related_name='elec_bill_id')
-    assigned_month = models.CharField(max_length=100, choices = smc.MONTHS)
+    gas_bill_id = models.ForeignKey(UtilityBill, on_delete=models.SET_NULL, null=True, default=None, related_name='gas_bill_id')
+    elec_bill_id = models.ForeignKey(UtilityBill, on_delete=models.SET_NULL, null=True, default=None, related_name='elec_bill_id')
+    assigned_month = models.CharField(max_length=100, choices = smc.MONTHS, default='January')
 
     elec_energy_intensity_kwh_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     gas_energy_intensity_kbtu_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
