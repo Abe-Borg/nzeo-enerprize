@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from school_management.models import School
 from .forms import UtilityBillForm
 import school_management.school_management_constants as smc
+from district_management.models import SchoolDistrict
 
 
 @login_required
@@ -20,6 +21,14 @@ def school_home(request):
 @login_required
 def add_utility_bill(request):
     utility_type_choices = smc.UTILITY_TYPE
+    districts = SchoolDistrict.objects.none()
+    user = request.user
+
+    if user.groups.filter(name='NZEO-Staff').exists():
+        districts = SchoolDistrict.objects.all()        
+    elif user.groups.filter(name='District-Staff').exists():
+        districts = SchoolDistrict.objects.filter(id=user_district.id)
+
     if request.method == 'POST':
         form = UtilityBillForm(request.POST)
         if form.is_valid():
@@ -32,8 +41,12 @@ def add_utility_bill(request):
                     return redirect('nzeo_admin_home')
     else:
         form = UtilityBillForm()
-    return render(request, 'school_management/add_utility_bill.html', {'form': form, 'utility_type_choices': utility_type_choices})
-
+        
+    return render(request, 'school_management/add_utility_bill.html', {
+        'form': form, 
+        'utility_type_choices': utility_type_choices, 
+        'districts': districts
+    })
 
 
 @login_required

@@ -175,16 +175,14 @@
   
 
 <script>
-// fetch all districts and schools for a selected district
+// fetch schools based on district selection
 document.addEventListener('DOMContentLoaded', function() {
     const districtSelect = document.getElementById("{{ form.district.id_for_label }}");
     const schoolSelect = document.getElementById("{{ form.school.id_for_label }}");
     
     function fetchSchools(districtId) {
-        // Clear all existing options except the first "Select School" placeholder
         schoolSelect.options.length = 0;
 
-        // Create and append the "Select School" placeholder option
         const placeholderOption = new Option("Select School", "");
         placeholderOption.disabled = true;
         placeholderOption.selected = true;
@@ -205,24 +203,33 @@ document.addEventListener('DOMContentLoaded', function() {
             schoolSelect.disabled = true;
         }
     }
-    // Fetch all districts on page load
+
+    // Initially fetch all districts (for NZEO staff) or the specific district (for district-specific users)
     fetch('/enerprize-api/get-all-districts/')
         .then(response => response.json())
         .then(data => {
-            data.districts.forEach(district => {
-                const option = document.createElement('option');
-                option.value = district.id;
-                option.textContent = district.district_name.toUpperCase();
-                districtSelect.appendChild(option);
-            });
+            if (data.districts.length > 0) {
+                data.districts.forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district.id;
+                    option.textContent = district.district_name.toUpperCase();
+                    districtSelect.appendChild(option);
+                });
+
+                // If there's only one district (plus the placeholder), automatically select it and fetch schools
+                if (districtSelect.options.length == 2) {
+                    districtSelect.selectedIndex = 1; // Select the only real district
+                    fetchSchools(districtSelect.value);
+                }
+            }
         })
         .catch(error => console.error('Error fetching districts:', error));
 
-    // Add change event listener to district select
     districtSelect.addEventListener('change', function() {
         fetchSchools(this.value);
     });
 });
+
 
 // make solar section active based on checkbox
 document.getElementById('solar_generation_checkbox').addEventListener('change', function() {
