@@ -27,7 +27,7 @@ def add_utility_bill(request):
     if user.groups.filter(name='NZEO-Staff').exists():
         districts = SchoolDistrict.objects.all()        
     elif user.groups.filter(name='District-Staff').exists():
-        districts = SchoolDistrict.objects.filter(id=user_district.id)
+        districts = SchoolDistrict.objects.filter(district_name = user.profile.user_district)
 
     if request.method == 'POST':
         form = UtilityBillForm(request.POST)

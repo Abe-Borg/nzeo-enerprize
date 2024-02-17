@@ -62,13 +62,14 @@
       <div class="d-lg-flex align-items-center">
         <!-- top right dropdown -->
         <div class="dropdown mx-lg-2">
-          <button class="btn btn-primary btn-block dropdown-toggle" type="button" id="newContentButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-primary btn-block dropdown-toggle" type="button" id="newContentButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Actions
           </button>
           <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'add_utility_bill' %}"><i class="fa-regular fa-cloud-arrow-down"></i> Enter Utility Bill</a>
+            <a class="dropdown-item" href="#"><i class="fa-regular fa-cloud-arrow-up"></i> Upload GB Data (XML)</a>
             <a class="dropdown-item" href="#"><i class="fa-regular fa-cloud-arrow-down"></i> Download</a>
             <a class="dropdown-item" href="#"><i class="fa-regular fa-cloud-arrow-up"></i> Upload</a>
-            <a class="dropdown-item" href="#"><i class="fa-sharp fa-regular fa-user-plus"></i> Add User</a>
           </div>
         </div>
 

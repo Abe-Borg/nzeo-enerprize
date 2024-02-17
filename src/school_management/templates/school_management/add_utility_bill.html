@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // If there's only one district (plus the placeholder), automatically select it and fetch schools
                 if (districtSelect.options.length == 2) {
-                    districtSelect.selectedIndex = 1; // Select the only real district
+                    districtSelect.selectedIndex = 1;
                     fetchSchools(districtSelect.value);
                 }
             }
@@ -250,6 +250,7 @@ document.getElementById('solar_generation_checkbox').addEventListener('change', 
         solarEnergyCredits.value = '';  
     }
 });
+
 
 document.addEventListener('DOMContentLoaded', function() {
     const utilityTypeSelect = document.getElementById("{{ form.utility_type.id_for_label }}");
@@ -291,6 +292,7 @@ document.getElementById('{{ form.utility_type.id_for_label }}').addEventListener
     fetchMeters(utilityType, schoolId);
 });
 
+
 function fetchMeters(utilityType, schoolId) {
     // get-meters-for-school-and-utility-type/<int:school_id>/<int:utility_type_id>/
     fetch(`/get-meters-for-school-and-utility-type/${schoolId}/${utilityType}/`)
@@ -311,41 +313,40 @@ function fetchMeters(utilityType, schoolId) {
                 const meterId = this.value;
                 displayMeterReadingForm(meterId);
             });
-
-            function displayMeterReadingForm(meterId) {
-                // Assuming there's a placeholder in your HTML for the meter reading form
-                const meterReadingFormPlaceholder = document.getElementById('meter-reading-form-placeholder');
-                
-                meterReadingFormPlaceholder.innerHTML = `
-                <div class="meter-reading-form" data-meter-id="${meterId}">
-                    <label for="elec_consumption_kwh_${meterId}">Electric Consumption (kWh):</label>
-                    <input type="number" class="form-control" name="elec_consumption_kwh_${meterId}" id="elec_consumption_kwh_${meterId}" step="0.01" placeholder="0.00">
-                    
-                    <label for="gas_consumption_therms_${meterId}">Gas Consumption (Therms):</label>
-                    <input type="number" class="form-control" name="gas_consumption_therms_${meterId}" id="gas_consumption_therms_${meterId}" step="0.01" placeholder="0.00">
-                    
-                    <label for="peak_consumption_kwh_${meterId}">Peak Consumption (kWh):</label>
-                    <input type="number" class="form-control" name="peak_consumption_kwh_${meterId}" id="peak_consumption_kwh_${meterId}" step="0.01" placeholder="0.00">
-                    
-                    <label for="off_peak_consumption_kwh_${meterId}">Off-Peak Consumption (kWh):</label>
-                    <input type="number" class="form-control" name="off_peak_consumption_kwh_${meterId}" id="off_peak_consumption_kwh_${meterId}" placeholder="0">
-                    
-                    <label for="part_peak_consumption_kwh_${meterId}">Part-Peak Consumption (kWh):</label>
-                    <input type="number" class="form-control" name="part_peak_consumption_kwh_${meterId}" id="part_peak_consumption_kwh_${meterId}" placeholder="0">
-                    
-                    <label for="demand_charge_kw_${meterId}">Demand Charge (kW):</label>
-                    <input type="number" class="form-control" name="demand_charge_kw_${meterId}" id="demand_charge_kw_${meterId}" step="0.01" placeholder="0.00">
-                    
-                    <label for="solar_generation_kwh_${meterId}">Solar Generation (kWh):</label>
-                    <input type="number" class="form-control" name="solar_generation_kwh_${meterId}" id="solar_generation_kwh_${meterId}" step="0.01" placeholder="0.00">
-                </div>
-            `;
-            }
-
         })
         .catch(error => console.error('Error fetching meters:', error));
 }
 
+// Adjusted displayMeterReadingForm function to accept the placeholder ID
+function displayMeterReadingForm(meterId, placeholderId) {
+    const meterReadingFormPlaceholder = document.getElementById(placeholderId);
+    // Dynamically create and insert the meter reading form associated with the selected meter
+    // Similar to the previously provided displayMeterReadingForm function
+    meterReadingFormPlaceholder.innerHTML = `
+        <div class="meter-reading-form" data-meter-id="${meterId}">
+            <label for="elec_consumption_kwh_${meterId}">Electric Consumption (kWh):</label>
+            <input type="number" class="form-control" name="elec_consumption_kwh_${meterId}" id="elec_consumption_kwh_${meterId}" step="0.01" placeholder="0.00">
+            
+            <label for="gas_consumption_therms_${meterId}">Gas Consumption (Therms):</label>
+            <input type="number" class="form-control" name="gas_consumption_therms_${meterId}" id="gas_consumption_therms_${meterId}" step="0.01" placeholder="0.00">
+            
+            <label for="peak_consumption_kwh_${meterId}">Peak Consumption (kWh):</label>
+            <input type="number" class="form-control" name="peak_consumption_kwh_${meterId}" id="peak_consumption_kwh_${meterId}" step="0.01" placeholder="0.00">
+            
+            <label for="off_peak_consumption_kwh_${meterId}">Off-Peak Consumption (kWh):</label>
+            <input type="number" class="form-control" name="off_peak_consumption_kwh_${meterId}" id="off_peak_consumption_kwh_${meterId}" placeholder="0">
+            
+            <label for="part_peak_consumption_kwh_${meterId}">Part-Peak Consumption (kWh):</label>
+            <input type="number" class="form-control" name="part_peak_consumption_kwh_${meterId}" id="part_peak_consumption_kwh_${meterId}" placeholder="0">
+            
+            <label for="demand_charge_kw_${meterId}">Demand Charge (kW):</label>
+            <input type="number" class="form-control" name="demand_charge_kw_${meterId}" id="demand_charge_kw_${meterId}" step="0.01" placeholder="0.00">
+            
+            <label for="solar_generation_kwh_${meterId}">Solar Generation (kWh):</label>
+            <input type="number" class="form-control" name="solar_generation_kwh_${meterId}" id="solar_generation_kwh_${meterId}" step="0.01" placeholder="0.00">
+        </div>
+    `;
+}
 
 // dynamic meter addition
 document.getElementById('add-meter-btn').addEventListener('click', function() {
@@ -401,40 +402,6 @@ function addMeterSelection() {
         displayMeterReadingForm(meterId, meterReadingPlaceholder.id);
     });
 }
-
-
-// Adjusted displayMeterReadingForm function to accept the placeholder ID
-function displayMeterReadingForm(meterId, placeholderId) {
-    const meterReadingFormPlaceholder = document.getElementById(placeholderId);
-    // Dynamically create and insert the meter reading form associated with the selected meter
-    // Similar to the previously provided displayMeterReadingForm function
-    meterReadingFormPlaceholder.innerHTML = `
-        <div class="meter-reading-form" data-meter-id="${meterId}">
-            <label for="elec_consumption_kwh_${meterId}">Electric Consumption (kWh):</label>
-            <input type="number" class="form-control" name="elec_consumption_kwh_${meterId}" id="elec_consumption_kwh_${meterId}" step="0.01" placeholder="0.00">
-            
-            <label for="gas_consumption_therms_${meterId}">Gas Consumption (Therms):</label>
-            <input type="number" class="form-control" name="gas_consumption_therms_${meterId}" id="gas_consumption_therms_${meterId}" step="0.01" placeholder="0.00">
-            
-            <label for="peak_consumption_kwh_${meterId}">Peak Consumption (kWh):</label>
-            <input type="number" class="form-control" name="peak_consumption_kwh_${meterId}" id="peak_consumption_kwh_${meterId}" step="0.01" placeholder="0.00">
-            
-            <label for="off_peak_consumption_kwh_${meterId}">Off-Peak Consumption (kWh):</label>
-            <input type="number" class="form-control" name="off_peak_consumption_kwh_${meterId}" id="off_peak_consumption_kwh_${meterId}" placeholder="0">
-            
-            <label for="part_peak_consumption_kwh_${meterId}">Part-Peak Consumption (kWh):</label>
-            <input type="number" class="form-control" name="part_peak_consumption_kwh_${meterId}" id="part_peak_consumption_kwh_${meterId}" placeholder="0">
-            
-            <label for="demand_charge_kw_${meterId}">Demand Charge (kW):</label>
-            <input type="number" class="form-control" name="demand_charge_kw_${meterId}" id="demand_charge_kw_${meterId}" step="0.01" placeholder="0.00">
-            
-            <label for="solar_generation_kwh_${meterId}">Solar Generation (kWh):</label>
-            <input type="number" class="form-control" name="solar_generation_kwh_${meterId}" id="solar_generation_kwh_${meterId}" step="0.01" placeholder="0.00">
-        </div>
-    `;
-}
-
-
 </script>
 {% endblock %}
 
