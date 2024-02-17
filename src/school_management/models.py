@@ -6,6 +6,9 @@ class School(models.Model):
     school_district = models.ForeignKey(SchoolDistrict, on_delete=models.CASCADE)
     school_name = models.CharField(max_length=100)
     school_address = models.CharField(max_length=100) # geo coordinates are calculated form address.
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+
     school_student_population = models.IntegerField(default=0)
     school_student_percent_disadvantaged = models.IntegerField(default=0) 
     school_student_percent_english_learners = models.IntegerField(default=0)
