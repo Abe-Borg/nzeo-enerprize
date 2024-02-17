@@ -1,7 +1,3 @@
-import googlemaps
-from district_management.models import SchoolDistrict
-from school_management.models import School
-
 import os
 import django
 
@@ -10,6 +6,12 @@ django.setup()
 
 from django.db import connection
 
+import googlemaps
+from district_management.models import SchoolDistrict
+from school_management.models import School
+
+
+
 def geolocate_schools():
     gmaps = googlemaps.Client(key='AIzaSyANW4JtLihHDKEiBkkknOHOn6CCX-WwthA')
     schools = School.objects.all()
@@ -17,7 +19,7 @@ def geolocate_schools():
     for school in schools:
         if school.latitude is None or school.longitude is None:
             # Geolocate the school
-            geocode_result = gmaps.geocode(school.address)
+            geocode_result = gmaps.geocode(school.school_address)
             if geocode_result:
                 # Assume the first result is the most relevant
                 latitude = geocode_result[0]['geometry']['location']['lat']
@@ -27,11 +29,11 @@ def geolocate_schools():
                 school.latitude = latitude
                 school.longitude = longitude
                 school.save()
-                print(f"Coordinates saved for {school.name}")
+                print(f"Coordinates saved for {school.school_name}")
             else:
-                print(f"Geolocation failed for {school.address}")
+                print(f"Geolocation failed for {school.school_address}")
         else:
-            print(f"Coordinates already stored for {school.name}")
+            print(f"Coordinates already stored for {school.school_name}")
 
 
 geolocate_schools()
