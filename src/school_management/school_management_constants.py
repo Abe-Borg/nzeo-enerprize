@@ -184,3 +184,18 @@ UNIT_CONVERSIONS = (
     ('Methane(kBTU/lbs) NH4 natural gas', 23.81),
     ('Methane (lbs/kBTU) NH4 natural gas', 0.042),
 )
+
+MONTHS = (
+    ('January', 'January'),
+    ('February', 'February'),
+    ('March', 'March'),
+    ('April', 'April'),
+    ('May', 'May'),
+    ('June', 'June'),
+    ('July', 'July'),
+    ('August', 'August'),
+    ('September', 'September'),
+    ('October', 'October'),
+    ('November', 'November'),
+    ('December', 'December'),
+)

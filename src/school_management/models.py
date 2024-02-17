@@ -5,7 +5,7 @@ import school_management.school_management_constants as smc
 class School(models.Model):
     school_district = models.ForeignKey(SchoolDistrict, on_delete=models.CASCADE)
     school_name = models.CharField(max_length=100)
-    school_address = models.CharField(max_length=100) # geo coordinates are calculated form address.
+    school_address = models.CharField(max_length=100)
     latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     school_student_population = models.IntegerField(default=0)
@@ -13,7 +13,8 @@ class School(models.Model):
     school_student_percent_english_learners = models.IntegerField(default=0)
 
     def calculate_school_area_sqft(self):
-        # Summing the area of all related buildings
+        # Summing the area of all related buildings, dynamic cals so that it is always up to date
+        # area will change when schools are loaded up with real data.
         return self.building_set.aggregate(models.Sum('building_area_sqft'))['building_area_sqft__sum'] or 0
 
     def __str__(self):
@@ -41,9 +42,7 @@ class Building(models.Model):
     building_name = models.CharField(max_length=100, default='building_name')
     building_type = models.CharField(max_length=100, choices=smc.BUILDING_TYPES)
     building_area_sqft = models.IntegerField()
-    # building_geo_lat = models.FloatField(default=0.0)
-    # building_geo_long = models.FloatField(default=0.0)
-    building_coordinates = models.JSONField() # coordinates dynamically set by user by placing markup on a map.
+    building_coordinates = models.JSONField() # coordinates dynamically set by nzeo staff
     building_age = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
@@ -92,43 +91,6 @@ class Equipment(models.Model):
         super().save(*args, **kwargs)
 
 
-class PerformanceMetrics(models.Model):
-    school = models.ForeignKey(School, on_delete=models.CASCADE)
-    elec_energy_intensity_kwh_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    gas_energy_intensity_kbtu_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    energy_use_intensity_combined_kbtu_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # sum of energy use and gross area (gas and electric)
-    
-    elec_energy_intensity_kwh_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    gas_energy_intensity_kbtu_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    energy_use_intensity_combined_kbtu_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # sum of energy use and student population (gas and electric)
-    
-    elec_energy_cost_index_dollar_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    gas_energy_cost_index_dollar_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    energy_cost_index_combined_dollar_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # sum of energy cost and gross area (gas and electric)
-    
-    elec_energy_cost_index_dollar_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    gas_energy_cost_index_dollar_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    energy_cost_index_combined_dollar_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # sum of energy cost and student population (gas and electric)
-
-    lbs_natural_gas_nh4 = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    lbs_co2_per_lb_nh4 = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    
-    scope1_co2e_gas_lbs = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # Lbs of CO2e from Energy Use Gas (methane - CH4)
-    scope2_co2e_elec_lbs = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # Lbs of CO2e from Energy Use Elec (CAMX grid)
-
-    cui_scope1_gas_lbs_co2e_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    cui_scope2_elec_lbs_co2e_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    cui_total_lbs_co2e_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-
-    cui_scope1_gas_lbs_co2e_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    cui_scope2_elec_lbs_co2e_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    cui_total_lbs_co2e_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-
-    # solar energy metrics
-    net_elec_consumption_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # Electric consumption (from utility bills) - Solar generation
-    net_cost_dollars = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # Electric cost (from utility bills) - Solar energy credits
-
-
 class Meter(models.Model):
     meter_id = models.IntegerField(primary_key=True)
     meter_type = models.CharField(max_length=100, choices = smc.UTILITY_TYPE + (('Solar', 'Solar'),))
@@ -170,3 +132,43 @@ class MeterReading(models.Model):
     demand_charge_kw = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     solar_generation_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     
+
+class PerformanceMetrics(models.Model):
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    gas_bill_id = models.ForeignKey(UtilityBill, on_delete=models.SET_NULL, null=True, blank=True, default=None, related_name='gas_bill_id')
+    elec_bill_id = models.ForeignKey(UtilityBill, on_delete=models.SET_NULL, null=True, blank=True, default=None, related_name='elec_bill_id')
+    assigned_month = models.CharField(max_length=100, choices = smc.MONTHS)
+
+    elec_energy_intensity_kwh_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    gas_energy_intensity_kbtu_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    energy_use_intensity_combined_kbtu_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # sum of energy use and gross area (gas and electric)
+    
+    elec_energy_intensity_kwh_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    gas_energy_intensity_kbtu_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    energy_use_intensity_combined_kbtu_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # sum of energy use and student population (gas and electric)
+    
+    elec_energy_cost_index_dollar_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    gas_energy_cost_index_dollar_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    energy_cost_index_combined_dollar_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # sum of energy cost and gross area (gas and electric)
+    
+    elec_energy_cost_index_dollar_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    gas_energy_cost_index_dollar_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    energy_cost_index_combined_dollar_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # sum of energy cost and student population (gas and electric)
+
+    lbs_natural_gas_nh4 = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    lbs_co2_per_lb_nh4 = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    
+    scope1_co2e_gas_lbs = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # Lbs of CO2e from Energy Use Gas (methane - CH4)
+    scope2_co2e_elec_lbs = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # Lbs of CO2e from Energy Use Elec (CAMX grid)
+
+    cui_scope1_gas_lbs_co2e_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    cui_scope2_elec_lbs_co2e_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    cui_total_lbs_co2e_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+
+    cui_scope1_gas_lbs_co2e_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    cui_scope2_elec_lbs_co2e_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    cui_total_lbs_co2e_student = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    
+    # solar energy metrics
+    net_elec_consumption_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # Electric consumption (from utility bills) - Solar generation
+    net_cost_dollars = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # Electric cost (from utility bills) - Solar energy credits
