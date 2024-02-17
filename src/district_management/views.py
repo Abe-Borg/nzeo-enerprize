@@ -24,9 +24,11 @@ def district_admin_home(request):
         'API_KEY': 'AIzaSyANW4JtLihHDKEiBkkknOHOn6CCX-WwthA'
     }
 
-    district_schools_list = School.objects.filter(school_district = assigned_district)
-    named_locations = [{'name': school.school_name, 'address': school.school_address} for school in district_schools_list]
-    district_schools_coordinates = get_coordinates_for_named_locations(named_locations)
+    district_schools_list = School.objects.filter(school_district=assigned_district)
+    district_schools_coordinates = [
+        {'name': school.school_name, 'lat': school.latitude, 'lng': school.longitude} 
+        for school in district_schools_list
+    ]
     context['district_schools_coordinates'] = district_schools_coordinates
     return render(request, 'district_management/district_admin_home.html', context)
 
