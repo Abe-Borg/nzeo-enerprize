@@ -33,7 +33,7 @@
                 {% csrf_token %}
                     <!-- Utilty selection -->
                     <div class="form-group">
-                        <select class="form-control" name="{{ form.utility_type.name }}" id="{{ form.utility_type.id_for_label }}">
+                        <select class="form-control" name="utility_type" id="utility_type">
                             <option value="" selected disabled>Select Utility Type</option>
                             {% for value, display in utility_type_choices %}
                                 <option value="{{ value }}">{{ display }}</option>
@@ -104,7 +104,7 @@
                     </div>
                     <!-- total_electric_charges $, this is a direct input from the bill-->
                     <div class="form-group" >
-                        <input type="number" class="form-control" placeholder = "Total Electric Charges $" name="{{ form.total_electric_charges.name }}" id="{{ form.total_electric_charges.id_for_label }}" disabled>
+                        <input type="number" class="form-control" placeholder = "Total Electric Charges $" name="total_electric_charges" id="total_electric_charges" disabled>
                     </div>
                     <!-- total_gas_usage_therms  $-->
                     <div class="form-group">
@@ -113,7 +113,7 @@
                     </div>
                     <!-- total_gas_charges $ this is a direct input from the bill-->
                     <div class="form-group">
-                        <input type="number" class="form-control" placeholder="Total Gas Charges $" name="{{ form.total_gas_charges.name }}" id="{{ form.total_gas_charges.id_for_label }}" disabled>
+                        <input type="number" class="form-control" placeholder="Total Gas Charges $" name="total_gas_charges" id="total_gas_charges" disabled>
                     </div>
                     <!-- total_demand_charge_kw  $-->
                     <div class="form-group" >
@@ -233,38 +233,26 @@ document.getElementById('solar_generation_checkbox').addEventListener('change', 
     }
 });
 
-
+// make utility bill fields active based on utility type
 document.addEventListener('DOMContentLoaded', function() {
-    const utilityTypeSelect = document.getElementById("{{ form.utility_type.id_for_label }}");
-    const totalGasChargesInput = document.getElementById("{{ form.total_gas_charges.id_for_label}");
-    const gasConsumptionInput = document.getElementById("{{ form.gas_consumption_therms.id_for_label }}");
-    const totalElectricChargesInput = document.getElementById("{{ form.total_electric_charges.id_for_label }}");
-    const electricConsumptionInput = document.getElementById("{{ form.elec_consumption_kwh.id_for_label }}");
-    const electricPeakDemandInput = document.getElementById("{{ form.peak_demand_kwh.id_for_label }}");
-    const electricOffPeakDemandInput = document.getElementById("{{ form.off_peak_demand_kwh.id_for_label }}");
+    const utilityTypeSelect = document.getElementById("utility_type");
+    const totalGasChargesInput = document.getElementById("total_gas_charges");
+    const totalElectricChargesInput = document.getElementById("total_electric_charges");
 
     // Call this function both on change and on initial load
     function updateFieldAccessibility() {
-        if (utilityTypeSelect.value === 'natural_gas') {
+        if (utilityTypeSelect.value === 'Natural Gas') {
             totalGasChargesInput.disabled = false;
-            gasConsumptionInput.disabled = false;
             totalElectricChargesInput.disabled = true;
-            electricConsumptionInput.disabled = true;
-            electricPeakDemandInput.disabled = true;
-            electricOffPeakDemandInput.disabled = true;
-        } else if (utilityTypeSelect.value === 'electric') {
+        } else if (utilityTypeSelect.value === 'Electric') {
             totalGasChargesInput.disabled = true;
-            gasConsumptionInput.disabled = true;
             totalElectricChargesInput.disabled = false;
-            electricConsumptionInput.disabled = false;
-            electricPeakDemandInput.disabled = false;
-            electricOffPeakDemandInput.disabled = false;
         }
     }
 
     // Attach the event listener and call the function on initial load
     utilityTypeSelect.addEventListener('change', updateFieldAccessibility);
-    updateFieldAccessibility(); // Call on initial load
+    updateFieldAccessibility(); 
 });
 
 // fetch meters and make meterreading menus for data entry
