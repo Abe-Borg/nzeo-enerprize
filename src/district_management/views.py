@@ -23,8 +23,9 @@ def district_admin_home(request):
         'map_zoom_level': 12,
         'API_KEY': 'AIzaSyANW4JtLihHDKEiBkkknOHOn6CCX-WwthA'
     }
-
-    ddistrict_schools_coordinates = [
+    
+    district_schools_list = School.objects.filter(school_district=assigned_district)
+    district_schools_coordinates = [
         {
             'name': school.school_name,
             'lat': float(school.latitude),  # Convert Decimal to float
