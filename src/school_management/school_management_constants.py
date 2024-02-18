@@ -1,7 +1,7 @@
 UTILITY_TYPE = (
         ('Natural Gas', 'Natural Gas'),
         ('Electric', 'Electric'),
-        # ('solar', 'Solar'),
+        ('Electric-Net-Energy', 'Electric-Net-Energy'),
 )
 UTILITY_PROVIDERS = (
     ('PGE', 'PGE'),

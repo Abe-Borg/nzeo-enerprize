@@ -33,8 +33,8 @@
                 {% csrf_token %}
                     <!-- Utilty selection -->
                     <div class="form-group">
-                        <select class="form-control" name="utility_type" id="utility_type">
-                            <option value="" selected disabled>Select Utility Type</option>
+                        <select class="form-control" name="{{ form.utility_type.name }}" id="{{ form.utility_type.id_for_label }}">
+                            <option value="" selected disabled>Select Utility Bill Type</option>
                             {% for value, display in utility_type_choices %}
                                 <option value="{{ value }}">{{ display }}</option>
                             {% endfor %}
@@ -58,7 +58,7 @@
                     </div>
                     <!-- service agreement id-->
                     <div class="form-group">
-                        <select class = "form-control" name="{{ form.service_agreement_id.name }}" id="{{ form.service_agreement_id.id_for_label }}" required>
+                        <select class = "form-control" name="{{ form.service_agreement_id.name }}" id="{{ form.service_agreement_id.id_for_label }}" disabled required>
                             <option value="" selected disabled>Select Service Agreement ID</option>
                             {% for service_agreement in service_agreements %}
                                 <option value="{{ service_agreement.id }}">{{ service_agreement.service_agreement_id }}</option>
@@ -69,7 +69,7 @@
                     <!-- meter id -->
                     <div class="form-group">
                         <div class="form-group" id="meter-selection-placeholder">
-                            <select class="form-control" name="meter_id" id="meter_id" required>
+                            <select class="form-control" name="meter_id" id="meter_id" disabled required>
                                 <option value="" selected disabled>Select Meter</option>
                                 <!-- Dynamically populated based on utility type and school -->                                
                             </select> 
@@ -90,30 +90,30 @@
                     <!-- Utility Bill Start Date -->
                     <div class="form-group">
                         <label>Utility Bill Start Date:</label>
-                        <input type="date" class="form-control" name="{{ form.bill_start_date.name }}" id="{{ form.bill_start_date.id_for_label }}" required>
+                        <input type="date" class="form-control" name="{{ form.bill_start_date.name }}" id="{{ form.bill_start_date.id_for_label }}" disabled required>
                     </div>
                     <!-- Utility Bill End Date --> 
                     <div class="form-group">
                         <label for="{{ form.bill_end_date.id_for_label }}">Utility Bill End Date:</label>
-                        <input type="date" class="form-control" name="bill_end_date" id="bill_end_date" required>
+                        <input type="date" class="form-control" name="bill_end_date" id="bill_end_date" disabled required>
+                    </div>
+                    <!-- total_electric_charges $, this is a direct input from the bill-->
+                    <div class="form-group" >
+                        <input type="number" class="form-control" placeholder = "Total Electric Charges $" name="total_electric_charges" id="total_electric_charges" disabled>
+                    </div>
+                    <!-- total_gas_charges $ this is a direct input from the bill-->
+                    <div class="form-group">
+                        <input type="number" class="form-control" placeholder="Total Gas Charges $" name="total_gas_charges" id="total_gas_charges" disabled>
                     </div>
                     <!-- total_electric_usage_kwh  $-->
                     <div class="form-group" >
                         <input type="number" class="form-control" name="{{ form.total_electric_usage_kwh.name }}" placeholder = "Total Electric Usage kWh (auto-calculated)" id="{{ form.total_electric_usage_kwh.id_for_label }}" disabled>
                         <!--this will be the sum of elec_consumption_kwh of each electric MeterReding included in this bill-->
                     </div>
-                    <!-- total_electric_charges $, this is a direct input from the bill-->
-                    <div class="form-group" >
-                        <input type="number" class="form-control" placeholder = "Total Electric Charges $" name="total_electric_charges" id="total_electric_charges" disabled>
-                    </div>
                     <!-- total_gas_usage_therms  $-->
                     <div class="form-group">
                         <input type="number" class="form-control" name="{{ form.total_gas_usage_therms.name }}" placeholder = "Total Gas Usage Therms (auto-calculated)" id="{{ form.total_gas_usage_therms.id_for_label }}" disabled>
                         <!--this will be the sum of gas_consumption_therms of each gas MeterReding included in this bill-->
-                    </div>
-                    <!-- total_gas_charges $ this is a direct input from the bill-->
-                    <div class="form-group">
-                        <input type="number" class="form-control" placeholder="Total Gas Charges $" name="total_gas_charges" id="total_gas_charges" disabled>
                     </div>
                     <!-- total_demand_charge_kw  $-->
                     <div class="form-group" >
@@ -155,7 +155,6 @@
                     <!-- total_solar_generation_kWh -->
                     <div class="form-group" >
                         <!--this will be the sum of solar_generation_kwh of each solar MeterReding included in this bill-->
-
                     </div>
                     <!-- solar energy credits $ this is a direct entry from a bill-->
                     <div class="form-group">
@@ -165,7 +164,6 @@
                     <button type="button" class="btn btn-danger" onclick="window.history.back()">Cancel</button>
                     <button type="submit" name="action" value="save_and_add_another" class="btn btn-secondary">Save and Add Another</button>
                     <button type="submit" name="action" value="save_bill" class="btn btn-primary" onclick="window.history.back()">Save</button>
-                    <!-- <a href = "{% url 'check_calculations' %}" class="btn btn-success">Check Calculations</a> -->
                 </form>
             </div>
         </div>
@@ -202,7 +200,6 @@ document.addEventListener('DOMContentLoaded', function() {
             schoolSelect.disabled = true;
         }
     }
-
     // Automatically fetch schools if there's only one district option available (for district-specific users)
     if (districtSelect.options.length == 2) {
         fetchSchools(districtSelect.value);
@@ -235,9 +232,9 @@ document.getElementById('solar_generation_checkbox').addEventListener('change', 
 
 // make utility bill fields active based on utility type
 document.addEventListener('DOMContentLoaded', function() {
-    const utilityTypeSelect = document.getElementById("utility_type");
-    const totalGasChargesInput = document.getElementById("total_gas_charges");
-    const totalElectricChargesInput = document.getElementById("total_electric_charges");
+    const utilityTypeSelect = document.getElementById("{{ form.utility_type.id_for_label }}");
+    const totalGasChargesInput = document.getElementById("{{ form.total_gas_charges.id_for_label }}");
+    const totalElectricChargesInput = document.getElementById("{{ form.total_electric_charges.id_for_label");
 
     // Call this function both on change and on initial load
     function updateFieldAccessibility() {

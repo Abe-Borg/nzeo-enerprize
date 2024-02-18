@@ -108,7 +108,6 @@ class UtilityBill(models.Model):
     bill_statement_date = models.DateField()
     bill_start_date = models.DateField()
     bill_end_date = models.DateField()
-
     total_electric_usage_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     total_electric_charges = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     total_gas_usage_therms = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
