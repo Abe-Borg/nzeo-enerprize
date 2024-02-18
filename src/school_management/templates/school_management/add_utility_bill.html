@@ -33,7 +33,7 @@
                 {% csrf_token %}
                     <!-- Utilty selection -->
                     <div class="form-group">
-                        <select class="form-control" name="{{ form.utility_type.name }}" id="{{ form.utility_type.id_for_label }}">
+                        <select class="form-control" name="{{ form.utility_type.name }}" id="utility_type">
                             <option value="" selected disabled>Select Utility Bill Type</option>
                             {% for value, display in utility_type_choices %}
                                 <option value="{{ value }}">{{ display }}</option>
@@ -51,25 +51,22 @@
                     </div>
                     <!-- School Selection -->
                     <div class="form-group">
-                        <select class="form-control" name="{{ form.school.name }}" id="{{ form.school.id_for_label }}" disabled required>
+                        <select class="form-control" name="{{ form.school.name }}" id="{{ form.school.id_for_label }}" required>
                             <option value="" selected disabled>Select School</option>
                             <!-- Options will be populated based on district selection -->
                         </select>
                     </div>
                     <!-- service agreement id-->
                     <div class="form-group">
-                        <select class = "form-control" name="{{ form.service_agreement_id.name }}" id="{{ form.service_agreement_id.id_for_label }}" disabled required>
+                        <select class = "form-control" name="{{ form.service_agreement_id.name }}" id="{{ form.service_agreement_id.id_for_label }}" required>
                             <option value="" selected disabled>Select Service Agreement ID</option>
-                            {% for service_agreement in service_agreements %}
-                                <option value="{{ service_agreement.id }}">{{ service_agreement.service_agreement_id }}</option>
-                                <!-- Options will be populated based on school selection -->
-                            {% endfor %}
+                            <!-- options will be populated based on school selection-->
                         </select>
                     </div>
                     <!-- meter id -->
                     <div class="form-group">
                         <div class="form-group" id="meter-selection-placeholder">
-                            <select class="form-control" name="meter_id" id="meter_id" disabled required>
+                            <select class="form-control" id="meter_id" required>
                                 <option value="" selected disabled>Select Meter</option>
                                 <!-- Dynamically populated based on utility type and school -->                                
                             </select> 
@@ -232,7 +229,7 @@ document.getElementById('solar_generation_checkbox').addEventListener('change', 
 
 // make utility bill fields active based on utility type
 document.addEventListener('DOMContentLoaded', function() {
-    const utilityTypeSelect = document.getElementById("{{ form.utility_type.id_for_label }}");
+    const utilityTypeSelect = document.getElementById("utility_type");
     const totalGasChargesInput = document.getElementById("{{ form.total_gas_charges.id_for_label }}");
     const totalElectricChargesInput = document.getElementById("{{ form.total_electric_charges.id_for_label");
 
@@ -253,13 +250,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // fetch meters and make meterreading menus for data entry
-document.getElementById('{{ form.utility_type.id_for_label }}').addEventListener('change', function() {
+document.getElementById('utility_type').addEventListener('change', function() {
     const utilityType = this.value;
-    const schoolId = document.getElementById('{{ form.school.id_for_label }}').value; // Assuming school is selected by this point
+    const schoolId = document.getElementById('{{ form.school.id_for_label }}').value;
     fetchMeters(utilityType, schoolId);
 });
-
-
 function fetchMeters(utilityType, schoolId) {
     // get-meters-for-school-and-utility-type/<int:school_id>/<int:utility_type_id>/
     fetch(`/get-meters-for-school-and-utility-type/${schoolId}/${utilityType}/`)
@@ -319,8 +314,6 @@ function displayMeterReadingForm(meterId, placeholderId) {
 document.getElementById('add-meter-btn').addEventListener('click', function() {
     addMeterSelection();
 });
-
-
 function addMeterSelection() {
     const meterIndex = document.querySelectorAll('.meter-selection').length; // To keep track of how many meters have been added
     
@@ -333,7 +326,6 @@ function addMeterSelection() {
     meterSelect.className = 'form-control meter-selection';
     meterSelect.name = `meter_id_${meterIndex}`;
     meterSelect.innerHTML = `<option value="" selected disabled>Select Meter</option>`;
-    // Populate this dropdown with meter options as per your utility type requirement
     
     // Append meter selection to the meter group
     meterGroup.appendChild(meterSelect);
