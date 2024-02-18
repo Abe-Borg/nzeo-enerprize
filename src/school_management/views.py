@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from school_management.models import School
-from .forms import UtilityBillForm
+from school_management.models import School, UtilityBill, PerformanceMetrics, MeterReading
+from .forms import UtilityBillForm, MeterReadingForm
 import school_management.school_management_constants as smc
 from district_management.models import SchoolDistrict
+from django.forms import inlineformset_factory
 
 
 @login_required
@@ -24,16 +25,33 @@ def add_utility_bill(request):
     districts = SchoolDistrict.objects.none()
     user = request.user
 
+    # Determine the districts available to the user
     if user.groups.filter(name='NZEO-Staff').exists():
-        districts = SchoolDistrict.objects.all()        
+        districts = SchoolDistrict.objects.all()
     elif user.groups.filter(name='District-Staff').exists():
-        districts = SchoolDistrict.objects.filter(district_name = user.profile.user_district)
+        districts = SchoolDistrict.objects.filter(district_name=user.profile.user_district)
+
+    # Setup the MeterReadingFormSet
+    MeterReadingFormSet = inlineformset_factory(
+        UtilityBill,
+        MeterReading,
+        form=MeterReadingForm,
+        extra=1,
+        can_delete=True
+    )
 
     if request.method == 'POST':
         form = UtilityBillForm(request.POST)
-        if form.is_valid():
+        formset = MeterReadingFormSet(request.POST)
+
+        if form.is_valid() and formset.is_valid():
             utility_bill = form.save(commit=False)
             utility_bill.save()
+
+            # Now save the formset with the newly created UtilityBill instance
+            formset.instance = utility_bill
+            formset.save()
+
             if 'action' in request.POST:
                 if request.POST['action'] == 'save_and_add_another':
                     return redirect('add_utility_bill')
@@ -41,10 +59,12 @@ def add_utility_bill(request):
                     return redirect('nzeo_admin_home')
     else:
         form = UtilityBillForm()
-        
+        formset = MeterReadingFormSet()
+
     return render(request, 'school_management/add_utility_bill.html', {
-        'form': form, 
-        'utility_type_choices': utility_type_choices, 
+        'form': form,
+        'formset': formset,
+        'utility_type_choices': utility_type_choices,
         'districts': districts
     })
 
