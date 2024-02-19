@@ -354,9 +354,27 @@ class ServiceAgreementAdmin(admin.ModelAdmin):
 
 @admin.register(Meter)
 class MeterAdmin(admin.ModelAdmin):
-    list_display = ('meter_id', 'meter_type', 'meter_school', 'meter_building', 'meter_service_agreement_id')
-    list_filter = ('meter_type', 'meter_school', 'meter_building', 'meter_service_agreement_id')
- 
+    list_display = ('meter_id', 'get_utility_type', 'get_meter_school', 'meter_building', 'meter_service_agreement_id')
+    list_filter = ('meter_service_agreement_id__utility_type', 'meter_service_agreement_id__school', 'meter_building', 'meter_service_agreement_id')
+
+    def get_utility_type(self, obj):
+        # Check if the meter has an associated service agreement
+        if obj.meter_service_agreement_id:
+            return obj.meter_service_agreement_id.utility_type
+        else:
+            return "No Service Agreement"
+
+    
+    def get_meter_school(self, obj):
+        if obj.meter_service_agreement_id:
+            return obj.meter_service_agreement_id.school.school_name
+        else:
+            return "No Service Agreement"
+    
+    get_meter_school.admin_order_field = 'meter_service_agreement_id__school'  # Allows column order sorting
+    get_meter_school.short_description = 'School'
+    get_utility_type.admin_order_field = 'meter_service_agreement_id__utility_type'  # Allows column order sorting
+    get_utility_type.short_description = 'Utility Type'
 
 admin.site.register(MeterReading)
 admin.site.register(PerformanceMetrics)

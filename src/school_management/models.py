@@ -94,9 +94,14 @@ class Equipment(models.Model):
 class Meter(models.Model):
     # multiple meters can be associated with a single service agreement
     meter_id = models.IntegerField(primary_key=True)
-    meter_school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True)
     meter_building = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True, blank=True)
     meter_service_agreement_id = models.ForeignKey(ServiceAgreement, on_delete=models.SET_NULL, null=True, blank=True)
+    
+    def get_utility_type(self):
+        return self.meter_service_agreement_id.utility_type if self.meter_service_agreement_id else None
+
+    def get_meter_school(self):
+        return self.meter_service_agreement_id.school if self.meter_service_agreement_id else None
 
 
 class UtilityBill(models.Model):
