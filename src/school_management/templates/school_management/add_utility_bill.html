@@ -87,12 +87,12 @@
                     <!-- Utility Bill Start Date -->
                     <div class="form-group">
                         <label>Utility Bill Start Date:</label>
-                        <input type="date" class="form-control" name="{{ form.bill_start_date.name }}" id="{{ form.bill_start_date.id_for_label }}" disabled required>
+                        <input type="date" class="form-control" name="{{ form.bill_start_date.name }}" id="{{ form.bill_start_date.id_for_label }}" required>
                     </div>
                     <!-- Utility Bill End Date --> 
                     <div class="form-group">
                         <label for="{{ form.bill_end_date.id_for_label }}">Utility Bill End Date:</label>
-                        <input type="date" class="form-control" name="bill_end_date" id="bill_end_date" disabled required>
+                        <input type="date" class="form-control" name="bill_end_date" id="bill_end_date" required>
                     </div>
                     <!-- total_electric_charges $, this is a direct input from the bill-->
                     <div class="form-group" >
@@ -142,7 +142,7 @@
                     <br>
                     <!-- Solar meter id -->
                     <div class="form-group">
-                        <select class="form-control" name="{{ form.district.name }}" id="{{ form.district.id_for_label }}" required>
+                        <select class="form-control" name="" id="solar_meter_input" disabled required>
                             <option value="" selected disabled>Select Meter (placeholder)</option>
                             <!-- Dynamically populated based on utility type and school -->                                
                         </select> 
@@ -151,7 +151,7 @@
 
                     <!-- total_solar_generation_kWh -->
                     <div class="form-group" >
-                        <!--this will be the sum of solar_generation_kwh of each solar MeterReding included in this bill-->
+                        <input type="number" class="form-control" placeholder="Solar Generation kWh $" name="" id="solar_generation_kwh" disabled>
                     </div>
                     <!-- solar energy credits $ this is a direct entry from a bill-->
                     <div class="form-group">
@@ -209,19 +209,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // make solar section active based on checkbox
 document.getElementById('solar_generation_checkbox').addEventListener('change', function() {
-    const solarGenerationKWh = document.getElementById("{{ form.solar_generation_kwh.id_for_label }}");
+    const solarMeterInput = document.getElementById("solar_meter_input");
+    const solarGenerationKWh = document.getElementById("solar_generation_kwh");
     const solarEnergyCredits = document.getElementById("{{ form.solar_energy_credits.id_for_label }}");
     const isChecked = this.checked;
 
+    solarMeterInput.disabled = !isChecked;
     solarGenerationKWh.disabled = !isChecked;
     solarEnergyCredits.disabled = !isChecked;
 
     if (isChecked) {
+        solarMeterInput.required = true;
         solarGenerationKWh.required = true;
         solarEnergyCredits.required = true;
     } else {
+        solarMeterInput.required = false;
         solarGenerationKWh.required = false;
         solarEnergyCredits.required = false;
+        solarMeterInput.value = '';
         solarGenerationKWh.value = ''; 
         solarEnergyCredits.value = '';  
     }
@@ -243,7 +248,6 @@ document.addEventListener('DOMContentLoaded', function() {
             totalElectricChargesInput.disabled = false;
         }
     }
-
     // Attach the event listener and call the function on initial load
     utilityTypeSelect.addEventListener('change', updateFieldAccessibility);
     updateFieldAccessibility(); 

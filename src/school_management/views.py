@@ -5,6 +5,7 @@ from .forms import UtilityBillForm, MeterReadingForm
 import school_management.school_management_constants as smc
 from district_management.models import SchoolDistrict
 from django.forms import inlineformset_factory
+from django.contrib import messages
 
 
 @login_required
@@ -54,9 +55,8 @@ def add_utility_bill(request):
 
             if 'action' in request.POST:
                 if request.POST['action'] == 'save_and_add_another':
+                    messages.success(request, 'Utility bill has been added successfully, please add another.')
                     return redirect('add_utility_bill')
-                elif request.POST['action'] == 'save_bill':
-                    return redirect('nzeo_admin_home')
     else:
         form = UtilityBillForm()
         formset = MeterReadingFormSet()
