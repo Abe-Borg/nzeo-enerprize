@@ -352,11 +352,13 @@ class ServiceAgreementAdmin(admin.ModelAdmin):
     search_fields = ['school__school_name', 'utility_provider_account_number__account_number']
 
 
-
-
+@admin.register(Meter)
+class MeterAdmin(admin.ModelAdmin):
+    list_display = ('meter_id', 'meter_type', 'meter_school', 'meter_building', 'meter_service_agreement_id')
+    list_filter = ('meter_type', 'meter_school', 'meter_building', 'meter_service_agreement_id')
+ 
 
 admin.site.register(MeterReading)
 admin.site.register(PerformanceMetrics)
-admin.site.register(Meter)
 admin.site.register(UtilityBill)
 

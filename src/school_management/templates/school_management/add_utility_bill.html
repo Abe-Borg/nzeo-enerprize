@@ -96,11 +96,11 @@
                     </div>
                     <!-- total_electric_charges $, this is a direct input from the bill-->
                     <div class="form-group" >
-                        <input type="number" class="form-control" placeholder = "Total Electric Charges $" name="total_electric_charges" id="total_electric_charges" disabled>
+                        <input type="number" class="form-control" placeholder = "Total Electric Charges $" name="total_electric_charges" id="{{ form.total_electric_charges.id_for_label }}" disabled>
                     </div>
                     <!-- total_gas_charges $ this is a direct input from the bill-->
                     <div class="form-group">
-                        <input type="number" class="form-control" placeholder="Total Gas Charges $" name="total_gas_charges" id="total_gas_charges" disabled>
+                        <input type="number" class="form-control" placeholder="Total Gas Charges $" name="total_gas_charges" id="{{ form.total_gas_charges.id_for_label }}" disabled>
                     </div>
                     <!-- total_electric_usage_kwh  $-->
                     <div class="form-group" >
@@ -183,7 +183,6 @@ document.addEventListener('DOMContentLoaded', function() {
         schoolSelect.appendChild(placeholderOption);
 
         if (districtId) {
-            schoolSelect.disabled = false;
             fetch(`/enerprize-api/get-schools-for-district/${districtId}/`)
                 .then(response => response.json())
                 .then(data => {
@@ -193,9 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 })
                 .catch(error => console.error('Error:', error));
-        } else {
-            schoolSelect.disabled = true;
-        }
+        } 
     }
     // Automatically fetch schools if there's only one district option available (for district-specific users)
     if (districtSelect.options.length == 2) {
@@ -236,18 +233,19 @@ document.getElementById('solar_generation_checkbox').addEventListener('change', 
 document.addEventListener('DOMContentLoaded', function() {
     const utilityTypeSelect = document.getElementById("utility_type");
     const totalGasChargesInput = document.getElementById("{{ form.total_gas_charges.id_for_label }}");
-    const totalElectricChargesInput = document.getElementById("{{ form.total_electric_charges.id_for_label");
+    const totalElectricChargesInput = document.getElementById("{{ form.total_electric_charges.id_for_label }}");
 
     // Call this function both on change and on initial load
     function updateFieldAccessibility() {
         if (utilityTypeSelect.value === 'Natural Gas') {
             totalGasChargesInput.disabled = false;
             totalElectricChargesInput.disabled = true;
-        } else if (utilityTypeSelect.value === 'Electric') {
+        } else if (utilityTypeSelect.value === 'Electric' | utilityTypeSelect.value === 'Electric-Net-Energy') {
             totalGasChargesInput.disabled = true;
             totalElectricChargesInput.disabled = false;
         }
     }
+
     // Attach the event listener and call the function on initial load
     utilityTypeSelect.addEventListener('change', updateFieldAccessibility);
     updateFieldAccessibility(); 

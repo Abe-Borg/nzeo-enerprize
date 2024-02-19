@@ -1,5 +1,5 @@
 UTILITY_TYPE = (
-        ('Natural Gas', 'Natural Gas'),
+        ('Natural-Gas', 'Natural-Gas'),
         ('Electric', 'Electric'),
         ('Electric-Net-Energy', 'Electric-Net-Energy'),
 )
