@@ -13,7 +13,9 @@ class UtilityBillForm(forms.ModelForm):
 class MeterReadingForm(forms.ModelForm):
     class Meta:
         model = MeterReading
-        fields = '__all__'
+        fields=('elec_consumption_kwh', 'gas_consumption_therms', 'peak_consumption_kwh', 
+                'off_peak_consumption_kwh', 'part_peak_consumption_kwh', 'demand_charge_kw', 
+                'solar_generation_kwh')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
