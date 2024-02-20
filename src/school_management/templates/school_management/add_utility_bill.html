@@ -353,13 +353,13 @@ function addMeterSelection() {
 }
 
 
-// fetch service agreements based on school selection
+// fetch service agreements based on school selection & selected utility
 document.getElementById("{{ form.school.id_for_label }}").addEventListener('change', function() {
     const schoolId = this.value;
-    fetchServiceAgreements(schoolId);
+    fetchServiceAgreements(schoolId, document.getElementById("utility_type").value);
 });
-function fetchServiceAgreements(schoolId) {
-    fetch(`/enerprize-api/get-service-agreements-for-school/${schoolId}/`)
+function fetchServiceAgreements(schoolId, utility_type) {
+    fetch(`/enerprize-api/get-service-agreements-for-school/${schoolId}/${utility_type}`)
         .then(response => response.json())
         .then(data => {
             const serviceAgreementSelect = document.getElementById("{{ form.service_agreement_id.id_for_label }}");

@@ -1,6 +1,6 @@
 # enerprize_api/views.py
 from django.shortcuts import render
-from school_management.models import School, Meter
+from school_management.models import School, Meter, ServiceAgreement
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
@@ -18,17 +18,21 @@ def get_all_districts(request):
     return JsonResponse({'districts': district_list})
 
 
-def get_service_agreements_for_school(request, school_id):
+def get_service_agreements_for_school(request, school_id, utility_type):
     # Use get_object_or_404 to handle cases where the school does not exist
     school = get_object_or_404(School, pk=school_id)
-    # Retrieve service agreement IDs for the given school
-    service_agreements = school.serviceagreement_set.all().values_list('service_agreement_id', flat=True)
+    # Retrieve service agreement IDs for the given school and utility type
+    service_agreements = ServiceAgreement.objects.filter(
+        school=school, 
+        utility_type=utility_type
+    ).values_list('service_agreement_id', flat=True)
+    
     service_agreement_list = list(service_agreements)
     if service_agreement_list:
         return JsonResponse({'service_agreements': service_agreement_list})
     else:
-        # No service agreements found for the given school ID
-        return JsonResponse({'error': 'No service agreements found for the given school ID'}, status=404)
+        # No service agreements found for the given school ID and utility type
+        return JsonResponse({'error': 'No service agreements found for the given school ID and utility type'}, status=404)
 
 
 def get_meters_for_service_agreement(request, service_agreement_id):
