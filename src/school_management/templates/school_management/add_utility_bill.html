@@ -96,11 +96,11 @@
                     </div>
                     <!-- total_electric_charges $, this is a direct input from the bill-->
                     <div class="form-group" >
-                        <input type="number" class="form-control" placeholder = "Total Electric Charges $" name="total_electric_charges" id="{{ form.total_electric_charges.id_for_label }}" disabled>
+                        <input type="number" class="form-control" placeholder = "Total Electric Charges $" name="{{ form.total_electric_charges.name }}" id="{{ form.total_electric_charges.id_for_label }}" disabled>
                     </div>
                     <!-- total_gas_charges $ this is a direct input from the bill-->
                     <div class="form-group">
-                        <input type="number" class="form-control" placeholder="Total Gas Charges $" name="total_gas_charges" id="{{ form.total_gas_charges.id_for_label }}" disabled>
+                        <input type="number" class="form-control" placeholder="Total Gas Charges $" name="{{ form.total_gas_charges.name }}" id="{{ form.total_gas_charges.id_for_label }}" disabled>
                     </div>
                     <!-- total_electric_usage_kwh  $-->
                     <div class="form-group" >
@@ -198,7 +198,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (districtSelect.options.length == 2) {
         fetchSchools(districtSelect.value);
     }
-
     districtSelect.addEventListener('change', function() {
         fetchSchools(this.value);
     });
@@ -237,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Call this function both on change and on initial load
     function updateFieldAccessibility() {
-        if (utilityTypeSelect.value === 'Natural Gas') {
+        if (utilityTypeSelect.value === 'Natural-Gas') {
             totalGasChargesInput.disabled = false;
             totalElectricChargesInput.disabled = true;
         } else if (utilityTypeSelect.value === 'Electric' | utilityTypeSelect.value === 'Electric-Net-Energy') {
@@ -252,14 +251,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // fetch meters and make meterreading menus for data entry
-document.getElementById('utility_type').addEventListener('change', function() {
-    const utilityType = this.value;
-    const schoolId = document.getElementById('{{ form.school.id_for_label }}').value;
-    fetchMeters(utilityType, schoolId);
+document.getElementById("{{ form.service_agreement_id.id_for_label }}").addEventListener('change', function() {
+    const serviceAgreementID = this.value;
+    fetchMeters(serviceAgreementID);
 });
-function fetchMeters(utilityType, schoolId) {
-    // get-meters-for-school-and-utility-type/<int:school_id>/<int:utility_type_id>/
-    fetch(`/get-meters-for-school-and-utility-type/${schoolId}/${utilityType}/`)
+function fetchMeters(service_agreemenet_id) {
+    fetch(`/get_meters_for_service_agreement/${service_agreemenet_id}/`)
         .then(response => response.json())
         .then(data => {
             const meterSelect = document.createElement('select');
@@ -363,6 +360,37 @@ function addMeterSelection() {
         displayMeterReadingForm(meterId, meterReadingPlaceholder.id);
     });
 }
+
+
+// fetch service agreements based on school selection
+document.getElementById("{{ form.school.id_for_label }}").addEventListener('change', function() {
+    const schoolId = this.value;
+    fetchServiceAgreements(schoolId);
+});
+function fetchServiceAgreements(schoolId) {
+    fetch(`/get-service-agreements-for-school/${schoolId}/`)
+        .then(response => response.json())
+        .then(data => {
+            const serviceAgreementSelect = document.getElementById("{{ form.service_agreement_id.id_for_label }}");
+            serviceAgreementSelect.innerHTML = ''; // Clear existing options
+            const placeholderOption = new Option("Select Service Agreement ID", "");
+            placeholderOption.disabled = true;
+            placeholderOption.selected = true;
+            serviceAgreementSelect.appendChild(placeholderOption);
+
+            // Update this part to correctly iterate over service agreement IDs
+            data.service_agreements.forEach(serviceAgreementId => {
+                // Directly use serviceAgreementId since it's not an object but the ID itself
+                const option = new Option(serviceAgreementId, serviceAgreementId);
+                serviceAgreementSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error fetching service agreements:', error));
+}
+
+
 </script>
+
+
 {% endblock %}
 
