@@ -256,7 +256,7 @@ document.getElementById("{{ form.service_agreement_id.id_for_label }}").addEvent
     fetchMeters(serviceAgreementID);
 });
 function fetchMeters(service_agreemenet_id) {
-    fetch(`/get_meters_for_service_agreement/${service_agreemenet_id}/`)
+    fetch(`/enerprize-api/get_meters_for_service_agreement/${service_agreemenet_id}/`)
         .then(response => response.json())
         .then(data => {
             const meterSelect = document.createElement('select');
@@ -315,28 +315,22 @@ document.getElementById('add-meter-btn').addEventListener('click', function() {
 });
 function addMeterSelection() {
     const meterIndex = document.querySelectorAll('.meter-selection').length; // To keep track of how many meters have been added
-    
     // Create a container for the entire meter group (selection, reading form, and delete button)
     const meterGroup = document.createElement('div');
     meterGroup.className = 'form-group meter-group';
-    
     // Create the meter selection dropdown
     const meterSelect = document.createElement('select');
     meterSelect.className = 'form-control meter-selection';
     meterSelect.name = `meter_id_${meterIndex}`;
     meterSelect.innerHTML = `<option value="" selected disabled>Select Meter</option>`;
-    
     // Append meter selection to the meter group
     meterGroup.appendChild(meterSelect);
-
     // Create a placeholder for the meter reading form
     const meterReadingPlaceholder = document.createElement('div');
     meterReadingPlaceholder.id = `meter-reading-form-placeholder-${meterIndex}`;
     meterReadingPlaceholder.className = 'meter-reading-form-placeholder';
-    
     // Append reading form placeholder to the meter group
     meterGroup.appendChild(meterReadingPlaceholder);
-
     // Create the delete button for the meter
     const deleteButton = document.createElement('button');
     deleteButton.type = 'button';
@@ -346,14 +340,11 @@ function addMeterSelection() {
         // Remove the entire meter group when delete button is clicked
         meterGroup.remove();
     };
-    
     // Append delete button to the meter group
     meterGroup.appendChild(deleteButton);
-
     // Append the meter group to the meters container
     const container = document.getElementById('meters-container');
     container.appendChild(meterGroup);
-
     // Set up a change event listener for the new meter selection to display its reading form
     meterSelect.addEventListener('change', function() {
         const meterId = this.value;
@@ -368,7 +359,7 @@ document.getElementById("{{ form.school.id_for_label }}").addEventListener('chan
     fetchServiceAgreements(schoolId);
 });
 function fetchServiceAgreements(schoolId) {
-    fetch(`/get-service-agreements-for-school/${schoolId}/`)
+    fetch(`/enerprize-api/get-service-agreements-for-school/${schoolId}/`)
         .then(response => response.json())
         .then(data => {
             const serviceAgreementSelect = document.getElementById("{{ form.service_agreement_id.id_for_label }}");
@@ -387,7 +378,6 @@ function fetchServiceAgreements(schoolId) {
         })
         .catch(error => console.error('Error fetching service agreements:', error));
 }
-
 
 </script>
 
