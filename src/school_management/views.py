@@ -6,6 +6,7 @@ import school_management.school_management_constants as smc
 from district_management.models import SchoolDistrict
 from django.forms import inlineformset_factory
 from django.contrib import messages
+from django.db import transaction
 
 
 @login_required
@@ -21,6 +22,7 @@ def school_home(request):
 
 
 @login_required
+@transaction.atomic
 def add_utility_bill(request):
     utility_type_choices = smc.UTILITY_TYPE
     districts = SchoolDistrict.objects.none()

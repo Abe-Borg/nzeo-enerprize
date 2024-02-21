@@ -36,7 +36,7 @@ def get_service_agreements_for_school(request, school_id, utility_type):
 
 
 def get_meters_for_service_agreement(request, service_agreement_id):
-    if service_agreement_id:
+    if service_agreement_id: 
         meters = Meter.objects.filter(meter_service_agreement_id=service_agreement_id).values_list('meter_id', flat=True)
         meter_list = list(meters)
         # Check if the service agreement has meters associated with it
