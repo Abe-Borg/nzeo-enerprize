@@ -112,11 +112,8 @@
                         <input type="number" class="form-control" placeholder="Total Gas Charges $" name="{{ form.total_gas_charges.name }}" id="{{ form.total_gas_charges.id_for_label }}">
                     </div>
 
-                    <button class="btn btn-info gas-inputs d-none" type="button" data-bs-toggle="collapse" data-bs-target="#gasInputs" aria-expanded="false" aria-controls="gasInputs">
-                        Natural Gas Input Results
-                    </button>
-                    <div class="collapse gas-inputs" id="gasInputs">
-                        <div class = "card card-body">
+                    <div class="card gas-inputs d-none">
+                        <div class = "card-body">
                             <!-- total_gas_usage_therms  $-->
                             <div class="form-group">
                                 <input type="number" class="form-control" name="{{ form.total_gas_usage_therms.name }}" placeholder = "Total Gas Usage Therms (auto-calculated)" id="{{ form.total_gas_usage_therms.id_for_label }}" disabled>
@@ -125,11 +122,8 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-info electric-inputs d-none" type="button" data-bs-toggle="collapse" data-bs-target="#electricInputs" aria-expanded="false" aria-controls="electricInputs">
-                        Electric Input Results
-                    </button>
-                    <div class="collapse electric-inputs" id="electricInputs">
-                        <div class = "card card-body">
+                    <div class="card electric-inputs d-none">
+                        <div class = "card-body">
                             <!-- total_electric_usage_kwh  $-->
                             <div class="form-group" >
                                 <input type="number" class="form-control" name="{{ form.total_electric_usage_kwh.name }}" placeholder = "Total Electric Usage kWh (auto-calculated)" id="{{ form.total_electric_usage_kwh.id_for_label }}" disabled>
@@ -231,40 +225,58 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // make solar section active based on checkbox
-document.getElementById('solar_generation_checkbox').addEventListener('change', function() {
-    const solarMeterInput = document.getElementById("solar_meter_input");
-    const solarGenerationKWh = document.getElementById("solar_generation_kwh");
-    const solarEnergyCredits = document.getElementById("{{ form.solar_energy_credits.id_for_label }}");
-    // target solar inputs class to show/hide based on checkbox
-    const solarInputs = document.querySelectorAll('.solar-inputs');
-    const isChecked = this.checked;
+document.addEventListener('DOMContentLoaded', function() {
+    const utilityTypeSelect = document.getElementById("utility_type");
+    const solarCheckbox = document.getElementById('solar_generation_checkbox');
 
-    solarInputs.forEach(function(input) {
-        input.style.display = isChecked ? 'block' : 'none';
+    utilityTypeSelect.addEventListener('change', function() {
+        // Check if the selected utility type is 'Electric-Net-Energy'
+        if (this.value === 'Electric-Net-Energy') {
+            solarCheckbox.checked = true;
+        } else {
+            solarCheckbox.checked = false;
+        }
+
+        // Manually trigger the change event on the solar checkbox to apply any logic tied to its change
+        solarCheckbox.dispatchEvent(new Event('change'));
     });
 
-    solarMeterInput.disabled = !isChecked;
-    solarGenerationKWh.disabled = !isChecked;
-    solarEnergyCredits.disabled = !isChecked;
+    // Your existing code for handling solar section visibility based on the checkbox
+    document.getElementById('solar_generation_checkbox').addEventListener('change', function() {
+        const solarMeterInput = document.getElementById("solar_meter_input");
+        const solarGenerationKWh = document.getElementById("solar_generation_kwh");
+        const solarEnergyCredits = document.getElementById("{{ form.solar_energy_credits.id_for_label }}");
+        // target solar inputs class to show/hide based on checkbox
+        const solarInputs = document.querySelectorAll('.solar-inputs');
+        const isChecked = this.checked;
 
-    if (isChecked) {
-        solarMeterInput.required = true;
-        solarGenerationKWh.required = true;
-        solarEnergyCredits.required = true;
-    } else {
-        solarMeterInput.required = false;
-        solarGenerationKWh.required = false;
-        solarEnergyCredits.required = false;
-        solarMeterInput.value = '';
-        solarGenerationKWh.value = ''; 
-        solarEnergyCredits.value = '';  
-    }
+        solarInputs.forEach(function(input) {
+            input.style.display = isChecked ? 'block' : 'none';
+        });
+
+        solarMeterInput.disabled = !isChecked;
+        solarGenerationKWh.disabled = !isChecked;
+        solarEnergyCredits.disabled = !isChecked;
+
+        if (isChecked) {
+            solarMeterInput.required = true;
+            solarGenerationKWh.required = true;
+            solarEnergyCredits.required = true;
+        } else {
+            solarMeterInput.required = false;
+            solarGenerationKWh.required = false;
+            solarEnergyCredits.required = false;
+            solarMeterInput.value = '';
+            solarGenerationKWh.value = ''; 
+            solarEnergyCredits.value = '';  
+        }
+    });
 });
+
 
 // make utility bill fields active based on utility type
 document.addEventListener('DOMContentLoaded', function() {
     const utilityTypeSelect = document.getElementById("utility_type");
-    
     // Function to show or hide elements based on class
     function toggleVisibility(classSelector, show) {
         const elements = document.querySelectorAll(classSelector);
@@ -276,13 +288,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
     // Update visibility based on the utility type selection
     function updateFieldVisibility() {
         // Initially hide all
         toggleVisibility('.electric-inputs', false);
         toggleVisibility('.gas-inputs', false);
-
         // Show based on the selected utility type
         if (utilityTypeSelect.value === 'Natural-Gas') {
             toggleVisibility('.gas-inputs', true);
@@ -290,10 +300,10 @@ document.addEventListener('DOMContentLoaded', function() {
             toggleVisibility('.electric-inputs', true);
         }
     }
-
     utilityTypeSelect.addEventListener('change', updateFieldVisibility);
     updateFieldVisibility(); // Call on initial load to set the correct initial state
 });
+
 
 // fetch meters and make meterreading menus for data entry
 document.getElementById("{{ form.service_agreement_id.id_for_label }}").addEventListener('change', function() {
