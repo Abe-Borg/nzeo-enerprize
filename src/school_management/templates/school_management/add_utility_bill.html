@@ -11,19 +11,18 @@
     align-items: center;
     gap: 10px; /* Adjust the space between elements as needed */
 }
-
 .meter-group .btn-danger {
     margin-left: auto; /* Aligns the delete button to the right */
 }
 .solar-inputs {
     display: none;
 }
-.electric-inputs {
-    display: none;
-}
-.gas-inputs {
-    display: none;
-}
+/* .electric-inputs { */
+    /* display: none; */
+/* } */
+/* .gas-inputs { */
+    /* display: none; */
+/* } */
 </style>
 
 <div class="main-container fullscreen">
@@ -105,20 +104,20 @@
                     </div>
 
                     <!-- total_electric_charges $, this is a direct input from the bill-->
-                    <div class="form-group electric-inputs">
+                    <div class="form-group electric-inputs d-none">
                         <input type="number" class="form-control" placeholder = "Total Electric Charges $" name="{{ form.total_electric_charges.name }}" id="{{ form.total_electric_charges.id_for_label }}">
                     </div>
                     <!-- total_gas_charges $ this is a direct input from the bill-->
-                    <div class="form-group gas-inputs">
+                    <div class="form-group gas-inputs d-none">
                         <input type="number" class="form-control" placeholder="Total Gas Charges $" name="{{ form.total_gas_charges.name }}" id="{{ form.total_gas_charges.id_for_label }}">
                     </div>
 
-                    <!-- total_gas_usage_therms  $-->
-                    <button class="btn btn-info gas-inputs" type="button" data-bs-toggle="collapse" data-bs-target="#gasInputs" aria-expanded="false" aria-controls="gasInputs">
-                        Toggle Natural Gas Input Results
+                    <button class="btn btn-info gas-inputs d-none" type="button" data-bs-toggle="collapse" data-bs-target="#gasInputs" aria-expanded="false" aria-controls="gasInputs">
+                        Natural Gas Input Results
                     </button>
-                    <div class="collapse" id="gasInputs">
+                    <div class="collapse gas-inputs" id="gasInputs">
                         <div class = "card card-body">
+                            <!-- total_gas_usage_therms  $-->
                             <div class="form-group">
                                 <input type="number" class="form-control" name="{{ form.total_gas_usage_therms.name }}" placeholder = "Total Gas Usage Therms (auto-calculated)" id="{{ form.total_gas_usage_therms.id_for_label }}" disabled>
                                 <!--this will be the sum of gas_consumption_therms of each gas MeterReding included in this bill-->
@@ -126,10 +125,10 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-info electric-inputs" type="button" data-bs-toggle="collapse" data-bs-target="#electricInputs" aria-expanded="false" aria-controls="electricInputs">
-                        Toggle Electric Input Results
+                    <button class="btn btn-info electric-inputs d-none" type="button" data-bs-toggle="collapse" data-bs-target="#electricInputs" aria-expanded="false" aria-controls="electricInputs">
+                        Electric Input Results
                     </button>
-                    <div class="collapse" id="electricInputs">
+                    <div class="collapse electric-inputs" id="electricInputs">
                         <div class = "card card-body">
                             <!-- total_electric_usage_kwh  $-->
                             <div class="form-group" >
@@ -265,41 +264,35 @@ document.getElementById('solar_generation_checkbox').addEventListener('change', 
 // make utility bill fields active based on utility type
 document.addEventListener('DOMContentLoaded', function() {
     const utilityTypeSelect = document.getElementById("utility_type");
-    const electricInputs = document.querySelectorAll('.electric-inputs');
-    const gasInputs = document.querySelectorAll('.gas-inputs');
+    
+    // Function to show or hide elements based on class
+    function toggleVisibility(classSelector, show) {
+        const elements = document.querySelectorAll(classSelector);
+        elements.forEach(element => {
+            if (show) {
+                element.classList.remove('d-none'); // Show element
+            } else {
+                element.classList.add('d-none'); // Hide element
+            }
+        });
+    }
 
-    // Function to control the initial visibility of collapsible elements
+    // Update visibility based on the utility type selection
     function updateFieldVisibility() {
-        // Hide all inputs initially
-        electricInputs.forEach(input => input.style.display = 'none');
-        gasInputs.forEach(input => input.style.display = 'none');
+        // Initially hide all
+        toggleVisibility('.electric-inputs', false);
+        toggleVisibility('.gas-inputs', false);
 
-        const electricCollapseElement = document.getElementById('electricInputs');
-        const gasCollapseElement = document.getElementById('gasInputs');
-        
-        // Ensure the Bootstrap Collapse instances are initialized
-        const electricCollapse = new bootstrap.Collapse(electricCollapseElement, {
-            toggle: false // Prevent automatic toggling upon initialization
-        });
-        const gasCollapse = new bootstrap.Collapse(gasCollapseElement, {
-            toggle: false // Prevent automatic toggling upon initialization
-        });
-
-        // Hide both initially to manage via utility type selection
-        electricCollapse.hide();
-        gasCollapse.hide();
-
-        // Show based on the selected utility type without interfering with manual toggle
+        // Show based on the selected utility type
         if (utilityTypeSelect.value === 'Natural-Gas') {
-            gasInputs.forEach(input => input.style.display = 'block');
-            gasCollapse.show();
+            toggleVisibility('.gas-inputs', true);
         } else if (utilityTypeSelect.value === 'Electric' || utilityTypeSelect.value === 'Electric-Net-Energy') {
-            electricInputs.forEach(input => input.style.display = 'block');
-            electricCollapse.show();
+            toggleVisibility('.electric-inputs', true);
         }
     }
+
     utilityTypeSelect.addEventListener('change', updateFieldVisibility);
-    updateFieldVisibility(); // Call on initial load
+    updateFieldVisibility(); // Call on initial load to set the correct initial state
 });
 
 // fetch meters and make meterreading menus for data entry
