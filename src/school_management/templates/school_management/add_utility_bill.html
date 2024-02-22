@@ -15,6 +15,9 @@
 .meter-group .btn-danger {
     margin-left: auto; /* Aligns the delete button to the right */
 }
+.solar-inputs {
+    display: none;
+}
 </style>
 
 <div class="main-container fullscreen">
@@ -141,7 +144,7 @@
                     </div>
                     <br>
                     <!-- Solar meter id -->
-                    <div class="form-group">
+                    <div class="form-group solar-inputs">
                         <select class="form-control" name="" id="solar_meter_input" disabled required>
                             <option value="" selected disabled>Select Meter (placeholder)</option>
                             <!-- Dynamically populated based on utility type and school -->                                
@@ -150,7 +153,7 @@
                     <!-- the user should have the option to dynamically add meters to the utility bill. these meters are pre-existing and are fetched from the db based on the utility bill type.-->
 
                     <!-- total_solar_generation_kWh -->
-                    <div class="form-group" >
+                    <div class="form-group solar-inputs" >
                         <input type="number" class="form-control" placeholder="Solar Generation kWh $" name="" id="solar_generation_kwh" disabled>
                     </div>
                     <!-- solar energy credits $ this is a direct entry from a bill-->
@@ -208,7 +211,10 @@ document.getElementById('solar_generation_checkbox').addEventListener('change', 
     const solarMeterInput = document.getElementById("solar_meter_input");
     const solarGenerationKWh = document.getElementById("solar_generation_kwh");
     const solarEnergyCredits = document.getElementById("{{ form.solar_energy_credits.id_for_label }}");
+    const solarInputs = document.querySelector('.solar-inputs');
     const isChecked = this.checked;
+
+    solarInputs.style.display = isChecked ? 'block' : 'none';
 
     solarMeterInput.disabled = !isChecked;
     solarGenerationKWh.disabled = !isChecked;
