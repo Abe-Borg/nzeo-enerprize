@@ -17,7 +17,6 @@ def get_all_districts(request):
     district_list = list(districts)
     return JsonResponse({'districts': district_list})
 
-
 def get_service_agreements_for_school(request, school_id, utility_type):
     # Use get_object_or_404 to handle cases where the school does not exist
     school = get_object_or_404(School, pk=school_id)
@@ -33,7 +32,6 @@ def get_service_agreements_for_school(request, school_id, utility_type):
     else:
         # No service agreements found for the given school ID and utility type
         return JsonResponse({'error': 'No service agreements found for the given school ID and utility type'}, status=404)
-
 
 def get_meters_for_service_agreement(request, service_agreement_id):
     if service_agreement_id: 

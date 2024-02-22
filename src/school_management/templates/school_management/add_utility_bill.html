@@ -195,6 +195,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const districtSelect = document.getElementById("{{ form.district.id_for_label }}");
     const schoolSelect = document.getElementById("{{ form.school.id_for_label }}");
 
+    // Function to format and update district names in the dropdown
+    function formatDistrictNames() {
+        Array.from(districtSelect.options).forEach(option => {
+            if (option.value) { // Skip the placeholder option
+                const districtNameParts = option.text.split(' ');
+                option.text = districtNameParts[0].toUpperCase(); // First word in uppercase
+            }
+        });
+    }
+
+    // Function to fetch schools based on the selected district and update the school dropdown
     function fetchSchools(districtId) {
         schoolSelect.options.length = 0;
 
@@ -208,21 +219,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(response => response.json())
                 .then(data => {
                     data.schools.forEach(school => {
-                        const option = new Option(school.school_name, school.id);
+                        const option = new Option(school.school_name, school.id); // Keep school names as is
                         schoolSelect.appendChild(option);
                     });
                 })
                 .catch(error => console.error('Error:', error));
-        } 
+        }
     }
+
+    // Call formatDistrictNames to format district names on initial load
+    formatDistrictNames();
+
     // Automatically fetch schools if there's only one district option available (for district-specific users)
     if (districtSelect.options.length == 2) {
         fetchSchools(districtSelect.value);
     }
+
+    // Add event listener to district select dropdown to fetch schools on change
     districtSelect.addEventListener('change', function() {
         fetchSchools(this.value);
     });
 });
+
+
 
 // make solar section active based on checkbox
 document.addEventListener('DOMContentLoaded', function() {
@@ -273,7 +292,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-
 // make utility bill fields active based on utility type
 document.addEventListener('DOMContentLoaded', function() {
     const utilityTypeSelect = document.getElementById("utility_type");
@@ -303,7 +321,6 @@ document.addEventListener('DOMContentLoaded', function() {
     utilityTypeSelect.addEventListener('change', updateFieldVisibility);
     updateFieldVisibility(); // Call on initial load to set the correct initial state
 });
-
 
 // fetch meters and make meterreading menus for data entry
 document.getElementById("{{ form.service_agreement_id.id_for_label }}").addEventListener('change', function() {
