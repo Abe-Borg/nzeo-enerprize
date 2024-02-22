@@ -30,7 +30,7 @@ class UtilityProviderAccountNumber(models.Model):
     
 
 class ServiceAgreement(models.Model):
-    # per school, per utility
+    # per school, per utility, multiple service agrements can be associated with a single utility.
     service_agreement_id = models.CharField(max_length = 100 , primary_key=True)
     utility_type = models.CharField(max_length = 100, choices = smc.UTILITY_TYPE)
     school = models.ForeignKey(School, on_delete=models.CASCADE)

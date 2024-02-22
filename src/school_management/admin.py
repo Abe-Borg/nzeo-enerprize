@@ -338,14 +338,30 @@ class DistrictListFilter(admin.SimpleListFilter):
             return queryset.filter(school__school_district__district_name=self.value())
         return queryset
 
-# Custom admin for ServiceAgreement
+
 @admin.register(ServiceAgreement)
 class ServiceAgreementAdmin(admin.ModelAdmin):
-    list_display = ('service_agreement_id', 'utility_type', 'school', 'utility_provider_account_number', 'get_school_district')
+    list_display = ('service_agreement_id', 'utility_type', 'school', 'utility_provider_account_number', 'get_school_district', 'has_meter', 'meter_count', 'assigned_meters')
     list_filter = ('utility_type', 'school', DistrictListFilter)
 
     def get_school_district(self, obj):
         return obj.school.school_district.district_name
+
+    def has_meter(self, obj):
+        return Meter.objects.filter(meter_service_agreement_id=obj).exists()
+
+    def meter_count(self, obj):
+        # Counts the number of meters associated with the service agreement
+        return Meter.objects.filter(meter_service_agreement_id=obj).count()
+
+    def assigned_meters(self, obj):
+        meters = Meter.objects.filter(meter_service_agreement_id=obj)
+        return ", ".join([str(meter.meter_id) for meter in meters])
+
+    has_meter.boolean = True
+    has_meter.short_description = 'Has Meter?'
+    meter_count.short_description = 'Number of Assigned Meters'
+    assigned_meters.short_description = 'Assigned Meters'
     get_school_district.admin_order_field = 'school__school_district__district_name' 
     get_school_district.short_description = 'School District' 
 
