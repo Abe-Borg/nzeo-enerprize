@@ -102,7 +102,6 @@
                         <label for="{{ form.bill_end_date.id_for_label }}">Utility Bill End Date:</label>
                         <input type="date" class="form-control" name="bill_end_date" id="bill_end_date" required>
                     </div>
-
                     <!-- total_electric_charges $, this is a direct input from the bill-->
                     <div class="form-group electric-inputs d-none">
                         <input type="number" class="form-control" placeholder = "Total Electric Charges $" name="{{ form.total_electric_charges.name }}" id="{{ form.total_electric_charges.id_for_label }}">
@@ -111,7 +110,6 @@
                     <div class="form-group gas-inputs d-none">
                         <input type="number" class="form-control" placeholder="Total Gas Charges $" name="{{ form.total_gas_charges.name }}" id="{{ form.total_gas_charges.id_for_label }}">
                     </div>
-
                     <div class="card gas-inputs d-none">
                         <div class = "card-body">
                             <!-- total_gas_usage_therms  $-->
@@ -121,7 +119,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="card electric-inputs d-none">
                         <div class = "card-body">
                             <!-- total_electric_usage_kwh  $-->
@@ -151,7 +148,6 @@
                             </div>
                         </div>
                     </div>
-
                     <br>
                     <!-- SOLAR INPUT SECTION -->
                     <div class="form-check electric-inputs">
@@ -194,7 +190,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const districtSelect = document.getElementById("{{ form.district.id_for_label }}");
     const schoolSelect = document.getElementById("{{ form.school.id_for_label }}");
-
     // Function to format and update district names in the dropdown
     function formatDistrictNames() {
         Array.from(districtSelect.options).forEach(option => {
@@ -204,11 +199,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
     // Function to fetch schools based on the selected district and update the school dropdown
     function fetchSchools(districtId) {
         schoolSelect.options.length = 0;
-
         const placeholderOption = new Option("Select School", "");
         placeholderOption.disabled = true;
         placeholderOption.selected = true;
@@ -226,22 +219,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 .catch(error => console.error('Error:', error));
         }
     }
-
     // Call formatDistrictNames to format district names on initial load
     formatDistrictNames();
-
     // Automatically fetch schools if there's only one district option available (for district-specific users)
     if (districtSelect.options.length == 2) {
         fetchSchools(districtSelect.value);
     }
-
     // Add event listener to district select dropdown to fetch schools on change
     districtSelect.addEventListener('change', function() {
         fetchSchools(this.value);
     });
 });
-
-
 
 // make solar section active based on checkbox
 document.addEventListener('DOMContentLoaded', function() {
@@ -327,28 +315,40 @@ document.getElementById("{{ form.service_agreement_id.id_for_label }}").addEvent
     const serviceAgreementID = this.value;
     fetchMeters(serviceAgreementID);
 });
-function fetchMeters(service_agreemenet_id) {
-    fetch(`/enerprize-api/get_meters_for_service_agreement/${service_agreemenet_id}/`) 
+function fetchMeters(service_agreement_id) {
+    console.log("Fetching meters for service agreement ID:", service_agreement_id);
+    fetch(`/enerprize-api/get_meters_for_service_agreement/${service_agreement_id}/`) 
         .then(response => response.json())
         .then(data => {
-            const meterSelect = document.createElement('select');
-            meterSelect.className = 'form-control';
-            meterSelect.name = 'meter_id';
+            console.log("Received data:", data);
+            const meterSelect = document.getElementById('meter_id'); // Use the existing select element
+            console.log("meterSelect:", meterSelect);
+            meterSelect.innerHTML = ''; // Clear existing options
+
+            // Add a default "Select Meter" option
+            const defaultOption = new Option("Select Meter", "", true, true);
+            defaultOption.disabled = true;
+            meterSelect.appendChild(defaultOption);
+
+            // Check if data.meters is defined and log the number of meters
+            if (data.meters && Array.isArray(data.meters)) {
+                console.log("Number of meters fetched:", data.meters.length);
+            } else {
+                console.log("data.meters is undefined or not an array");
+            }
+
+            // Populate the select element with fetched meters
             data.meters.forEach(meter => {
-                const option = new Option(meter.id);
+                console.log("Meter object:", meter);
+                console.log("Adding meter to select:", meter);
+                const option = new Option(meter, meter); // Assuming meter.id is what you want to display
                 meterSelect.appendChild(option);
-            });
-            const meterSelectionPlaceholder = document.getElementById('meter-selection-placeholder');
-            meterSelectionPlaceholder.innerHTML = ''; 
-            meterSelectionPlaceholder.appendChild(meterSelect);
-            
-            meterSelect.addEventListener('change', function() {
-                const meterId = this.value;
-                displayMeterReadingForm(meterId);
             });
         })
         .catch(error => console.error('Error fetching meters:', error));
 }
+
+
 // Adjusted displayMeterReadingForm function to accept the placeholder ID
 function displayMeterReadingForm(meterId, placeholderId) {
     const meterReadingFormPlaceholder = document.getElementById(placeholderId);
