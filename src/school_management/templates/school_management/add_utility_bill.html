@@ -186,6 +186,7 @@
 </div>
   
 <script>
+    
 // fetch schools based on district selection
 document.addEventListener('DOMContentLoaded', function() {
     const districtSelect = document.getElementById("{{ form.district.id_for_label }}");
@@ -310,6 +311,49 @@ document.addEventListener('DOMContentLoaded', function() {
     updateFieldVisibility(); // Call on initial load to set the correct initial state
 });
 
+let allMeters = [];
+let selectedMeters = new Set();
+// Function to update the meter selects whenever there's a change
+function updateMeterSelects() {
+    // Find all meter selects
+    const meterSelects = document.querySelectorAll('.meter-selection');
+    meterSelects.forEach(meterSelect => {
+        const previouslySelectedMeter = meterSelect.value;
+        // Repopulate each select while excluding selected meters
+        populateMeterSelect(meterSelect, previouslySelectedMeter);
+    });
+}
+function populateMeterSelect(meterSelect, previouslySelectedMeter) {
+    meterSelect.innerHTML = ''; // Clear existing options
+    // Add a default "Select Meter" option
+    const defaultOption = new Option("Select Meter", "", true, previouslySelectedMeter === "");
+    defaultOption.disabled = true;
+    meterSelect.appendChild(defaultOption);
+
+    // Add available meters to the select, excluding already selected meters
+    allMeters.forEach(meterId => {
+        if (!selectedMeters.has(meterId.toString())) {
+            const option = new Option(meterId, meterId, false, meterId.toString() === previouslySelectedMeter);
+            meterSelect.appendChild(option);
+        }
+    });
+}
+// When a meter is selected, update the list of selected meters
+function onMeterSelected(meterSelect) {
+    // Add the new selection to the set of selected meters
+    if (meterSelect.value) {
+        selectedMeters.add(meterSelect.value);
+    }
+    // Remove any unselected meters from the set of selected meters
+    document.querySelectorAll('.meter-selection').forEach(select => {
+        if (select.value === "") {
+            selectedMeters.delete(select.getAttribute('data-previously-selected'));
+        }
+    });
+    // Update all meter selects to reflect the new availability
+    updateMeterSelects();
+}
+
 // fetch meters and make meterreading menus for data entry
 document.getElementById("{{ form.service_agreement_id.id_for_label }}").addEventListener('change', function() {
     const serviceAgreementID = this.value;
@@ -320,6 +364,9 @@ function fetchMeters(service_agreement_id) {
     fetch(`/enerprize-api/get_meters_for_service_agreement/${service_agreement_id}/`) 
         .then(response => response.json())
         .then(data => {
+            allMeters = data.meters || [];
+            selectedMeters.clear();
+            updateMeterSelects();
             console.log("Received data:", data);
             const meterSelect = document.getElementById('meter_id'); // Use the existing select element
             console.log("meterSelect:", meterSelect);
@@ -355,27 +402,35 @@ function displayMeterReadingForm(meterId, placeholderId) {
     // Dynamically create and insert the meter reading form associated with the selected meter
     // Similar to the previously provided displayMeterReadingForm function
     meterReadingFormPlaceholder.innerHTML = `
-        <div class="meter-reading-form" data-meter-id="${meterId}">
-            <label for="elec_consumption_kwh_${meterId}">Electric Consumption (kWh):</label>
-            <input type="number" class="form-control" name="elec_consumption_kwh_${meterId}" id="elec_consumption_kwh_${meterId}" step="0.01" placeholder="0.00">
-            
-            <label for="gas_consumption_therms_${meterId}">Gas Consumption (Therms):</label>
-            <input type="number" class="form-control" name="gas_consumption_therms_${meterId}" id="gas_consumption_therms_${meterId}" step="0.01" placeholder="0.00">
-            
-            <label for="peak_consumption_kwh_${meterId}">Peak Consumption (kWh):</label>
-            <input type="number" class="form-control" name="peak_consumption_kwh_${meterId}" id="peak_consumption_kwh_${meterId}" step="0.01" placeholder="0.00">
-            
-            <label for="off_peak_consumption_kwh_${meterId}">Off-Peak Consumption (kWh):</label>
-            <input type="number" class="form-control" name="off_peak_consumption_kwh_${meterId}" id="off_peak_consumption_kwh_${meterId}" placeholder="0">
-            
-            <label for="part_peak_consumption_kwh_${meterId}">Part-Peak Consumption (kWh):</label>
-            <input type="number" class="form-control" name="part_peak_consumption_kwh_${meterId}" id="part_peak_consumption_kwh_${meterId}" placeholder="0">
-            
-            <label for="demand_charge_kw_${meterId}">Demand Charge (kW):</label>
-            <input type="number" class="form-control" name="demand_charge_kw_${meterId}" id="demand_charge_kw_${meterId}" step="0.01" placeholder="0.00">
-            
-            <label for="solar_generation_kwh_${meterId}">Solar Generation (kWh):</label>
-            <input type="number" class="form-control" name="solar_generation_kwh_${meterId}" id="solar_generation_kwh_${meterId}" step="0.01" placeholder="0.00">
+        <div class="row g-3" data-meter-id="${meterId}">
+            <div class="col-md-6">
+                <label for="elec_consumption_kwh_${meterId}" class="form-label">Electric Consumption (kWh):</label>
+                <input type="number" class="form-control" name="elec_consumption_kwh_${meterId}" id="elec_consumption_kwh_${meterId}" step="0.01" placeholder="0.00">
+            </div>
+            <div class="col-md-6">
+                <label for="gas_consumption_therms_${meterId}" class="form-label">Gas Consumption (Therms):</label>
+                <input type="number" class="form-control" name="gas_consumption_therms_${meterId}" id="gas_consumption_therms_${meterId}" step="0.01" placeholder="0.00">
+            </div>
+            <div class="col-md-6">
+                <label for="peak_consumption_kwh_${meterId}" class="form-label">Peak Consumption (kWh):</label>
+                <input type="number" class="form-control" name="peak_consumption_kwh_${meterId}" id="peak_consumption_kwh_${meterId}" step="0.01" placeholder="0.00">
+            </div>
+            <div class="col-md-6">
+                <label for="off_peak_consumption_kwh_${meterId}" class="form-label">Off-Peak Consumption (kWh):</label>
+                <input type="number" class="form-control" name="off_peak_consumption_kwh_${meterId}" id="off_peak_consumption_kwh_${meterId}" placeholder="0">
+            </div>
+            <div class="col-md-6">
+                <label for="part_peak_consumption_kwh_${meterId}" class="form-label">Part-Peak Consumption (kWh):</label>
+                <input type="number" class="form-control" name="part_peak_consumption_kwh_${meterId}" id="part_peak_consumption_kwh_${meterId}" placeholder="0">
+            </div>
+            <div class="col-md-6">
+                <label for="demand_charge_kw_${meterId}" class="form-label">Demand Charge (kW):</label>
+                <input type="number" class="form-control" name="demand_charge_kw_${meterId}" id="demand_charge_kw_${meterId}" step="0.01" placeholder="0.00">
+            </div>
+            <div class="col-md-6">
+                <label for="solar_generation_kwh_${meterId}" class="form-label">Solar Generation (kWh):</label>
+                <input type="number" class="form-control" name="solar_generation_kwh_${meterId}" id="solar_generation_kwh_${meterId}" step="0.01" placeholder="0.00">
+            </div>
         </div>
     `;
 }
@@ -421,6 +476,13 @@ function addMeterSelection() {
         const meterId = this.value;
         displayMeterReadingForm(meterId, meterReadingPlaceholder.id);
     });
+    // Add an event listener to handle selection of a meter
+    meterSelect.addEventListener('change', function() {
+        onMeterSelected(this);
+    });
+    meterSelect.setAttribute('data-previously-selected', ''); // Track the previous selection
+    // Populate the new meter select
+    populateMeterSelect(meterSelect, '');
 }
 
 // fetch service agreements based on school selection & selected utility
