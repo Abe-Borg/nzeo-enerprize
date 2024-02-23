@@ -396,44 +396,58 @@ function fetchMeters(service_agreement_id) {
 }
 
 
-// Adjusted displayMeterReadingForm function to accept the placeholder ID
 function displayMeterReadingForm(meterId, placeholderId) {
+    // Get the placeholder for the meter reading form
     const meterReadingFormPlaceholder = document.getElementById(placeholderId);
-    // Dynamically create and insert the meter reading form associated with the selected meter
-    // Similar to the previously provided displayMeterReadingForm function
-    meterReadingFormPlaceholder.innerHTML = `
-        <div class="row g-3" data-meter-id="${meterId}">
-            <div class="col-md-6">
-                <label for="elec_consumption_kwh_${meterId}" class="form-label">Electric Consumption (kWh):</label>
-                <input type="number" class="form-control" name="elec_consumption_kwh_${meterId}" id="elec_consumption_kwh_${meterId}" step="0.01" placeholder="0.00">
-            </div>
-            <div class="col-md-6">
-                <label for="gas_consumption_therms_${meterId}" class="form-label">Gas Consumption (Therms):</label>
-                <input type="number" class="form-control" name="gas_consumption_therms_${meterId}" id="gas_consumption_therms_${meterId}" step="0.01" placeholder="0.00">
-            </div>
-            <div class="col-md-6">
-                <label for="peak_consumption_kwh_${meterId}" class="form-label">Peak Consumption (kWh):</label>
-                <input type="number" class="form-control" name="peak_consumption_kwh_${meterId}" id="peak_consumption_kwh_${meterId}" step="0.01" placeholder="0.00">
-            </div>
-            <div class="col-md-6">
-                <label for="off_peak_consumption_kwh_${meterId}" class="form-label">Off-Peak Consumption (kWh):</label>
-                <input type="number" class="form-control" name="off_peak_consumption_kwh_${meterId}" id="off_peak_consumption_kwh_${meterId}" placeholder="0">
-            </div>
-            <div class="col-md-6">
-                <label for="part_peak_consumption_kwh_${meterId}" class="form-label">Part-Peak Consumption (kWh):</label>
-                <input type="number" class="form-control" name="part_peak_consumption_kwh_${meterId}" id="part_peak_consumption_kwh_${meterId}" placeholder="0">
-            </div>
-            <div class="col-md-6">
-                <label for="demand_charge_kw_${meterId}" class="form-label">Demand Charge (kW):</label>
-                <input type="number" class="form-control" name="demand_charge_kw_${meterId}" id="demand_charge_kw_${meterId}" step="0.01" placeholder="0.00">
-            </div>
-            <div class="col-md-6">
-                <label for="solar_generation_kwh_${meterId}" class="form-label">Solar Generation (kWh):</label>
-                <input type="number" class="form-control" name="solar_generation_kwh_${meterId}" id="solar_generation_kwh_${meterId}" step="0.01" placeholder="0.00">
-            </div>
+    // Get the closest .form-group that contains the meter selection
+    const formGroupDiv = meterReadingFormPlaceholder.closest('.form-group');
+
+    // Look for any existing grid layout within this form group and remove it if found
+    let existingGridLayout = formGroupDiv.querySelector('.meter-reading-form');
+    if (existingGridLayout) {
+        existingGridLayout.remove();
+    }
+
+    // Create the grid layout div with 'row' and 'g-3' classes for a two-column layout
+    const gridLayoutDiv = document.createElement('div');
+    gridLayoutDiv.className = 'row g-3 meter-reading-form';
+    gridLayoutDiv.setAttribute('data-meter-id', meterId);
+
+    gridLayoutDiv.innerHTML = `
+        <div class="col-md-6">
+            <label for="elec_consumption_kwh_${meterId}" class="form-label">Electric Consumption (kWh):</label>
+            <input type="number" class="form-control" name="elec_consumption_kwh_${meterId}" id="elec_consumption_kwh_${meterId}" step="0.01" placeholder="0.00">
+        </div>
+        <div class="col-md-6">
+            <label for="gas_consumption_therms_${meterId}" class="form-label">Gas Consumption (Therms):</label>
+            <input type="number" class="form-control" name="gas_consumption_therms_${meterId}" id="gas_consumption_therms_${meterId}" step="0.01" placeholder="0.00">
+        </div>
+        <div class="col-md-6">
+            <label for="peak_consumption_kwh_${meterId}" class="form-label">Peak Consumption (kWh):</label>
+            <input type="number" class="form-control" name="peak_consumption_kwh_${meterId}" id="peak_consumption_kwh_${meterId}" step="0.01" placeholder="0.00">
+        </div>
+        <div class="col-md-6">
+            <label for="off_peak_consumption_kwh_${meterId}" class="form-label">Off-Peak Consumption (kWh):</label>
+            <input type="number" class="form-control" name="off_peak_consumption_kwh_${meterId}" id="off_peak_consumption_kwh_${meterId}" placeholder="0">
+        </div>
+        <div class="col-md-6">
+            <label for="part_peak_consumption_kwh_${meterId}" class="form-label">Part-Peak Consumption (kWh):</label>
+            <input type="number" class="form-control" name="part_peak_consumption_kwh_${meterId}" id="part_peak_consumption_kwh_${meterId}" placeholder="0">
+        </div>
+        <div class="col-md-6">
+            <label for="demand_charge_kw_${meterId}" class="form-label">Demand Charge (kW):</label>
+            <input type="number" class="form-control" name="demand_charge_kw_${meterId}" id="demand_charge_kw_${meterId}" step="0.01" placeholder="0.00">
+        </div>
+        <div class="col-md-6">
+            <label for="solar_generation_kwh_${meterId}" class="form-label">Solar Generation (kWh):</label>
+            <input type="number" class="form-control" name="solar_generation_kwh_${meterId}" id="solar_generation_kwh_${meterId}" step="0.01" placeholder="0.00">
         </div>
     `;
+
+    // Append the new grid layout right after the select dropdown within the form group
+    formGroupDiv.appendChild(gridLayoutDiv);
 }
+
 
 // dynamic meter addition
 document.getElementById('add-meter-btn').addEventListener('click', function() {
