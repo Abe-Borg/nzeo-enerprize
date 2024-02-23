@@ -1,0 +1,29 @@
+elec_energy_intensity_kwh_per_sqft, sourced from elect energy use (which comes from utility bills) and school area
+gas_energy_intensity_kbtu_per_sqft, sourced from gas energy use (which comes from utility bills) and school area
+energy_use_intensity_combined_kbtu_per_sqft, sum of elec_energy_intensity_kwh_per_sqft and gas_energy_intensity_kbtu_per_sqft
+
+elec_energy_intensity_kwh_per_student, sourced from elect energy use (which comes from utility bills) and student count
+gas_energy_intensity_kbtu_per_student, sourced from gas energy use (which comes from utility bills) and student count
+energy_use_intensity_combined_kbtu_per_student, sum of elec_energy_intensity_kwh_per_student and gas_energy_intensity_kbtu_per_student
+
+elec_energy_cost_index_dollar_per_sqft, sourced from elect energy use cost (which comes from utility bills) and school area
+gas_energy_cost_index_dollar_per_sqft, sourced from gas energy use cost (which comes from utility bills) and school area
+energy_cost_index_combined_dollar_per_sqft, sum of elec_energy_cost_index_dollar_per_sqft and gas_energy_cost_index_dollar_per_sqft
+
+elec_energy_cost_index_dollar_per_student, sourced from elect energy use cost (which comes from utility bills) and student count
+gas_energy_cost_index_dollar_per_student, sourced from gas energy use cost (which comes from utility bills) and student count
+energy_cost_index_combined_dollar_per_student, sum of elec_energy_cost_index_dollar_per_student and gas_energy_cost_index_dollar_per_student
+
+lbs_natural_gas_ch4, input is gas energy use in therms (this is shown on gas utility bills), then value is converted to BTUs and then the BTUs value is converted to lbs Natural GAs (CH4) 
+lbs_co2e_per_lb_natural_gas_ch4, input is lbs_natural_gas_ch4, then value is converted to lbs CO2e
+
+scope1_co2e_gas_lbs_ch4, sourced from lbs_natural_gas_ch4 and lbs_co2e_per_lb_natural_gas_ch4
+scope2_co2e_elec_lbs_camx, 
+
+cui_scope1_gas_lbs_co2e_per_sqft
+cui_scope2_elec_lbs_co2e_per_sqft
+cui_total_lbs_co2e_per_sqft
+
+cui_scope1_gas_lbs_co2e_per_student
+cui_scope2_elec_lbs_co2e_per_student
+cui_total_lbs_co2e_per_student
