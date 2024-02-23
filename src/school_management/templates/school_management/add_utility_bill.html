@@ -482,9 +482,13 @@ function addMeterSelection() {
     };
     // Append delete button to the meter group
     meterGroup.appendChild(deleteButton);
+
     // Append the meter group to the meters container
     const container = document.getElementById('meters-container');
     container.appendChild(meterGroup);
+    const hr = document.createElement('hr');
+    container.appendChild(hr);
+
     // Set up a change event listener for the new meter selection to display its reading form
     meterSelect.addEventListener('change', function() {
         const meterId = this.value;
