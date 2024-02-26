@@ -37,7 +37,7 @@ urlpatterns = [
     path('maps/', include('maps.urls')),
     path('nzeo-management/', include('nzeo_management.urls')),
     path('plots/', include('plots.urls')),
-    path('school_management/', include('school_management.urls')),
+    path('school_management/', include(('school_management.urls', 'school_management'), namespace='school_management')),
     path('error_page/', error_page, name='error_page'),
     path('change_password/', change_password, name='change_password'),
     path('change_email/', change_email, name='change_email'),

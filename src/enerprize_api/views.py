@@ -51,3 +51,13 @@ def get_school_gross_floor_area(request, school_id):
     school = get_object_or_404(School, pk=school_id)
     gross_floor_area = school.calculate_school_area_sqft()
     return JsonResponse({'gross_floor_area': gross_floor_area})
+
+def get_school_electricity_usage(request, school_id):
+    school = get_object_or_404(School, pk=school_id)
+    electricity_usage = school.calculate_electricity_usage()
+    return JsonResponse({'electricity_usage': electricity_usage})
+
+def get_school_natural_gas_usage(request, school_id):
+    school = get_object_or_404(School, pk=school_id)
+    natural_gas_usage = school.calculate_natural_gas_usage()
+    return JsonResponse({'natural_gas_usage': natural_gas_usage})

@@ -17,6 +17,16 @@ class School(models.Model):
         # area will change when schools are loaded up with real data.
         return self.building_set.aggregate(models.Sum('building_area_sqft'))['building_area_sqft__sum'] or 0
 
+    def calculate_electricity_usage(self):
+        equipment = self.equipment_set.all()
+        total_electricity_demand = sum(equipment.values_list('equipment_elec_kw_demand', flat=True))        
+        return total_electricity_demand
+    
+    def calculate_natural_gas_usage(self):
+        equipment = self.equipment_set.all()
+        total_gas_demand = sum(equipment.values_list('equipment_gas_btuh_demand', flat=True))
+        return total_gas_demand
+
     def __str__(self):
         return str(self.school_name)
     
@@ -80,7 +90,6 @@ class Equipment(models.Model):
     equipment_storage_kwh = models.IntegerField(default = 0)
     equipment_storage_kbtu = models.IntegerField(default = 0)
     equipment_location = models.CharField(max_length=100, default='equipment_location')
-
 
     def __str__(self):
         return str(self.equipment_tag)

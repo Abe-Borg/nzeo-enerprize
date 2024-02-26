@@ -75,7 +75,7 @@ def add_utility_bill(request):
 def check_calculations(request):
     districts = SchoolDistrict.objects.all()
     context = {
-        'district': districts
+        'districts': districts
     }
     return render(request, 'school_management/check_calculations.html', context)
 

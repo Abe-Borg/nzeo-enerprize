@@ -3,7 +3,7 @@
 
 {% block main_container_nzeo_staff %}
 <style>
-.text-center h1 {
+.text-center h3 {
     margin-top: 2rem;
 }
 .meter-group {
@@ -24,9 +24,9 @@
     <div class="row justify-content-center">
       <div class="col-xl-5 col-lg-6 col-md-7">
         <div class="text-center">
-          <h1 class="h1">
+          <h3 class="h3">
               Enter Values to Check Calculations for Perfomance Metrics
-          </h1>
+          </h3>
           <hr><br>
           <!-- District Selection -->
           <select class="form-control" id="district" required>
@@ -55,14 +55,13 @@
           <input type="number" class="form-control" placeholder="Total gas usage therms" id= "total_gas_usage_therms">
           <!-- total_gas_charges_dollars -->
           <input type="number" class="form-control" placeholder = "Total charges $" id="total_gas_charges_dollars">
+          <br>
+          <button class="btn btn-primary" id="calculate">Calculate</button>
           <hr><br>
 
-          <button class="btn btn-primary" id="calculate">Calculate</button>
-          <hr><br><br>
-
-          <h2>
+          <h3>
             Results
-          </h2>
+          </h3>
           <br>
           <!-- Result Display Section -->
           <div id="resultsDisplay" class="results-container">
@@ -151,52 +150,54 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+document.getElementById("calculate").addEventListener("click", calculateMetrics);
 function calculateMetrics() {
-    // Retrieve input values
-    var total_electric_usage_kwh = parseFloat(document.getElementById("total_electric_usage_kwh").value);
-    var total_electric_charges = parseFloat(document.getElementById("total_electric_charges_dollars").value);
-    var total_gas_usage_therms = parseFloat(document.getElementById("total_gas_usage_therms").value);
-    var total_gas_charges = parseFloat(document.getElementById("total_gas_charges_dollars").value);
-    var school_area = parseFloat(document.getElementById("school_area_sqft").value);
-    var number_of_students = parseFloat(document.getElementById("number_of_students").value);
+  // Retrieve input values
+  var total_electric_usage_kwh = parseFloat(document.getElementById("total_electric_usage_kwh").value);
+  var total_electric_charges = parseFloat(document.getElementById("total_electric_charges_dollars").value);
+  var total_gas_usage_therms = parseFloat(document.getElementById("total_gas_usage_therms").value);
+  var total_gas_charges = parseFloat(document.getElementById("total_gas_charges_dollars").value);
+  var school_area = parseFloat(document.getElementById("school_area_sqft").value);
+  var number_of_students = parseFloat(document.getElementById("number_of_students").value);
 
-    // Energy use intensity calculations
-    var elec_energy_use_intensity_kwh_per_sqft = total_electric_usage_kwh / school_area;
-    var elec_energy_use_intensity_kbtu_per_sqft = elec_energy_use_intensity_kwh_per_sqft * 0.29307107;
-    var natural_gas_energy_use_intensity_kbtu_per_sqft = (total_gas_usage_therms * 99.976) / school_area;
-    var combined_energy_use_intensity_kbtu_per_sqft = elec_energy_use_intensity_kbtu_per_sqft + natural_gas_energy_use_intensity_kbtu_per_sqft;
+  // Energy use intensity calculations
+  var elec_energy_use_intensity_kwh_per_sqft = total_electric_usage_kwh / school_area;
+  var elec_energy_use_intensity_kbtu_per_sqft = elec_energy_use_intensity_kwh_per_sqft * 0.29307107;
+  var natural_gas_energy_use_intensity_kbtu_per_sqft = (total_gas_usage_therms * 99.976) / school_area;
+  var combined_energy_use_intensity_kbtu_per_sqft = elec_energy_use_intensity_kbtu_per_sqft + natural_gas_energy_use_intensity_kbtu_per_sqft;
 
-    // Energy use intensity per student
-    var elec_energy_use_intensity_kwh_per_student = total_electric_usage_kwh / number_of_students;
-    var elec_energy_use_intensity_kbtu_per_student = elec_energy_use_intensity_kwh_per_student * 0.29307107;
-    var natural_gas_energy_use_intensity_kbtu_per_student = (total_gas_usage_therms * 99.976) / number_of_students;
-    var combined_energy_use_intensity_kbtu_per_student = elec_energy_use_intensity_kbtu_per_student + natural_gas_energy_use_intensity_kbtu_per_student;
+  // Energy use intensity per student
+  var elec_energy_use_intensity_kwh_per_student = total_electric_usage_kwh / number_of_students;
+  var elec_energy_use_intensity_kbtu_per_student = elec_energy_use_intensity_kwh_per_student * 0.29307107;
+  var natural_gas_energy_use_intensity_kbtu_per_student = (total_gas_usage_therms * 99.976) / number_of_students;
+  var combined_energy_use_intensity_kbtu_per_student = elec_energy_use_intensity_kbtu_per_student + natural_gas_energy_use_intensity_kbtu_per_student;
 
-    // Energy use cost index
-    var elec_energy_use_cost_index_dollar_per_sqft = total_electric_charges / school_area;
-    var natural_gas_energy_use_cost_index_dollar_per_sqft = total_gas_charges / school_area;
-    var combined_energy_use_cost_index_dollar_per_sqft = elec_energy_use_cost_index_dollar_per_sqft + natural_gas_energy_use_cost_index_dollar_per_sqft;
+  // Energy use cost index
+  var elec_energy_use_cost_index_dollar_per_sqft = total_electric_charges / school_area;
+  var natural_gas_energy_use_cost_index_dollar_per_sqft = total_gas_charges / school_area;
+  var combined_energy_use_cost_index_dollar_per_sqft = elec_energy_use_cost_index_dollar_per_sqft + natural_gas_energy_use_cost_index_dollar_per_sqft;
 
-    // Energy use cost index per student
-    var elec_energy_use_cost_index_dollar_per_student = total_electric_charges / number_of_students;
-    var natural_gas_energy_use_cost_index_dollar_per_student = total_gas_charges / number_of_students;
-    var combined_energy_use_cost_index_dollar_per_student = elec_energy_use_cost_index_dollar_per_student + natural_gas_energy_use_cost_index_dollar_per_student;
+  // Energy use cost index per student
+  var elec_energy_use_cost_index_dollar_per_student = total_electric_charges / number_of_students;
+  var natural_gas_energy_use_cost_index_dollar_per_student = total_gas_charges / number_of_students;
+  var combined_energy_use_cost_index_dollar_per_student = elec_energy_use_cost_index_dollar_per_student + natural_gas_energy_use_cost_index_dollar_per_student;
 
-    // CO2e and natural gas conversions
-    var lbs_natural_gas_from_therms = total_gas_usage_therms * 99.976 * 0.042;
-    var scope1_lbs_co2e_from_lbs_natural_gas = lbs_natural_gas_from_therms * 25;
-    var scope2_lbs_co2e_from_kwh_elec_camx_grid = (total_electric_usage_kwh / 1000) * 531.7;
+  // CO2e and natural gas conversions
+  var lbs_natural_gas_from_therms = total_gas_usage_therms * 99.976 * 0.042;
+  var scope1_lbs_co2e_from_lbs_natural_gas = lbs_natural_gas_from_therms * 25;
+  var scope2_lbs_co2e_from_kwh_elec_camx_grid = (total_electric_usage_kwh / 1000) * 531.7;
 
-    // CO2e per sqft and per student
-    var cui_scope1_lbs_co2e_per_sqft_from_natural_gas_use = scope1_lbs_co2e_from_lbs_natural_gas / school_area;
-    var cui_scope2_lbs_co2e_per_sqft_from_elec_use = scope2_lbs_co2e_from_kwh_elec_camx_grid / school_area;
-    var cui_total_lbs_co2e_per_sqft = cui_scope1_lbs_co2e_per_sqft_from_natural_gas_use + cui_scope2_lbs_co2e_per_sqft_from_elec_use;
+  // CO2e per sqft and per student
+  var cui_scope1_lbs_co2e_per_sqft_from_natural_gas_use = scope1_lbs_co2e_from_lbs_natural_gas / school_area;
+  var cui_scope2_lbs_co2e_per_sqft_from_elec_use = scope2_lbs_co2e_from_kwh_elec_camx_grid / school_area;
+  var cui_total_lbs_co2e_per_sqft = cui_scope1_lbs_co2e_per_sqft_from_natural_gas_use + cui_scope2_lbs_co2e_per_sqft_from_elec_use;
 
-    var cui_scope1_lbs_co2e_per_student_from_natural_gas_use = scope1_lbs_co2e_from_lbs_natural_gas / number_of_students;
-    var cui_scope2_lbs_co2e_per_student_from_elec_use = scope2_lbs_co2e_from_kwh_elec_camx_grid / number_of_students;
-    var cui_total_lbs_co2e_per_student = cui_scope1_lbs_co2e_per_student_from_natural_gas_use + cui_scope2_lbs_co2e_per_student_from_elec_use;
+  var cui_scope1_lbs_co2e_per_student_from_natural_gas_use = scope1_lbs_co2e_from_lbs_natural_gas / number_of_students;
+  var cui_scope2_lbs_co2e_per_student_from_elec_use = scope2_lbs_co2e_from_kwh_elec_camx_grid / number_of_students;
+  var cui_total_lbs_co2e_per_student = cui_scope1_lbs_co2e_per_student_from_natural_gas_use + cui_scope2_lbs_co2e_per_student_from_elec_use;
 
 }
+
 </script>
 
 {% endblock %}
