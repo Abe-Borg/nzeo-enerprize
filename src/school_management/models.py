@@ -123,7 +123,6 @@ class UtilityBill(models.Model):
     total_off_peak_consumption_kwh = models.IntegerField(default=0)
     total_peak_consumption_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     total_part_peak_consumption_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    solar_energy_credits = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
 
 
 class MeterReading(models.Model):
