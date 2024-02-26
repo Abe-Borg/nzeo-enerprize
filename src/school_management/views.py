@@ -73,7 +73,9 @@ def add_utility_bill(request):
 
 @login_required
 def check_calculations(request):
-    context = {smc.UNIT_CONVERSIONS}
-
+    districts = SchoolDistrict.objects.all()
+    context = {
+        'district': districts
+    }
     return render(request, 'school_management/check_calculations.html', context)
 

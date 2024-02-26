@@ -168,7 +168,7 @@ UNITS_OF_MEASURE = (
     ('lbs CO2e/student', 'Pounds of CO2e per student'),
 )
 UNIT_CONVERSIONS = (
-    ('lbs/metric_ton', 2204.62),
+    ('lbs/metric_ton', 2204.62), 
     ('BTU/kWh', 0.00029307),
     ('kBTU/kWh', 0.29307),
     ('kWh/kBTU', 3.412),
