@@ -43,7 +43,7 @@
           <!-- other inputs -->
           <input type="number" class="form-control" placeholder = "School Area (sqft)" id = "school_area_sqft" disabled>
           <input type="number" class="form-control" placeholder = "Number of Students" id="number_of_students" disabled>
-          <input type="number" class="form-control" placeholder = "Campus Electric Energy Demand kWh (equipment)" id="campus_energy_demand_kWh" disabled>
+          <input type="number" class="form-control" placeholder = "Campus Electric Energy Demand kW (equipment)" id="campus_energy_demand_kW" disabled>
           <input type = "number" class="form-control" placeholder = "Campus Natural Gas Demand kBTUh (equipment)" id="campus_gas_demand_kbtuh" disabled>
           <hr><br>
 
@@ -108,6 +108,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const districtSelect = document.getElementById("district");
     const schoolSelect = document.getElementById("school");
+    
     // Function to format and update district names in the dropdown
     function formatDistrictNames() {
         Array.from(districtSelect.options).forEach(option => {
@@ -117,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
     // Function to fetch schools based on the selected district and update the school dropdown
     function fetchSchools(districtId) {
         schoolSelect.options.length = 0;
@@ -137,18 +139,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 .catch(error => console.error('Error:', error));
         }
     }
+    
     // Call formatDistrictNames to format district names on initial load
     formatDistrictNames();
-    // Automatically fetch schools if there's only one district option available (for district-specific users)
-    if (districtSelect.options.length == 2) {
-        fetchSchools(districtSelect.value);
-    }
+
     // Add event listener to district select dropdown to fetch schools on change
     districtSelect.addEventListener('change', function() {
         fetchSchools(this.value);
     });
 });
 
+document.getElementById('school').addEventListener('change', function() {
+    var schoolId = this.value;
+    fetch(`/get-school-data/${schoolId}/`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('school_area_sqft').value = data.school_area_sqft;
+            document.getElementById('number_of_students').value = data.number_of_students;
+            document.getElementById('campus_energy_demand_kW').value = data.campus_energy_demand_kW;
+            document.getElementById('campus_gas_demand_kbtuh').value = data.campus_gas_demand_kbtuh;
+        })
+        .catch(error => console.error('Error:', error));
+});
 
 document.getElementById("calculate").addEventListener("click", calculateMetrics);
 function calculateMetrics() {
