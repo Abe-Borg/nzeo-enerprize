@@ -109,20 +109,35 @@ class UtilityBill(models.Model):
     utility_type = models.CharField(max_length=100, choices = smc.UTILITY_TYPE)
     district = models.ForeignKey(SchoolDistrict, on_delete=models.SET_NULL, null=True)
     school = models.ForeignKey(School, on_delete=models.CASCADE)
+    
     service_agreement_id = models.ForeignKey(ServiceAgreement, on_delete=models.SET_NULL, null= True, default=0)
     bill_statement_date = models.DateField()
     bill_start_date = models.DateField()
     bill_end_date = models.DateField()
+    
     total_electric_usage_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    total_electric_charges = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    total_gas_usage_therms = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    total_gas_charges = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    solar_energy_credits = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    total_electric_charges_dollars = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     total_demand_charge_kw = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
-    total_solar_generation_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     total_off_peak_consumption_kwh = models.IntegerField(default=0)
     total_peak_consumption_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
     total_part_peak_consumption_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    
+    total_gas_usage_therms = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    total_gas_charges_dollars = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+
+    # all solar related fields
+    total_solar_generation_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    solar_energy_credits_dollars = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    electric_net_peak_usage_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    electric_net_part_peak_usage_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    electric_net_off_peak_usage_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    electric_net_usage_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    estimated_total_net_energy_meter_charges_dollars = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    electric_net_energy_meter_charges_dollars = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    solar_imports_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    solar_exports_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+    electric_net_usage_kwh = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00)
+
 
 
 class MeterReading(models.Model):
