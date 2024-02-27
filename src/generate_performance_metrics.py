@@ -38,32 +38,34 @@ def generate_synthetic_data(school_id, year):
 
     synthetic_electric_usage = generate_synthetic_data_for_month(electric_usage_samples)
     synthetic_electric_cost = generate_synthetic_data_for_month(electric_cost_samples)
-    synthetic_gas_usage = generate_synthetic_data_for_month(gas_usage_samples)
+    synthetic_gas_usage = generate_synthetic_data_for_month(gas_usage_samples) 
     synthetic_gas_cost = generate_synthetic_data_for_month(gas_cost_samples) 
 
-    for month in range(1, 13):
-        
-        elec_energy_use_intensity_kwh_per_sqft = synthetic_electric_usage[month - 1] / school.calculate_school_area_sqft()
-        elec_energy_use_intensity_kbtu_per_sqft = elec_energy_use_intensity_kwh_per_sqft * KWH_TO_KBTU
-        natural_gas_energy_use_intensity_kbtu_per_sqft = synthetic_gas_usage[month - 1] * THERMS_TO_KBTU / school.calculate_school_area_sqft()
+    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+
+    for month_index in range(1, 13):
+        elec_energy_use_intensity_kwh_per_sqft = synthetic_electric_usage[month_index - 1] / school.calculate_school_area_sqft() 
+        elec_energy_use_intensity_kbtu_per_sqft = elec_energy_use_intensity_kwh_per_sqft * KWH_TO_KBTU 
+        natural_gas_energy_use_intensity_kbtu_per_sqft = synthetic_gas_usage[month_index - 1] * THERMS_TO_KBTU / school.calculate_school_area_sqft() 
         combined_energy_use_intensity_kbtu_per_sqft = elec_energy_use_intensity_kbtu_per_sqft + natural_gas_energy_use_intensity_kbtu_per_sqft
 
-        elec_energy_use_intensity_kwh_per_student = synthetic_electric_usage[month - 1] / school.school_student_population
-        elec_energy_use_intensity_kbtu_per_student = elec_energy_use_intensity_kwh_per_student * KWH_TO_KBTU
-        natural_gas_energy_use_intensity_kbtu_per_student = synthetic_gas_usage[month - 1] * THERMS_TO_KBTU / school.school_student_population
-        combined_energy_use_intensity_kbtu_per_student = elec_energy_use_intensity_kbtu_per_student + natural_gas_energy_use_intensity_kbtu_per_student
+        elec_energy_use_intensity_kwh_per_student = synthetic_electric_usage[month_index - 1] / school.school_student_population 
+        elec_energy_use_intensity_kbtu_per_student = elec_energy_use_intensity_kwh_per_student * KWH_TO_KBTU 
+        natural_gas_energy_use_intensity_kbtu_per_student = synthetic_gas_usage[month_index - 1] * THERMS_TO_KBTU / school.school_student_population  
+        combined_energy_use_intensity_kbtu_per_student = elec_energy_use_intensity_kbtu_per_student + natural_gas_energy_use_intensity_kbtu_per_student 
 
-        elec_energy_use_cost_index_dollar_per_sqft = synthetic_electric_cost[month - 1] / school.calculate_school_area_sqft()
-        natural_gas_energy_use_cost_index_dollar_per_sqft = synthetic_gas_cost[month - 1] / school.calculate_school_area_sqft()
-        combined_energy_use_cost_index_dollar_per_sqft = elec_energy_use_cost_index_dollar_per_sqft + natural_gas_energy_use_cost_index_dollar_per_sqft
+        elec_energy_use_cost_index_dollar_per_sqft = synthetic_electric_cost[month_index - 1] / school.calculate_school_area_sqft() 
+        natural_gas_energy_use_cost_index_dollar_per_sqft = synthetic_gas_cost[month_index - 1] / school.calculate_school_area_sqft() 
+        combined_energy_use_cost_index_dollar_per_sqft = elec_energy_use_cost_index_dollar_per_sqft + natural_gas_energy_use_cost_index_dollar_per_sqft 
 
-        elec_energy_use_cost_index_dollar_per_student = synthetic_electric_cost[month - 1] / school.school_student_population
-        natural_gas_energy_use_cost_index_dollar_per_student = synthetic_gas_cost[month - 1] / school.school_student_population
-        combined_energy_use_cost_index_dollar_per_student = elec_energy_use_cost_index_dollar_per_student + natural_gas_energy_use_cost_index_dollar_per_student
+        elec_energy_use_cost_index_dollar_per_student = synthetic_electric_cost[month_index - 1] / school.school_student_population 
+        natural_gas_energy_use_cost_index_dollar_per_student = synthetic_gas_cost[month_index - 1] / school.school_student_population 
+        combined_energy_use_cost_index_dollar_per_student = elec_energy_use_cost_index_dollar_per_student + natural_gas_energy_use_cost_index_dollar_per_student 
 
-        lbs_natural_gas_from_therms = synthetic_gas_usage[month - 1] * THERMS_TO_KBTU * THERMS_TO_LBS_NATURAL_GAS
+        lbs_natural_gas_from_therms = synthetic_gas_usage[month_index - 1] * THERMS_TO_KBTU * THERMS_TO_LBS_NATURAL_GAS
         scope1_lbs_co2e_from_lbs_natural_gas = lbs_natural_gas_from_therms * CO2E_PER_THERM
-        scope2_lbs_co2e_from_kwh_elec_camx_grid = (synthetic_electric_usage[month - 1] / 1000) * CO2E_PER_KWH
+        scope2_lbs_co2e_from_kwh_elec_camx_grid = (synthetic_electric_usage[month_index - 1] / 1000) * CO2E_PER_KWH
 
         cui_scope1_lbs_co2e_per_sqft_from_natural_gas_use = scope1_lbs_co2e_from_lbs_natural_gas / school.calculate_school_area_sqft()
         cui_scope2_lbs_co2e_per_sqft_from_elec_use = scope2_lbs_co2e_from_kwh_elec_camx_grid / school.calculate_school_area_sqft()
@@ -73,10 +75,33 @@ def generate_synthetic_data(school_id, year):
         cui_scope2_lbs_co2e_per_student_from_elec_use = scope2_lbs_co2e_from_kwh_elec_camx_grid / school.school_student_population
         cui_total_lbs_co2e_per_student = cui_scope1_lbs_co2e_per_student_from_natural_gas_use + cui_scope2_lbs_co2e_per_student_from_elec_use
 
-        # create a PerformanceMetrics record and populate it with the calculated values
-        
-
-        print(f"Metrics for {year}-{month} calculated and saved for school ID {school_id}.")
-
-# Example usage
-generate_synthetic_data(1, 2022)  # School ID 1 for the year 2022
+        # create a PerformanceMetrics record and populate it with the calculated values, and save
+        performance_metric = PerformanceMetrics(
+            school=school,
+            assigned_month=months[month_index - 1],
+            assigned_year=year,
+            elec_energy_use_intensity_kwh_per_sqft=elec_energy_use_intensity_kwh_per_sqft,
+            elec_energy_use_intensity_kbtu_per_sqft=elec_energy_use_intensity_kbtu_per_sqft,
+            natural_gas_energy_use_intensity_kbtu_per_sqft=natural_gas_energy_use_intensity_kbtu_per_sqft,
+            combined_energy_use_intensity_kbtu_per_sqft=combined_energy_use_intensity_kbtu_per_sqft,
+            elec_energy_use_intensity_kwh_per_student=elec_energy_use_intensity_kwh_per_student,
+            elec_energy_use_intensity_kbtu_per_student=elec_energy_use_intensity_kbtu_per_student,
+            natural_gas_energy_use_intensity_kbtu_per_student=natural_gas_energy_use_intensity_kbtu_per_student,
+            combined_energy_use_intensity_kbtu_per_student=combined_energy_use_intensity_kbtu_per_student,
+            elec_energy_use_cost_index_dollar_per_sqft=elec_energy_use_cost_index_dollar_per_sqft,
+            natural_gas_energy_use_cost_index_dollar_per_sqft=natural_gas_energy_use_cost_index_dollar_per_sqft,
+            combined_energy_use_cost_index_dollar_per_sqft=combined_energy_use_cost_index_dollar_per_sqft,
+            elec_energy_use_cost_index_dollar_per_student=elec_energy_use_cost_index_dollar_per_student,
+            natural_gas_energy_use_cost_index_dollar_per_student=natural_gas_energy_use_cost_index_dollar_per_student,
+            combined_energy_use_cost_index_dollar_per_student=combined_energy_use_cost_index_dollar_per_student,
+            lbs_natural_gas_from_therms=lbs_natural_gas_from_therms,
+            scope1_lbs_co2e_from_lbs_natural_gas=scope1_lbs_co2e_from_lbs_natural_gas,
+            scope2_lbs_co2e_from_kwh_elec_camx_grid=scope2_lbs_co2e_from_kwh_elec_camx_grid,
+            cui_scope1_lbs_co2e_per_sqft_from_natural_gas_use=cui_scope1_lbs_co2e_per_sqft_from_natural_gas_use,
+            cui_scope2_lbs_co2e_per_sqft_from_elec_use=cui_scope2_lbs_co2e_per_sqft_from_elec_use,
+            cui_total_lbs_co2e_per_sqft=cui_total_lbs_co2e_per_sqft,
+            cui_scope1_lbs_co2e_per_student_from_natural_gas_use=cui_scope1_lbs_co2e_per_student_from_natural_gas_use,
+            cui_scope2_lbs_co2e_per_student_from_elec_use=cui_scope2_lbs_co2e_per_student_from_elec_use,
+            cui_total_lbs_co2e_per_student=cui_total_lbs_co2e_per_student,
+        )
+        performance_metric.save()

@@ -166,7 +166,7 @@ class PerformanceMetrics(models.Model):
     gas_bill_id = models.ForeignKey(UtilityBill, on_delete=models.SET_NULL, null=True, default=None, related_name='gas_bill_id')
     elec_bill_id = models.ForeignKey(UtilityBill, on_delete=models.SET_NULL, null=True, default=None, related_name='elec_bill_id')
     assigned_month = models.CharField(max_length=100, choices = smc.MONTHS, default='January') # each performance metric will need to be manually assigned to a month even though the gas and electricity bills may not come in at the same time.
-    assigned_year = models.IntegerField(default=2021) # temp field, will be removed later
+    assigned_year = models.IntegerField(default=2021)
 
     elec_energy_use_intensity_kwh_per_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00), # sourced from elect energy use (which comes from utility bills) and school area
     elec_energy_use_intensity_kbtu_per_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # this is derived through a conversion factor, multiply elec_energy_use_intensity_kwh_per_sqft by 0.29307107
