@@ -152,6 +152,10 @@ SCHOOL_TYPE = {
     ('elementary_school', 'Elementary School'),
     ('middle_school', 'Middle School'),
     ('high_school', 'High School'),
+    ('adult_school', 'Adult School'),
+    ('special_education_school', 'Special Education School'),
+    ('miscellaneous', 'Miscellaneous'),
+    ('pre_school', 'Pre-School'),
 }
 
 UNITS_OF_MEASURE = (
