@@ -148,6 +148,11 @@ MANUFACTURERS = (
     ('maytag', 'Maytag')
 )
 
+SCHOOL_TYPE = {
+    ('elementary_school', 'Elementary School'),
+    ('middle_school', 'Middle School'),
+    ('high_school', 'High School'),
+}
 
 UNITS_OF_MEASURE = (
     ('kwh', 'Kilowatt hours'),
