@@ -101,12 +101,14 @@ def generate_synthetic_data(school_id, year):
         cui_scope1_lbs_co2e_per_student_from_natural_gas_use = Decimal(str(cui_scope1_lbs_co2e_per_student_from_natural_gas_use))
         cui_scope2_lbs_co2e_per_student_from_elec_use = Decimal(str(cui_scope2_lbs_co2e_per_student_from_elec_use))
         cui_total_lbs_co2e_per_student = Decimal(str(cui_total_lbs_co2e_per_student))
-        
+
 
 
         # create a PerformanceMetrics record and populate it with the calculated values, and save
         performance_metric = PerformanceMetrics(
             school=school,
+            gas_bill_id = None,
+            elec_bill_id = None,
             assigned_month=months[month_index - 1],
             assigned_year=year,
             elec_energy_use_intensity_kwh_per_sqft=elec_energy_use_intensity_kwh_per_sqft,

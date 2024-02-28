@@ -168,7 +168,7 @@ class PerformanceMetrics(models.Model):
     assigned_month = models.CharField(max_length=100, choices = smc.MONTHS, default='January') # each performance metric will need to be manually assigned to a month even though the gas and electricity bills may not come in at the same time.
     assigned_year = models.IntegerField(default=2021)
 
-    elec_energy_use_intensity_kwh_per_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00), # sourced from elect energy use (which comes from utility bills) and school area
+    elec_energy_use_intensity_kwh_per_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # sourced from elect energy use (which comes from utility bills) and school area
     elec_energy_use_intensity_kbtu_per_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # this is derived through a conversion factor, multiply elec_energy_use_intensity_kwh_per_sqft by 0.29307107
     natural_gas_energy_use_intensity_kbtu_per_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # sourced from gas energy use (which comes from utility bills) and school area
     combined_energy_use_intensity_kbtu_per_sqft = models.DecimalField(max_digits = 10, decimal_places = 2, default=0.00) # sum of energy use per gross area (gas and electric)
