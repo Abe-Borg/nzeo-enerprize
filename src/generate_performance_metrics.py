@@ -1,4 +1,5 @@
 import numpy as np
+from decimal import Decimal
 import os
 import django
 
@@ -6,6 +7,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
 
 from school_management.models import School, PerformanceMetrics  
+import school_management.school_management_constants as smc 
 
 # Constants for synthetic data generation
 ELECTRIC_USAGE_VARIANCE = 0.25
@@ -41,7 +43,7 @@ def generate_synthetic_data(school_id, year):
     synthetic_gas_usage = generate_synthetic_data_for_month(gas_usage_samples) 
     synthetic_gas_cost = generate_synthetic_data_for_month(gas_cost_samples) 
 
-    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    months = [month[0] for month in smc.MONTHS]
 
 
     for month_index in range(1, 13):
@@ -75,6 +77,33 @@ def generate_synthetic_data(school_id, year):
         cui_scope2_lbs_co2e_per_student_from_elec_use = scope2_lbs_co2e_from_kwh_elec_camx_grid / school.school_student_population
         cui_total_lbs_co2e_per_student = cui_scope1_lbs_co2e_per_student_from_natural_gas_use + cui_scope2_lbs_co2e_per_student_from_elec_use
 
+        # Convert float results to Decimal, suitable for DecimalField in Django model
+        elec_energy_use_intensity_kwh_per_sqft = Decimal(str(elec_energy_use_intensity_kwh_per_sqft))
+        elec_energy_use_intensity_kbtu_per_sqft = Decimal(str(elec_energy_use_intensity_kbtu_per_sqft))
+        natural_gas_energy_use_intensity_kbtu_per_sqft = Decimal(str(natural_gas_energy_use_intensity_kbtu_per_sqft))
+        combined_energy_use_intensity_kbtu_per_sqft = Decimal(str(combined_energy_use_intensity_kbtu_per_sqft))
+        elec_energy_use_intensity_kwh_per_student = Decimal(str(elec_energy_use_intensity_kwh_per_student))
+        elec_energy_use_intensity_kbtu_per_student = Decimal(str(elec_energy_use_intensity_kbtu_per_student))
+        natural_gas_energy_use_intensity_kbtu_per_student = Decimal(str(natural_gas_energy_use_intensity_kbtu_per_student))
+        combined_energy_use_intensity_kbtu_per_student = Decimal(str(combined_energy_use_intensity_kbtu_per_student))
+        elec_energy_use_cost_index_dollar_per_sqft = Decimal(str(elec_energy_use_cost_index_dollar_per_sqft))
+        natural_gas_energy_use_cost_index_dollar_per_sqft = Decimal(str(natural_gas_energy_use_cost_index_dollar_per_sqft))
+        combined_energy_use_cost_index_dollar_per_sqft = Decimal(str(combined_energy_use_cost_index_dollar_per_sqft))
+        elec_energy_use_cost_index_dollar_per_student = Decimal(str(elec_energy_use_cost_index_dollar_per_student))
+        natural_gas_energy_use_cost_index_dollar_per_student = Decimal(str(natural_gas_energy_use_cost_index_dollar_per_student))
+        combined_energy_use_cost_index_dollar_per_student = Decimal(str(combined_energy_use_cost_index_dollar_per_student))
+        lbs_natural_gas_from_therms = Decimal(str(lbs_natural_gas_from_therms))
+        scope1_lbs_co2e_from_lbs_natural_gas = Decimal(str(scope1_lbs_co2e_from_lbs_natural_gas))
+        scope2_lbs_co2e_from_kwh_elec_camx_grid = Decimal(str(scope2_lbs_co2e_from_kwh_elec_camx_grid))
+        cui_scope1_lbs_co2e_per_sqft_from_natural_gas_use = Decimal(str(cui_scope1_lbs_co2e_per_sqft_from_natural_gas_use))
+        cui_scope2_lbs_co2e_per_sqft_from_elec_use = Decimal(str(cui_scope2_lbs_co2e_per_sqft_from_elec_use))
+        cui_total_lbs_co2e_per_sqft = Decimal(str(cui_total_lbs_co2e_per_sqft))
+        cui_scope1_lbs_co2e_per_student_from_natural_gas_use = Decimal(str(cui_scope1_lbs_co2e_per_student_from_natural_gas_use))
+        cui_scope2_lbs_co2e_per_student_from_elec_use = Decimal(str(cui_scope2_lbs_co2e_per_student_from_elec_use))
+        cui_total_lbs_co2e_per_student = Decimal(str(cui_total_lbs_co2e_per_student))
+        
+
+
         # create a PerformanceMetrics record and populate it with the calculated values, and save
         performance_metric = PerformanceMetrics(
             school=school,
@@ -105,3 +134,9 @@ def generate_synthetic_data(school_id, year):
             cui_total_lbs_co2e_per_student=cui_total_lbs_co2e_per_student,
         )
         performance_metric.save()
+
+# Generate synthetic data for all schools
+for school in School.objects.all():
+    generate_synthetic_data(school.id, 2021)
+    generate_synthetic_data(school.id, 2022)
+    generate_synthetic_data(school.id, 2023)
