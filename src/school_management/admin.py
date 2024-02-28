@@ -320,7 +320,6 @@ class UtilityProviderAccountNumberAdmin(admin.ModelAdmin):
 admin.site.register(UtilityProviderAccountNumber, UtilityProviderAccountNumberAdmin)
 
 
-#################### Service Agreement Admin ####################
 # Custom filter for the district
 class DistrictListFilter(admin.SimpleListFilter):
     title = 'district'  # or use _('district') for i18n
@@ -393,6 +392,75 @@ class MeterAdmin(admin.ModelAdmin):
     get_utility_type.short_description = 'Utility Type'
 
 admin.site.register(MeterReading)
-admin.site.register(PerformanceMetrics)
+
+
+@admin.register(PerformanceMetrics)
+class PerformanceMetricsAdmin(admin.ModelAdmin):
+    list_filter = ('school', 'assigned_year', 'assigned_month')
+    
+    def get_list_display(self, request):
+        return [
+            'school',
+            'assigned_month',
+            'assigned_year',
+            'formatted_combined_energy_use_intensity_kbtu_per_sqft',
+            'formatted_combined_energy_use_intensity_kbtu_per_student',
+            'formatted_combined_energy_use_cost_index_dollar_per_sqft',
+            'formatted_combined_energy_use_cost_index_dollar_per_student',
+            # 'formatted_cui_scope1_lbs_co2e_per_sqft_from_natural_gas_use',
+            # 'formatted_cui_scope2_lbs_co2e_per_sqft_from_elec_use',
+            'formatted_cui_total_lbs_co2e_per_sqft',
+            # 'formatted_cui_scope1_lbs_co2e_per_student_from_natural_gas_use',
+            # 'formatted_cui_scope2_lbs_co2e_per_student_from_elec_use',
+            'formatted_cui_total_lbs_co2e_per_student',
+        ]
+
+    # Adjustments to the formatted_combined_energy_use_intensity_kbtu_per_sqft method
+    def formatted_combined_energy_use_intensity_kbtu_per_sqft(self, obj):
+        return f"{obj.combined_energy_use_intensity_kbtu_per_sqft} kBTU/sqft"
+    formatted_combined_energy_use_intensity_kbtu_per_sqft.admin_order_field = 'combined_energy_use_intensity_kbtu_per_sqft'
+    formatted_combined_energy_use_intensity_kbtu_per_sqft.short_description = "Combined EUI kBTU/sqft"
+
+    def formatted_combined_energy_use_intensity_kbtu_per_student(self, obj):
+        return f"{obj.combined_energy_use_intensity_kbtu_per_student} kBTU/student"
+    formatted_combined_energy_use_intensity_kbtu_per_student.admin_order_field = 'combined_energy_use_intensity_kbtu_per_student'
+    formatted_combined_energy_use_intensity_kbtu_per_student.short_description = "Combined EUI kBTU/student"
+
+    def formatted_combined_energy_use_cost_index_dollar_per_sqft(self, obj):
+        return f"${obj.combined_energy_use_cost_index_dollar_per_sqft} /sqft"
+    formatted_combined_energy_use_cost_index_dollar_per_sqft.admin_order_field = 'combined_energy_use_cost_index_dollar_per_sqft'
+    formatted_combined_energy_use_cost_index_dollar_per_sqft.short_description = "Combined EU Cost $/sqft"
+
+    def formatted_combined_energy_use_cost_index_dollar_per_student(self, obj):
+        return f"${obj.combined_energy_use_cost_index_dollar_per_student} /student"
+    formatted_combined_energy_use_cost_index_dollar_per_student.admin_order_field = 'combined_energy_use_cost_index_dollar_per_student'
+    formatted_combined_energy_use_cost_index_dollar_per_student.short_description = "Combined EU Cost $/student"
+
+    # def formatted_cui_scope1_lbs_co2e_per_sqft_from_natural_gas_use(self, obj):
+        # return f"{obj.cui_scope1_lbs_co2e_per_sqft_from_natural_gas_use} lbs CO2e/sqft"
+    # formatted_cui_scope1_lbs_co2e_per_sqft_from_natural_gas_use.short_description = "CUI Scope 1 (gas) - lbs CO2e/sqft"
+
+    # def formatted_cui_scope2_lbs_co2e_per_sqft_from_elec_use(self, obj):
+        # return f"{obj.cui_scope2_lbs_co2e_per_sqft_from_elec_use} lbs CO2e/sqft"
+    # formatted_cui_scope2_lbs_co2e_per_sqft_from_elec_use.short_description = "CUI Scope 2 (elec) - lbs CO2e/sqft"
+
+    def formatted_cui_total_lbs_co2e_per_sqft(self, obj):
+        return f"{obj.cui_total_lbs_co2e_per_sqft} lbs CO2e/sqft"
+    formatted_cui_total_lbs_co2e_per_sqft.admin_order_field = 'cui_total_lbs_co2e_per_sqft'
+    formatted_cui_total_lbs_co2e_per_sqft.short_description = "CUI Total lbs CO2e/sqft"
+
+    # def formatted_cui_scope1_lbs_co2e_per_student_from_natural_gas_use(self, obj):
+    #     return f"{obj.cui_scope1_lbs_co2e_per_student_from_natural_gas_use} lbs CO2e/student"
+    # formatted_cui_scope1_lbs_co2e_per_student_from_natural_gas_use.short_description = "CUI Scope 1 (gas) - lbs CO2e/student"
+
+    # def formatted_cui_scope2_lbs_co2e_per_student_from_elec_use(self, obj):
+    #     return f"{obj.cui_scope2_lbs_co2e_per_student_from_elec_use} lbs CO2e/student"
+    # formatted_cui_scope2_lbs_co2e_per_student_from_elec_use.short_description = "CUI Scope 2 (elec) - lbs CO2e/student"
+
+    def formatted_cui_total_lbs_co2e_per_student(self, obj):
+        return f"{obj.cui_total_lbs_co2e_per_student} lbs CO2e/student"
+    formatted_cui_total_lbs_co2e_per_student.admin_order_field = 'cui_total_lbs_co2e_per_student'
+    formatted_cui_total_lbs_co2e_per_student.short_description = "CUI Total lbs CO2e/student"
+
 admin.site.register(UtilityBill)
 
