@@ -37,14 +37,9 @@ def district_admin_home(request):
     # print(context)
     return render(request, 'district_management/district_admin_home.html', context)
 
-
 @login_required
-def school_level_analytics(request):    
-    return render(request, 'district_management/school_level_analytics.html')
-
-@login_required
-def district_level_analytics(request):    
-    return render(request, 'district_management/district_level_analytics.html')
+def district_analytics(request):    
+    return render(request, 'district_management/district_analytics.html')
 
 @login_required
 def district_overview(request):
