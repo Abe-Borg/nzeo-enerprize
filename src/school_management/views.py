@@ -90,4 +90,11 @@ def equipment_home(request, equipment_id):
     }
     return render(request, 'school_management/equipment_home.html', context)
 
-
+@login_required
+def school_analytics(request, school_id):
+    # get school data based on what school was selected
+    school = get_object_or_404(School, id=school_id)
+    context = {
+        'school': school,
+    }
+    return render(request, 'school_management/school_analytics.html', context)
