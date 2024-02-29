@@ -58,12 +58,10 @@ class Building(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)  # Save the building instance first
-
         # Now calculate the sum of all building areas for the related school
         total_area = Building.objects.filter(
             building_school=self.building_school
         ).aggregate(sum=models.Sum('building_area_sqft'))['sum'] or 0
-
         # Update the school_area_sqft field of the related School instance
         self.building_school.school_area_sqft = total_area
         self.building_school.save()

@@ -1,13 +1,14 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseForbidden
-from school_management.models import School, UtilityBill, PerformanceMetrics, MeterReading
+from school_management.models import School, UtilityBill, PerformanceMetrics, MeterReading, Equipment
 from .forms import UtilityBillForm, MeterReadingForm
 import school_management.school_management_constants as smc
 from district_management.models import SchoolDistrict
 from django.forms import inlineformset_factory
 from django.contrib import messages
 from django.db import transaction
+
 
 
 def user_is_NZEO_staff(user):
@@ -79,5 +80,14 @@ def check_calculations(request):
         'districts': districts
     }
     return render(request, 'school_management/check_calculations.html', context)
+
+@login_required
+def equipment_home(request, equipment_id):
+    # get equipment data based on what equipment specific equipment was selected
+    equipment = get_object_or_404(Equipment, id=equipment_id)
+    context = {
+        'equipment': equipment,
+    }
+    return render(request, 'school_management/equipment_home.html', context)
 
 
