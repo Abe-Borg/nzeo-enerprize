@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseForbidden
-from school_management.models import School, UtilityBill, PerformanceMetrics, MeterReading, Equipment
+from school_management.models import (
+    School, UtilityBill, PerformanceMetrics, 
+    MeterReading, Equipment, Building
+)
 from .forms import UtilityBillForm, MeterReadingForm
 import school_management.school_management_constants as smc
 from district_management.models import SchoolDistrict
@@ -10,18 +13,35 @@ from django.contrib import messages
 from django.db import transaction
 
 
-
 def user_is_NZEO_staff(user):
     return user.groups.filter(name='NZEO-Staff').exists()
 
 @login_required
-def school_home(request):
-    school_info = School.objects.get(school_name = request.user.profile.user_school)
+def school_home(request, school_id):
+    # get school data based on what school was selected
+    school = get_object_or_404(School, id=school_id)
     context = {
-        'school_name': school_info.school_name,
-        'school_district': school_info.school_district,
+        'school': school,
     }
     return render(request, 'school_management/school_home.html', context)
+
+@login_required
+def building_home(request, building_id):
+    # get building data based on what building was selected
+    building = get_object_or_404(Building, id=building_id)
+    context = {
+        'building': building,
+    }
+    return render(request, 'school_management/building_home.html', context)
+
+@login_required
+def equipment_home(request, equipment_id):
+    # get equipment data based on what equipment specific equipment was selected
+    equipment = get_object_or_404(Equipment, id=equipment_id)
+    context = {
+        'equipment': equipment,
+    }
+    return render(request, 'school_management/equipment_home.html', context)
 
 @login_required
 @transaction.atomic
@@ -82,15 +102,6 @@ def check_calculations(request):
     return render(request, 'school_management/check_calculations.html', context)
 
 @login_required
-def equipment_home(request, equipment_id):
-    # get equipment data based on what equipment specific equipment was selected
-    equipment = get_object_or_404(Equipment, id=equipment_id)
-    context = {
-        'equipment': equipment,
-    }
-    return render(request, 'school_management/equipment_home.html', context)
-
-@login_required
 def school_analytics(request, school_id):
     # get school data based on what school was selected
     school = get_object_or_404(School, id=school_id)
@@ -98,3 +109,4 @@ def school_analytics(request, school_id):
         'school': school,
     }
     return render(request, 'school_management/school_analytics.html', context)
+
