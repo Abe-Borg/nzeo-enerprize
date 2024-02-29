@@ -12,7 +12,3 @@ urlpatterns = [
     path('get-school-data/<int:school_id>/', views.get_school_data, name='get_school_data'),
 
 ]
-
-# path('get-school-gross-floor-area/<int:school_id>/', views.get_school_gross_floor_area, name='get_school_gross_floor_area'),
-# path('get-school-electricity-usage/<int:school_id>/', views.get_school_electricity_usage, name='get_school_electricity_usage'),
-# path('get-school-natural-gas-usage/<int:school_id>/', views.get_school_natural_gas_usage, name='get_school_natural_gas_usage'),
