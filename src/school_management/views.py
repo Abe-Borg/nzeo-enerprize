@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.http import HttpResponseForbidden
 from school_management.models import School, UtilityBill, PerformanceMetrics, MeterReading
 from .forms import UtilityBillForm, MeterReadingForm
 import school_management.school_management_constants as smc
@@ -9,17 +10,17 @@ from django.contrib import messages
 from django.db import transaction
 
 
+def user_is_NZEO_staff(user):
+    return user.groups.filter(name='NZEO-Staff').exists()
+
 @login_required
 def school_home(request):
-    '''This view is used to render the school home page for school staff
-    '''
     school_info = School.objects.get(school_name = request.user.profile.user_school)
     context = {
         'school_name': school_info.school_name,
         'school_district': school_info.school_district,
     }
     return render(request, 'school_management/school_home.html', context)
-
 
 @login_required
 @transaction.atomic
@@ -70,12 +71,13 @@ def add_utility_bill(request):
         'districts': districts
     })
 
-
 @login_required
+@user_passes_test(user_is_NZEO_staff)
 def check_calculations(request):
     districts = SchoolDistrict.objects.all()
     context = {
         'districts': districts
     }
     return render(request, 'school_management/check_calculations.html', context)
+
 
