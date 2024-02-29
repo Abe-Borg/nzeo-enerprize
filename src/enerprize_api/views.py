@@ -59,5 +59,9 @@ def get_school_data(request, school_id):
         'number_of_students': school.school_student_population,
         'campus_energy_demand_kW': school.calculate_electricity_usage(),
         'campus_gas_demand_kbtuh': school.calculate_natural_gas_usage(),
+        'school_district': school.school_district.district_name,
+        'school_name': school.school_name,
+        'school_address': school.school_address,
+
     }
     return JsonResponse(data)

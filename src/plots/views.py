@@ -34,8 +34,7 @@ def upload_xml_file(request):
         form = UploadXMLForm()
         return render(request, 'district_management/school_level_analytics.html', {'form': form})
 
-        
-
+    
 def get_line_plot(request):
     buf = BytesIO()
     create_line_plot(
@@ -253,14 +252,11 @@ def create_heatmap(pkl_filepath: str, plot_filepath: str = None, buf: BytesIO = 
 
 
 # ========== DATAFRAME FUNCTIONS ==========
-
-# def process_xml_interval_readings()
-
-
 def create_pandas_df_from_csv(csv_file_path, df_filepath):
     # create padas dataframe from csv file and save to a folder location
     df = pd.read_csv(csv_file_path)
     df.to_pickle(df_filepath, compression = 'zip')
+ 
     
 def pikl_q_table(df_filepath, pkl_filepath) -> None:
     df = create_pandas_df_from_csv(df_filepath)
