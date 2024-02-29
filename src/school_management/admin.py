@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.html import format_html
 from django.db.models import F
 
+
 class AreaRangeFilter(admin.SimpleListFilter):
     # Human-readable title which will be displayed in the right admin sidebar just above the filter options.
     title = _('building area (sqft)')
@@ -41,6 +42,7 @@ class AreaRangeFilter(admin.SimpleListFilter):
                 return queryset.filter(building_area_sqft__gte=int(low), building_area_sqft__lte=int(high))
         return queryset
 
+
 class ElecKwDemandFilter(admin.SimpleListFilter):
     title = _('Electrical KW Demand')
     parameter_name = 'elec_kw_demand'
@@ -61,6 +63,7 @@ class ElecKwDemandFilter(admin.SimpleListFilter):
             low, high = [int(x) for x in self.value().split('-')]
             return queryset.filter(equipment_elec_kw_demand__gte=low, equipment_elec_kw_demand__lte=high)
         return queryset
+
 
 class GasBtuhDemandFilter(admin.SimpleListFilter):
     title = _('Gas BTUH Demand')
@@ -84,6 +87,7 @@ class GasBtuhDemandFilter(admin.SimpleListFilter):
             return queryset.filter(gas_btuh_demand__gte=low, gas_btuh_demand__lte=high)
         return queryset
 
+
 class GeneratesElecKwFilter(admin.SimpleListFilter):
     title = _('Generates Electric KW')
     parameter_name = 'generates_elec_kw'
@@ -106,6 +110,7 @@ class GeneratesElecKwFilter(admin.SimpleListFilter):
                 return queryset.filter(generates_elec_kw=250)
         return queryset
 
+
 class StorageKBtuFilter(admin.SimpleListFilter):
     title = _('Storage kBTU')
     parameter_name = 'storage_kbtu'
@@ -121,6 +126,7 @@ class StorageKBtuFilter(admin.SimpleListFilter):
             return queryset.filter(storage_kbtu__gte=low, storage_kbtu__lte=high)
         return queryset
 
+
 class StorageKWhFilter(admin.SimpleListFilter):
     title = _('Storage kWh')
     parameter_name = 'storage_kwh'
@@ -135,6 +141,7 @@ class StorageKWhFilter(admin.SimpleListFilter):
             high = low + 4999
             return queryset.filter(storage_kwh__gte=low, storage_kwh__lte=high)
         return queryset
+
 
 class InstallDateRangeFilter(admin.SimpleListFilter):
     title = _('Installation Date')
@@ -153,6 +160,7 @@ class InstallDateRangeFilter(admin.SimpleListFilter):
                                    equipment_install_date__year__lte=end_year)
         return queryset
 
+
 class WarrantyExpirationDateRangeFilter(admin.SimpleListFilter):
     title = _('Warranty Expiration Date')
     parameter_name = 'warranty_expiration_range'
@@ -169,7 +177,8 @@ class WarrantyExpirationDateRangeFilter(admin.SimpleListFilter):
             return queryset.filter(equipment_warranty_expiration__year__gte=start_year,
                                    equipment_warranty_expiration__year__lte=end_year)
         return queryset
-    
+
+
 class BuildingAgeRangeFilter(admin.SimpleListFilter):
     title = _('Building Age')
     parameter_name = 'building_age_range'
@@ -188,9 +197,10 @@ class BuildingAgeRangeFilter(admin.SimpleListFilter):
                                    building_age__lte=end_year)
         return queryset
 
+
 class DistrictFilter(admin.SimpleListFilter):
     title = _('School District')
-    parameter_name = 'district'
+    parameter_name = 'district' 
 
     def lookups(self, request, model_admin):
         districts = SchoolDistrict.objects.all()
@@ -317,8 +327,6 @@ class UtilityProviderAccountNumberAdmin(admin.ModelAdmin):
     list_filter = ('utility_provider', 'utility_type', 'account_district')
     search_fields = ('account_number', 'utility_provider', 'utility_type') 
 
-admin.site.register(UtilityProviderAccountNumber, UtilityProviderAccountNumberAdmin)
-
 
 # Custom filter for the district
 class DistrictListFilter(admin.SimpleListFilter):
@@ -391,8 +399,6 @@ class MeterAdmin(admin.ModelAdmin):
     get_utility_type.admin_order_field = 'meter_service_agreement_id__utility_type'  # Allows column order sorting
     get_utility_type.short_description = 'Utility Type'
 
-admin.site.register(MeterReading)
-
 
 @admin.register(PerformanceMetrics)
 class PerformanceMetricsAdmin(admin.ModelAdmin):
@@ -436,31 +442,19 @@ class PerformanceMetricsAdmin(admin.ModelAdmin):
     formatted_combined_energy_use_cost_index_dollar_per_student.admin_order_field = 'combined_energy_use_cost_index_dollar_per_student'
     formatted_combined_energy_use_cost_index_dollar_per_student.short_description = "Combined EU Cost $/student"
 
-    # def formatted_cui_scope1_lbs_co2e_per_sqft_from_natural_gas_use(self, obj):
-        # return f"{obj.cui_scope1_lbs_co2e_per_sqft_from_natural_gas_use} lbs CO2e/sqft"
-    # formatted_cui_scope1_lbs_co2e_per_sqft_from_natural_gas_use.short_description = "CUI Scope 1 (gas) - lbs CO2e/sqft"
-
-    # def formatted_cui_scope2_lbs_co2e_per_sqft_from_elec_use(self, obj):
-        # return f"{obj.cui_scope2_lbs_co2e_per_sqft_from_elec_use} lbs CO2e/sqft"
-    # formatted_cui_scope2_lbs_co2e_per_sqft_from_elec_use.short_description = "CUI Scope 2 (elec) - lbs CO2e/sqft"
-
     def formatted_cui_total_lbs_co2e_per_sqft(self, obj):
         return f"{obj.cui_total_lbs_co2e_per_sqft} lbs CO2e/sqft"
     formatted_cui_total_lbs_co2e_per_sqft.admin_order_field = 'cui_total_lbs_co2e_per_sqft'
     formatted_cui_total_lbs_co2e_per_sqft.short_description = "CUI Total lbs CO2e/sqft"
-
-    # def formatted_cui_scope1_lbs_co2e_per_student_from_natural_gas_use(self, obj):
-    #     return f"{obj.cui_scope1_lbs_co2e_per_student_from_natural_gas_use} lbs CO2e/student"
-    # formatted_cui_scope1_lbs_co2e_per_student_from_natural_gas_use.short_description = "CUI Scope 1 (gas) - lbs CO2e/student"
-
-    # def formatted_cui_scope2_lbs_co2e_per_student_from_elec_use(self, obj):
-    #     return f"{obj.cui_scope2_lbs_co2e_per_student_from_elec_use} lbs CO2e/student"
-    # formatted_cui_scope2_lbs_co2e_per_student_from_elec_use.short_description = "CUI Scope 2 (elec) - lbs CO2e/student"
 
     def formatted_cui_total_lbs_co2e_per_student(self, obj):
         return f"{obj.cui_total_lbs_co2e_per_student} lbs CO2e/student"
     formatted_cui_total_lbs_co2e_per_student.admin_order_field = 'cui_total_lbs_co2e_per_student'
     formatted_cui_total_lbs_co2e_per_student.short_description = "CUI Total lbs CO2e/student"
 
+
+
 admin.site.register(UtilityBill)
+admin.site.register(UtilityProviderAccountNumber, UtilityProviderAccountNumberAdmin)
+admin.site.register(MeterReading)
 
