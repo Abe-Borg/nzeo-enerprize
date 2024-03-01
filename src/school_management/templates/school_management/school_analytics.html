@@ -17,15 +17,56 @@
       <div class="col-lg-9">
         <div class="text-center d-flex align-items-center justify-content-center pt-5">
           <div>
-            <span class="h3 d-block mt-3">Content Here</span>
-            <p>
-              school level analytics page under construction
-            </p>
+            <select id="perf-metrics-year-dropdown">
+              <option value="2021">2021</option>
+              <option value="2022">2022</option>
+              <option value="2023">2023</option>
+            </select>
+            <select id="perf-metrics-month-dropdown">
+              <option value="January">January</option>
+              <option value="February">February</option>
+              <option value="March">March</option>
+              <option value="April">April</option>
+              <option value="May">May</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
+            </select>  
+            <div id = "perf-metrics-output">
+              <!-- display fetched perf metrics as a table -->
+
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
+<script>
+document.getElementById('perf-metrics-year-dropdown').addEventListener('click', function(e) {
+    let year = document.getElementById('perf-metrics-year-dropdown').value;
+    let month = document.getElementById('permonth-dropdown').value;
+    let filterByMonth = document.getElementById('filter-by-month').checked;
+
+    let url = `enerprize-api/get-performance-metrics/${school_id}/${year}/`;
+    if (filterByMonth) {
+        url += `${month}/`;
+    }
+
+    fetch(url)
+        .then(response => response.json()) 
+        .then(data => {
+            // Process and display the fetched data in 'metrics-results' div
+            console.log(data); // Placeholder for actual data handling
+        })
+        .catch(error => console.error('Error fetching data:', error));
+});
+</script>
 
 {% endblock %}

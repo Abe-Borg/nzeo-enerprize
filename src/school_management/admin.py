@@ -413,11 +413,7 @@ class PerformanceMetricsAdmin(admin.ModelAdmin):
             'formatted_combined_energy_use_intensity_kbtu_per_student',
             'formatted_combined_energy_use_cost_index_dollar_per_sqft',
             'formatted_combined_energy_use_cost_index_dollar_per_student',
-            # 'formatted_cui_scope1_lbs_co2e_per_sqft_from_natural_gas_use',
-            # 'formatted_cui_scope2_lbs_co2e_per_sqft_from_elec_use',
             'formatted_cui_total_lbs_co2e_per_sqft',
-            # 'formatted_cui_scope1_lbs_co2e_per_student_from_natural_gas_use',
-            # 'formatted_cui_scope2_lbs_co2e_per_student_from_elec_use',
             'formatted_cui_total_lbs_co2e_per_student',
         ]
 
@@ -435,12 +431,12 @@ class PerformanceMetricsAdmin(admin.ModelAdmin):
     def formatted_combined_energy_use_cost_index_dollar_per_sqft(self, obj):
         return f"${obj.combined_energy_use_cost_index_dollar_per_sqft} /sqft"
     formatted_combined_energy_use_cost_index_dollar_per_sqft.admin_order_field = 'combined_energy_use_cost_index_dollar_per_sqft'
-    formatted_combined_energy_use_cost_index_dollar_per_sqft.short_description = "Combined EU Cost $/sqft"
+    formatted_combined_energy_use_cost_index_dollar_per_sqft.short_description = "Combined ECI $/sqft"
 
     def formatted_combined_energy_use_cost_index_dollar_per_student(self, obj):
         return f"${obj.combined_energy_use_cost_index_dollar_per_student} /student"
     formatted_combined_energy_use_cost_index_dollar_per_student.admin_order_field = 'combined_energy_use_cost_index_dollar_per_student'
-    formatted_combined_energy_use_cost_index_dollar_per_student.short_description = "Combined EU Cost $/student"
+    formatted_combined_energy_use_cost_index_dollar_per_student.short_description = "Combined ECI $/student"
 
     def formatted_cui_total_lbs_co2e_per_sqft(self, obj):
         return f"{obj.cui_total_lbs_co2e_per_sqft} lbs CO2e/sqft"

@@ -67,7 +67,6 @@ def get_school_data(request, school_id):
     }
     return JsonResponse(data)
 
-
 def get_performance_metrics_year_and_month(request, school_id, assigned_year, assigned_month):
     metrics = PerformanceMetrics.objects.filter(
         school = school_id,
