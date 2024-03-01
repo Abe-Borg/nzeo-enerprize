@@ -1,10 +1,11 @@
 # enerprize_api/views.py
 from django.shortcuts import render
-from school_management.models import School, Meter, ServiceAgreement
+from school_management.models import School, Meter, ServiceAgreement, PerformanceMetrics
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from district_management.models import SchoolDistrict
+
 
 
 def get_schools_for_district(request, district_id):
@@ -65,3 +66,19 @@ def get_school_data(request, school_id):
 
     }
     return JsonResponse(data)
+
+
+def get_performance_metrics_year_and_month(request, school_id, assigned_year, assigned_month):
+    metrics = PerformanceMetrics.objects.filter(
+        school = school_id,
+        assigned_year=assigned_year,
+        assigned_month=assigned_month
+    ).values()     
+    return JsonResponse(list(metrics), safe=False)
+
+def get_performance_metrics_year(request, school_id, assigned_year):
+    metrics = PerformanceMetrics.objects.filter(
+        school_id=school_id,
+        assigned_year=assigned_year
+    ).values()
+    return JsonResponse(list(metrics), safe=False)
