@@ -28,7 +28,6 @@
         <a class="nav-link" id="equipment-tab" data-toggle="tab" href="#equipment" role="tab" aria-controls="equipment" aria-selected="false">School Equipment</a>
       </li>
     </ul>
-
     <!-- Tab panes -->
     <div class="tab-content">
       <!-- Users Tab Content -->
@@ -147,9 +146,15 @@
       </div>
     </div>
     <br>
+    <!-- check calcs button-->
     <div style="text-align:center; margin-top:20px;">
       <a href="{% url 'school_management:check_calculations' %}" class="btn btn-secondary">Check Performance Metrics Calculations</a>
     </div>
+    <!-- school analytics test -->
+    <div style="text-align:center; margin-top:20px;">
+      <a href="{% url 'school_management:school_analytics' school_id = 1 %}" class="btn btn-secondary">Check school 1 analytics</a>
+    </div>
+    <!-- -->
   </div>
 
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
