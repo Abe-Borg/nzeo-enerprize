@@ -38,7 +38,9 @@ def district_admin_home(request):
     return render(request, 'district_management/district_admin_home.html', context)
 
 @login_required
+
 def district_analytics(request):    
+    # one district analytics page for all users, changes based on user role
     return render(request, 'district_management/district_analytics.html')
 
 @login_required
@@ -47,5 +49,5 @@ def district_overview(request):
 
 @login_required
 def district_leaderboards(request):
-    # route the user to the correct leaderboard page based on their role
+    # one district leaderboard dashboard for each user, this one is specific to district users.
     return render(request, 'district_management/district_leaderboards.html') 
