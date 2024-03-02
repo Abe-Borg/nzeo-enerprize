@@ -133,42 +133,58 @@
         };
         // Creating the map
         var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
         // Create markers for each school location
         var school_markers = JSON.parse(document.getElementById('marker-data').textContent);
+        var infoWindow = new google.maps.InfoWindow(); 
 
         function addMarkerWithDelay(school, delay) {
             window.setTimeout(function() {
                 var marker = new google.maps.Marker({
                     position: {lat: school.lat, lng: school.lng},
                     map: map,
-                    animation: google.maps.Animation.DROP, // This line adds the dropping animation
+                    animation: google.maps.Animation.DROP, // Adds the dropping animation
                     title: school.name
                 });
 
-                // Add modals to each school marker
-                marker.addListener('click', function() {
-                    // Set the map's zoom and center it on the marker's position
-                    map.setZoom(16);
-                    map.setCenter(marker.getPosition());
+                // Define the content of the InfoWindow
+                var infoWindowContent = '<div><strong>' + school.name + '</strong><br>' +
+                                        '<a href="#" onclick="showSchoolDetails(\'' + school.name + '\', \'' + school.description + '\', \'' + school.url + '\');return false;">Show me more information about this school</a></div>';
 
-                    // Update the modal content with school details
-                    document.getElementById('schoolModalLabel').textContent = school.name;
-                    document.querySelector('#schoolModal .modal-body').innerHTML = '<p>' + school.description + '</p>'; 
-                    document.getElementById('visitSchoolPage').setAttribute('href', school.url);
-
-                    // Show the modal
-                    $('#schoolModal').modal('show');
+                // Add a listener to open the InfoWindow by default
+                google.maps.event.addListener(marker, 'click', function() {
+                    infoWindow.setContent(infoWindowContent);
+                    infoWindow.open(map, marker);
                 });
+
+                // Open InfoWindow by default without waiting for marker click
+                window.setTimeout(function() {
+                    infoWindow.setContent(infoWindowContent);
+                    infoWindow.open(map, marker);
+                }, delay + 100); // Slightly after the marker drops to ensure map is ready
             }, delay);
         }
+
+        // Function to show school details in the modal
+        window.showSchoolDetails = function(name, description, url) {
+            // Set the map's zoom and center it on the marker's position
+            map.setZoom(16);
+            map.setCenter(marker.getPosition());
+
+            // Update the modal content with school details
+            document.getElementById('schoolModalLabel').textContent = name;
+            document.querySelector('#schoolModal .modal-body').innerHTML = '<p>' + description + '</p>'; 
+            document.getElementById('visitSchoolPage').setAttribute('href', url);
+
+            // Show the modal
+            $('#schoolModal').modal('show');
+        };
 
         // Loop through school_markers and add each marker with a delay
         school_markers.forEach(function(school, index) {
             // Delay each marker's appearance by 200ms more than the previous one
             addMarkerWithDelay(school, index * 200);
         });
-        
+
         
         // ========== CODE FOR SEARCH BOX ==========
         // Create the search box and link it to the UI element.
