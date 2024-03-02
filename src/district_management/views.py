@@ -30,6 +30,12 @@ def district_admin_home(request):
             'name': school.school_name,
             'lat': float(school.latitude),  # Convert Decimal to float
             'lng': float(school.longitude),  # Convert Decimal to float
+            'population': school.school_student_population,
+            'percent_disadvantaged': school.school_student_percent_disadvantaged, 
+            'percent_english_learners': school.school_student_percent_english_learners,
+            'school_area': school.calculate_school_area_sqft(),
+            'school_energy_use': school.calculate_electricity_usage(),
+            'school_energy_cost': school.calculate_natural_gas_usage(),
         } for school in district_schools_list
     ]
 
@@ -38,7 +44,6 @@ def district_admin_home(request):
     return render(request, 'district_management/district_admin_home.html', context)
 
 @login_required
-
 def district_analytics(request):    
     # one district analytics page for all users, changes based on user role
     return render(request, 'district_management/district_analytics.html')

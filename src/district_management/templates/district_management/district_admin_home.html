@@ -1,6 +1,6 @@
 {% extends "base_nav_top_sidebar.html" %}
 {% load static %}
-
+{% block title %}District Climapp{% endblock %}
 {% block center-panel-content %} 
 
 <!-- <link href="{% static 'district_management/district_maps_styles.css' %}" rel="stylesheet"> -->
@@ -41,15 +41,12 @@
         background-color: white; /* Optional: depends on your design */
         cursor: pointer; /* Changes the cursor to a pointer on hover */
     }
-
     #reset-map {
         margin-left: 10px; /* Adjust as per your layout */
     }
-
     #clear-search {
         margin-left: 10px; /* Adjust as per your layout */
     }
-
     #legend {
         width: 98%; 
         margin: 10px;
@@ -67,6 +64,9 @@
     #legend span {
         margin: 10px;
         vertical-align: middle;
+    }
+    .modal-backdrop.show {
+    opacity: 0;
     }
 </style>
 
@@ -92,10 +92,9 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="schoolModalLabel">School Details At-a-Glance</h5>
+                <h5 class="modal-title" id="schoolModalLabel"></h5>
             </div>
             <div class="modal-body">
-                school details go here.
             </div>
             <div class="modal-footer">
                 <a href="#" id="visitSchoolPage" target="_blank" class="btn btn-primary">Visit School Page</a>
@@ -103,9 +102,9 @@
         </div>
     </div>
 </div>
-  
 
 <script>
+    var markers = {}; // Global object to store markers
     function initMap() {
         const district_southwest_lat = parseFloat("{{southwest_lat}}");
         const district_southwest_lng = parseFloat("{{southwest_lng}}");
@@ -142,47 +141,41 @@
                 var marker = new google.maps.Marker({
                     position: {lat: school.lat, lng: school.lng},
                     map: map,
-                    animation: google.maps.Animation.DROP, // Adds the dropping animation
+                    animation: google.maps.Animation.DROP,
                     title: school.name
                 });
 
+                // Store the marker in the global object with a unique key
+                markers[school.name] = marker;
+
                 // Define the content of the InfoWindow
                 var infoWindowContent = '<div><strong>' + school.name + '</strong><br>' +
-                                        '<a href="#" onclick="showSchoolDetails(\'' + school.name + '\', \'' + school.description + '\', \'' + school.url + '\');return false;">Show me more information about this school</a></div>';
+                                        '<a href="#" onclick="showSchoolDetails(\'' + school.name + '\', \'' + school.description + '\', \'' + school.url + '\');return false;">Show more information</a></div>';
 
-                // Add a listener to open the InfoWindow by default
                 google.maps.event.addListener(marker, 'click', function() {
                     infoWindow.setContent(infoWindowContent);
                     infoWindow.open(map, marker);
                 });
-
-                // Open InfoWindow by default without waiting for marker click
-                window.setTimeout(function() {
-                    infoWindow.setContent(infoWindowContent);
-                    infoWindow.open(map, marker);
-                }, delay + 100); // Slightly after the marker drops to ensure map is ready
             }, delay);
         }
 
         // Function to show school details in the modal
-        window.showSchoolDetails = function(name, description, url) {
-            // Set the map's zoom and center it on the marker's position
-            map.setZoom(16);
-            map.setCenter(marker.getPosition());
-
-            // Update the modal content with school details
-            document.getElementById('schoolModalLabel').textContent = name;
-            document.querySelector('#schoolModal .modal-body').innerHTML = '<p>' + description + '</p>'; 
-            document.getElementById('visitSchoolPage').setAttribute('href', url);
-
-            // Show the modal
-            $('#schoolModal').modal('show');
+        window.showSchoolDetails = function(name) {
+            var marker = markers[name];
+            if (marker) {
+                map.setZoom(16);
+                map.setCenter(marker.getPosition());
+                document.getElementById('schoolModalLabel').textContent = name;
+                document.querySelector('#schoolModal .modal-body').innerHTML = '<p>' + name + ' details here...</p>';
+                document.getElementById('visitSchoolPage').setAttribute('href', '#');
+                $('#schoolModal').modal('show');
+            }
         };
 
         // Loop through school_markers and add each marker with a delay
         school_markers.forEach(function(school, index) {
             // Delay each marker's appearance by 200ms more than the previous one
-            addMarkerWithDelay(school, index * 200);
+            addMarkerWithDelay(school, index * 15);
         });
 
         

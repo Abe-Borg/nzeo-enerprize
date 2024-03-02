@@ -17,13 +17,22 @@ def user_is_NZEO_staff(user):
     return user.groups.filter(name='NZEO-Staff').exists()
 
 @login_required
-def school_home(request, school_id):
+def school_home(request, school_id = 1):
     # get school data based on what school was selected
     school = get_object_or_404(School, id=school_id)
     context = {
         'school': school,
     }
     return render(request, 'school_management/school_home.html', context)
+
+@login_required
+def school_analytics(request, school_id = 1):
+    # get school data based on what school was selected
+    school = get_object_or_404(School, id=school_id)
+    context = {
+        'school': school,
+    }
+    return render(request, 'school_management/school_analytics.html', context)
 
 @login_required
 def building_home(request, building_id):
@@ -101,12 +110,5 @@ def check_calculations(request):
     }
     return render(request, 'school_management/check_calculations.html', context)
 
-@login_required
-def school_analytics(request, school_id = 1):
-    # get school data based on what school was selected
-    school = get_object_or_404(School, id=school_id)
-    context = {
-        'school': school,
-    }
-    return render(request, 'school_management/school_analytics.html', context)
+
 

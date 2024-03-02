@@ -12,6 +12,7 @@ class School(models.Model):
     school_student_percent_disadvantaged = models.IntegerField(default=0) 
     school_student_percent_english_learners = models.IntegerField(default=0)
     school_type = models.CharField(max_length=100, choices = smc.SCHOOL_TYPE)
+    school_has_solar = models.BooleanField(default=False)
 
     def calculate_school_area_sqft(self):
         # Summing the area of all related buildings, dynamic cals so that it is always up to date
