@@ -8,7 +8,7 @@ from plots.forms import UploadXMLForm
 
 
 @login_required
-def district_admin_home(request):
+def district_admin_home(request): 
     context = {}
     assigned_district = request.user.profile.user_district    
     district_info = SchoolDistrict.objects.get(district_name = assigned_district)
@@ -47,4 +47,5 @@ def district_overview(request):
 
 @login_required
 def district_leaderboards(request):
-    return render(request, 'district_management/district_leaderboards.html')
+    # route the user to the correct leaderboard page based on their role
+    return render(request, 'district_management/district_leaderboards.html') 
