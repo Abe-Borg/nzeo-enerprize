@@ -3,7 +3,6 @@
 {% block title %}District Climapp{% endblock %}
 {% block center-panel-content %} 
 
-<!-- <link href="{% static 'district_management/district_maps_styles.css' %}" rel="stylesheet"> -->
 
 <style>
     #map {
@@ -138,7 +137,7 @@
 
         function addMarkerWithDelay(school, delay) {
             window.setTimeout(function() {
-                var marker = new google.maps.Marker({
+                var marker = new google.maps.marker.AdvancedMarkerElement({
                     position: {lat: school.lat, lng: school.lng},
                     map: map,
                     animation: google.maps.Animation.DROP,
@@ -172,7 +171,6 @@
                 $('#schoolModal').modal('show');
             }
         };
-
         // Loop through school_markers and add each marker with a delay
         school_markers.forEach(function(school, index) {
             addMarkerWithDelay(school, index * 15);
@@ -195,7 +193,7 @@
         });
 
         // ===== add marker to the map when user searches a location ===== 
-        var marker;
+        var search_marker;
         searchBox.addListener('places_changed', function() {
             var places = searchBox.getPlaces();
             if (places.length == 0) {
@@ -203,8 +201,8 @@
                 return;
             }
             // if a marker already exists, remove it
-            if (marker) {
-                marker.setMap(null);
+            if (search_marker) {
+                search_marker.setMap(null);
             }
             var place = places[0];
             if (!place.geometry) {
@@ -212,14 +210,16 @@
                 return;
             }
             // Create a marker for the selected place
-            marker = new google.maps.marker.AdvancedMarkerElement({
+            search_marker = new google.maps.marker.AdvancedMarkerElement({
                 map: map,
                 title: place.name,
                 position: place.geometry.location
             });
-            // Center the map on the selected place and zoom
-            map.setCenter(place.geometry.location);
-            map.setZoom(16);     
+
+            setTimeout(function() {
+                map.setCenter(place.geometry.location);
+                map.setZoom(16);
+            }, 50); 
         });
 
         // ===== Clear the search input =====
@@ -319,7 +319,7 @@
         });
     });
     function placeCustomMarker(location, map, iconUrl) {
-        var marker = new google.maps.Marker({
+        var marker = new google.maps.marker.AdvancedMarkerElement({
             position: location,
             map: map,
             icon: iconUrl,
@@ -329,7 +329,7 @@
 </script>
 
 <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&libraries=places,drawing&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?v=3.53.2&key={{API_KEY}}&libraries=places,drawing&callback=initMap">
 </script>
 
 <style>
