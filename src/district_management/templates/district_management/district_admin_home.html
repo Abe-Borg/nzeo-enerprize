@@ -137,7 +137,7 @@
 
         function addMarkerWithDelay(school, delay) {
             window.setTimeout(function() {
-                var marker = new google.maps.marker.AdvancedMarkerElement({
+                var marker = new google.maps.Marker({
                     position: {lat: school.lat, lng: school.lng},
                     map: map,
                     animation: google.maps.Animation.DROP,
@@ -210,7 +210,7 @@
                 return;
             }
             // Create a marker for the selected place
-            search_marker = new google.maps.marker.AdvancedMarkerElement({
+            search_marker = new google.maps.Marker({
                 map: map,
                 title: place.name,
                 position: place.geometry.location
@@ -319,7 +319,7 @@
         });
     });
     function placeCustomMarker(location, map, iconUrl) {
-        var marker = new google.maps.marker.AdvancedMarkerElement({
+        var marker = new google.maps.Marker({
             position: location,
             map: map,
             icon: iconUrl,
@@ -329,7 +329,7 @@
 </script>
 
 <script async defer
-    src="https://maps.googleapis.com/maps/api/js?v=3.53.2&key={{API_KEY}}&libraries=places,drawing&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&libraries=places,drawing&callback=initMap">
 </script>
 
 <style>
