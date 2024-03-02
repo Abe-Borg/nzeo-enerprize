@@ -25,22 +25,22 @@ def district_admin_home(request):
     }
     
     district_schools_list = School.objects.filter(school_district=assigned_district)
-    district_schools_coordinates = [
+    district_schools_information = [
         {
+            'schol_id': school.id,
             'name': school.school_name,
-            'lat': float(school.latitude),  # Convert Decimal to float
-            'lng': float(school.longitude),  # Convert Decimal to float
+            'lat': float(school.latitude),
+            'lng': float(school.longitude),
             'population': school.school_student_population,
             'percent_disadvantaged': school.school_student_percent_disadvantaged, 
             'percent_english_learners': school.school_student_percent_english_learners,
             'school_area': school.calculate_school_area_sqft(),
-            'school_energy_use': school.calculate_electricity_usage(),
-            'school_energy_cost': school.calculate_natural_gas_usage(),
+            'school_equipment_electricity_demand': school.calculate_electricity_usage(),
+            'school_equipment_natural_gas_demand': school.calculate_natural_gas_usage(),
+            'school_has_solar': school.school_has_solar,
         } for school in district_schools_list
     ]
-
-    context['district_schools_coordinates'] = district_schools_coordinates
-    # print(context)
+    context['district_schools_information'] = district_schools_information
     return render(request, 'district_management/district_admin_home.html', context)
 
 @login_required

@@ -85,7 +85,7 @@
 <button id="clear-search">Clear search</button>
 
 <!-- district school locations on the map --> 
-{{ district_schools_coordinates|json_script:"marker-data"}}
+{{ district_schools_information|json_script:"marker-data"}}
 
 <!-- Modal for schools-->
 <div class="modal fade" id="schoolModal" tabindex="-1" role="dialog" aria-labelledby="schoolModalLabel" aria-hidden="true">
@@ -147,10 +147,9 @@
 
                 // Store the marker in the global object with a unique key
                 markers[school.name] = marker;
-
                 // Define the content of the InfoWindow
                 var infoWindowContent = '<div><strong>' + school.name + '</strong><br>' +
-                                        '<a href="#" onclick="showSchoolDetails(\'' + school.name + '\', \'' + school.description + '\', \'' + school.url + '\');return false;">Show more information</a></div>';
+                                        '<a href="#" onclick="showSchoolDetails(\'' + school.name + '\', ' + school.id + ');return false;">Show more information</a></div>';
 
                 google.maps.event.addListener(marker, 'click', function() {
                     infoWindow.setContent(infoWindowContent);
@@ -160,21 +159,22 @@
         }
 
         // Function to show school details in the modal
-        window.showSchoolDetails = function(name) {
+        window.showSchoolDetails = function(name, schoolId) {
             var marker = markers[name];
             if (marker) {
                 map.setZoom(16);
                 map.setCenter(marker.getPosition());
                 document.getElementById('schoolModalLabel').textContent = name;
                 document.querySelector('#schoolModal .modal-body').innerHTML = '<p>' + name + ' details here...</p>';
-                document.getElementById('visitSchoolPage').setAttribute('href', '#');
+                
+                var schoolUrl = `/school-analytics/${schoolId}/`;
+                document.getElementById('visitSchoolPage').setAttribute('href', schoolUrl);
                 $('#schoolModal').modal('show');
             }
         };
 
         // Loop through school_markers and add each marker with a delay
         school_markers.forEach(function(school, index) {
-            // Delay each marker's appearance by 200ms more than the previous one
             addMarkerWithDelay(school, index * 15);
         });
 
@@ -212,7 +212,7 @@
                 return;
             }
             // Create a marker for the selected place
-            marker = new google.maps.Marker({
+            marker = new google.maps.marker.AdvancedMarkerElement({
                 map: map,
                 title: place.name,
                 position: place.geometry.location
