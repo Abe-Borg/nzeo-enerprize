@@ -136,28 +136,39 @@
 
         // Create markers for each school location
         var school_markers = JSON.parse(document.getElementById('marker-data').textContent);
-        school_markers.forEach(function(school) {
-            var marker = new google.maps.Marker({
-                position: {lat: school.lat, lng: school.lng},
-                map: map,
-                title: school.name
-            });
 
-            // add modals to each school marker
-            marker.addListener('click', function() {
-                // Set the map's zoom and center it on the marker's position
-                map.setZoom(16);
-                map.setCenter(marker.getPosition());
+        function addMarkerWithDelay(school, delay) {
+            window.setTimeout(function() {
+                var marker = new google.maps.Marker({
+                    position: {lat: school.lat, lng: school.lng},
+                    map: map,
+                    animation: google.maps.Animation.DROP, // This line adds the dropping animation
+                    title: school.name
+                });
 
-                // Update the modal content with school details
-                document.getElementById('schoolModalLabel').textContent = school.name;
-                document.querySelector('#schoolModal .modal-body').innerHTML = '<p>' + school.description + '</p>'; 
-                document.getElementById('visitSchoolPage').setAttribute('href', school.url);
+                // Add modals to each school marker
+                marker.addListener('click', function() {
+                    // Set the map's zoom and center it on the marker's position
+                    map.setZoom(16);
+                    map.setCenter(marker.getPosition());
 
-                // Show the modal
-                $('#schoolModal').modal('show');
-            });
+                    // Update the modal content with school details
+                    document.getElementById('schoolModalLabel').textContent = school.name;
+                    document.querySelector('#schoolModal .modal-body').innerHTML = '<p>' + school.description + '</p>'; 
+                    document.getElementById('visitSchoolPage').setAttribute('href', school.url);
+
+                    // Show the modal
+                    $('#schoolModal').modal('show');
+                });
+            }, delay);
+        }
+
+        // Loop through school_markers and add each marker with a delay
+        school_markers.forEach(function(school, index) {
+            // Delay each marker's appearance by 200ms more than the previous one
+            addMarkerWithDelay(school, index * 200);
         });
+        
         
         // ========== CODE FOR SEARCH BOX ==========
         // Create the search box and link it to the UI element.
