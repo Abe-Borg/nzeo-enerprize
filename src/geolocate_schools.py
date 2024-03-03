@@ -1,15 +1,11 @@
 import os
 import django
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
-
 from django.db import connection
-
 import googlemaps
 from district_management.models import SchoolDistrict
 from school_management.models import School
-
 
 
 def geolocate_schools():
@@ -32,4 +28,5 @@ def geolocate_schools():
         else:
             print(f"Geolocation failed for {school.school_address}")
 
-geolocate_schools()
+if __name__ == "__main__":
+    geolocate_schools()
