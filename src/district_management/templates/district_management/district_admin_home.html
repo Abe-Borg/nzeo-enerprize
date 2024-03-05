@@ -82,7 +82,9 @@
 <div id="mode-selection" style="margin-left: 10px;">
     <button id="select-equipment" class="btn btn-primary">Place Equipment Marker</button>
     <button id="select-building" class="btn btn-secondary">Place Building Marker</button>
-</div>
+</div><br>
+<button id="save-markers" class="btn btn-success">Save Markers</button>
+
 
 
 <input id="search-input" class="controls form-control me-2" type="text" placeholder="Search Map">
@@ -158,6 +160,22 @@
             });
         }
 
+        map.addListener('click', function(e) {
+            if (currentMode) {
+                placeMarker(e.latLng, currentMode);
+            }
+        });
+
+        // Mode selection buttons
+        document.getElementById('select-equipment').addEventListener('click', function() {
+            currentMode = 'equipment';
+            // Update button styles to indicate active mode
+        });
+
+        document.getElementById('select-building').addEventListener('click', function() {
+            currentMode = 'building';
+            // Update button styles to indicate active mode
+        });
 
         // Create markers for each school location
         var school_markers = JSON.parse(document.getElementById('marker-data').textContent);
@@ -334,7 +352,33 @@
         
     } // end of initMap()
 
-    
+    document.getElementById('save-markers').addEventListener('click', function() {
+        // Example of preparing data for submission
+        const equipmentData = equipmentMarkers.map(marker => marker.location);
+        const buildingData = buildingMarkers.map(marker => marker.location);
+
+        // Here, use AJAX or form submission to send this data to your backend
+        // For AJAX with jQuery:
+        $.ajax({
+            url: '/your-endpoint/',
+            method: 'POST',
+            data: {
+                equipment: JSON.stringify(equipmentData),
+                buildings: JSON.stringify(buildingData),
+                // Include any other necessary data
+            },
+            success: function(response) {
+                // Handle success
+                console.log('Markers saved:', response);
+            },
+            error: function(error) {
+                // Handle error
+                console.error('Error saving markers:', error);
+            }
+        });
+    });
+
+
     // ========== CODE FOR CLICK AND DRAW ANNOTATIONS
     document.querySelectorAll('.marker-icon-button').forEach(button => {
         button.addEventListener('click', function() {
