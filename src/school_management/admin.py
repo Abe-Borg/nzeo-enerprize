@@ -449,7 +449,6 @@ class PerformanceMetricsAdmin(admin.ModelAdmin):
     formatted_cui_total_lbs_co2e_per_student.short_description = "CUI Total lbs CO2e/student"
 
 
-
 admin.site.register(UtilityBill)
 admin.site.register(UtilityProviderAccountNumber, UtilityProviderAccountNumberAdmin)
 admin.site.register(MeterReading)

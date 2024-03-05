@@ -78,6 +78,12 @@
 
 <!-- Map goes here -->
 <div id="map"></div>
+<!-- Mode Selection -->
+<div id="mode-selection" style="margin-left: 10px;">
+    <button id="select-equipment" class="btn btn-primary">Place Equipment Marker</button>
+    <button id="select-building" class="btn btn-secondary">Place Building Marker</button>
+</div>
+
 
 <input id="search-input" class="controls form-control me-2" type="text" placeholder="Search Map">
 <button id="reset-map">Recenter map</button>
@@ -129,8 +135,30 @@
                 strictBounds: false,
             }
         };
+
+        let currentMode = 'equipment';
+
         // Creating the map
-        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        const map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        // Marker placement function
+        function placeMarker(location, mode) {
+            let markerColor;
+            if (mode === 'equipment') {
+                markerColor = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+            } else {
+                markerColor = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'; 
+            }
+            
+            const marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                icon: markerColor,
+                title: mode.charAt(0).toUpperCase() + mode.slice(1) 
+            });
+        }
+
+
         // Create markers for each school location
         var school_markers = JSON.parse(document.getElementById('marker-data').textContent);
         var infoWindow = new google.maps.InfoWindow(); 
@@ -303,6 +331,7 @@
         });
 
         drawingManager.setMap(map);
+        
     } // end of initMap()
 
     
