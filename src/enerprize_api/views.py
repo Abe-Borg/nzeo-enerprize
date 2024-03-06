@@ -1,11 +1,12 @@
 # enerprize_api/views.py
 from django.shortcuts import render
-from school_management.models import School, Meter, ServiceAgreement, PerformanceMetrics
+from school_management.models import School, Meter, ServiceAgreement, PerformanceMetrics, Equipment, Building
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from district_management.models import SchoolDistrict
-
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 def get_schools_for_district(request, district_id):
@@ -81,3 +82,4 @@ def get_performance_metrics_year(request, school_id, assigned_year):
         assigned_year=assigned_year
     ).values()
     return JsonResponse(list(metrics), safe=False)
+
