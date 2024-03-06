@@ -83,3 +83,20 @@ def get_performance_metrics_year(request, school_id, assigned_year):
     ).values()
     return JsonResponse(list(metrics), safe=False)
 
+@csrf_exempt
+def update_coordinates(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            equipment_data = data.get('equipment', [])
+            building_data = data.get('buildings', [])
+            
+            for item in equipment_data:
+                Equipment.objects.filter(id=item['id']).update(equipment_coordinates=item['coordinates'])  
+            for item in building_data:
+                Building.objects.filter(id=item['id']).update(building_coordinates=item['coordinates']) 
+            return JsonResponse({'status': 'success', 'message': 'Coordinates updated successfully'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
