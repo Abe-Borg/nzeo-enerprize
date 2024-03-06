@@ -83,6 +83,7 @@
     <button id="select-equipment" class="btn btn-primary">Place Equipment Marker</button>
     <button id="select-building" class="btn btn-secondary">Place Building Marker</button>
 </div><br>
+
 <button id="save-markers" class="btn btn-success">Save Markers</button>
 
 <!-- Search box -->
@@ -110,7 +111,11 @@
 </div>
 
 <script>
-    var markers = {}; // Global object to store markers
+    var school_markers = {}; 
+    var equipmentMarkers = [];
+    var buildingMarkers = [];
+    var currentClickListener = null; 
+
     function initMap() {
         const district_southwest_lat = parseFloat("{{southwest_lat}}");
         const district_southwest_lng = parseFloat("{{southwest_lng}}");
@@ -141,6 +146,7 @@
         // Creating the map
         const map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
+        // function to place equipment and building markers on the map
         function placeMarker(location, mode) {
             let markerColor;
             if (mode === 'equipment') {
@@ -149,12 +155,18 @@
                 markerColor = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'; 
             }
             
-            const marker = new google.maps.Marker({
+            const equipment_or_building_marker = new google.maps.Marker({
                 position: location,
                 map: map,
                 icon: markerColor,
                 title: mode.charAt(0).toUpperCase() + mode.slice(1) 
             });
+
+            if (mode == equipment) {
+                equipmentMarkers.push(equipment_or_building_marker);
+            } else {
+                buildingMarkers.push(equipment_or_building_marker);
+            }
         }
 
         map.addListener('click', function(e) {
@@ -163,14 +175,28 @@
             }
         });
 
+        function changeMode(newMode) {
+            // Remove the previous click listener if it exists
+            if (currentClickListener) {
+                google.maps.event.removeListener(currentClickListener);
+                currentClickListener = null; 
+            }
+            // Update the current mode
+            currentMode = newMode;
+            // Set up the new click listener for the map
+            currentClickListener = map.addListener('click', function(e) {
+                placeMarker(e.latLng, currentMode);
+            });
+        }
+
         // Mode selection buttons
         document.getElementById('select-equipment').addEventListener('click', function() {
-            currentMode = 'equipment';
+            changeMode('equipment');
             updateButtonStyles(this);
         });
 
         document.getElementById('select-building').addEventListener('click', function() {
-            currentMode = 'building';
+            changeMode('building');
             updateButtonStyles(this);
         });
 
@@ -195,7 +221,7 @@
                 });
 
                 // Store the marker in the global object with a unique key
-                markers[school.name] = marker;
+                school_markers[school.name] = marker;
                 // Define the content of the InfoWindow
                 var infoWindowContent = '<div><strong>' + school.name + '</strong><br>' +
                                         '<a href="#" onclick="showSchoolDetails(\'' + school.name + '\', ' + school.id + ');return false;">Show more information</a></div>';
@@ -209,7 +235,7 @@
 
         // Function to show school details in the modal
         window.showSchoolDetails = function(name, schoolId) {
-            var marker = markers[name];
+            var marker = school_markers[name];
             if (marker) {
                 map.setZoom(16);
                 map.setCenter(marker.getPosition());
@@ -284,7 +310,6 @@
             document.getElementById('search-input').value = '';
         });
 
-
         // ===== GOOGLE DEFAULT DRAWING TOOLS
         // Initialize the Google Maps Drawing Manager with options for clickable and draggable shapes
         var drawingManager = new google.maps.drawing.DrawingManager({
@@ -351,9 +376,7 @@
                 editable: true
             }
         });
-
         drawingManager.setMap(map);
-        
     } // end of initMap()
 
     function getCookie(name) {
@@ -371,18 +394,21 @@
         return cookieValue;
     }
 
-    // save equipment & building location markers.
+    // ========== CODE TO SAVE MARKERS TO THE DATABASE ==========
     document.getElementById('save-markers').addEventListener('click', function() {
-        const equipmentData = equipmentMarkers.map(marker => marker.location);
-        const buildingData = buildingMarkers.map(marker => marker.location);
+        const equipmentData = equipmentMarkers.map(marker => ({
+            location: {lat: marker.getPosition().lat(), lng: marker.getPosition().lng()}
+        }));
+        const buildingData = buildingMarkers.map(marker => ({
+            location: {lat: marker.getPosition().lat(), lng: marker.getPosition().lng()}
+        }));
 
         const payload = {
             equipment: equipmentData,
             buildings: buildingData,
         };
 
-        const endpoint = '/enerprize-api/update-coordinates/';
-        fetch(endpoint, {
+        fetch('/enerprize-api/update-coordinates/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -393,9 +419,11 @@
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
+            // Additional success handling here
         })
         .catch((error) => {
             console.error('Error:', error);
+            // Error handling here
         });
     });
 
