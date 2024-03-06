@@ -143,7 +143,6 @@
         // Creating the map
         const map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-        // Marker placement function
         function placeMarker(location, mode) {
             let markerColor;
             if (mode === 'equipment') {
@@ -353,12 +352,9 @@
     } // end of initMap()
 
     document.getElementById('save-markers').addEventListener('click', function() {
-        // Example of preparing data for submission
         const equipmentData = equipmentMarkers.map(marker => marker.location);
         const buildingData = buildingMarkers.map(marker => marker.location);
 
-        // Here, use AJAX or form submission to send this data to your backend
-        // For AJAX with jQuery:
         $.ajax({
             url: '/your-endpoint/',
             method: 'POST',
@@ -368,18 +364,16 @@
                 // Include any other necessary data
             },
             success: function(response) {
-                // Handle success
                 console.log('Markers saved:', response);
             },
             error: function(error) {
-                // Handle error
                 console.error('Error saving markers:', error);
             }
         });
     });
 
 
-    // ========== CODE FOR CLICK AND DRAW ANNOTATIONS
+    // ========== CODE CUSTOM ANNOTATIONS
     document.querySelectorAll('.marker-icon-button').forEach(button => {
         button.addEventListener('click', function() {
             var iconUrl = this.getAttribute('data-icon-url');
