@@ -85,8 +85,7 @@
 </div><br>
 <button id="save-markers" class="btn btn-success">Save Markers</button>
 
-
-
+<!-- Search box -->
 <input id="search-input" class="controls form-control me-2" type="text" placeholder="Search Map">
 <button id="reset-map">Recenter map</button>
 <button id="clear-search">Clear search</button>
@@ -139,7 +138,6 @@
         };
 
         let currentMode = 'equipment';
-
         // Creating the map
         const map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
@@ -168,13 +166,20 @@
         // Mode selection buttons
         document.getElementById('select-equipment').addEventListener('click', function() {
             currentMode = 'equipment';
-            // Update button styles to indicate active mode
+            updateButtonStyles(this);
         });
 
         document.getElementById('select-building').addEventListener('click', function() {
             currentMode = 'building';
-            // Update button styles to indicate active mode
+            updateButtonStyles(this);
         });
+
+        function updateButtonStyles(activeButton) {
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            activeButton.classList.add('active');
+        }
 
         // Create markers for each school location
         var school_markers = JSON.parse(document.getElementById('marker-data').textContent);
@@ -355,20 +360,30 @@
         const equipmentData = equipmentMarkers.map(marker => marker.location);
         const buildingData = buildingMarkers.map(marker => marker.location);
 
-        $.ajax({
-            url: '/your-endpoint/',
+        const payload = {
+            equipment: equipmentData,
+            buildings: buildingData,
+        };
+
+        // Example endpoint
+        const endpoint = '/your-endpoint/';
+
+        fetch(endpoint, {
             method: 'POST',
-            data: {
-                equipment: JSON.stringify(equipmentData),
-                buildings: JSON.stringify(buildingData),
-                // Include any other necessary data
+            headers: {
+                'Content-Type': 'application/json',
+                // Add any other headers your request needs
             },
-            success: function(response) {
-                console.log('Markers saved:', response);
-            },
-            error: function(error) {
-                console.error('Error saving markers:', error);
-            }
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json()) // Assuming the server responds with JSON
+        .then(data => {
+            console.log('Success:', data);
+            // Handle success response
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            // Handle errors
         });
     });
 
