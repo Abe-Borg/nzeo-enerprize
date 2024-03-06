@@ -13,5 +13,6 @@ urlpatterns = [
     path('get-performance-metrics/<int:school_id>/<int:assigned_year>/<str:assigned_month>/', views.get_performance_metrics_year_and_month, name='get_performance_metrics_year_and_month'),
     path('get-performance-metrics-year/<int:school_id>/<int:assigned_year>/', views.get_performance_metrics_year, name='get_performance_metrics_year'),
     path('update-coordinates/', views.update_coordinates, name='update_coordinates'),
-
+    path('get-equipment-for-school/<int:school_id>/', views.get_equipment_for_school, name='get_equipment_for_school'),
+    path('get-buildings-for-school/<int:school_id>/', views.get_buildings_for_school, name='get_buildings_for_school'),
 ]

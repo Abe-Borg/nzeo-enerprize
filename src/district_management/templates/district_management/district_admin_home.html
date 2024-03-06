@@ -116,6 +116,24 @@
     var buildingMarkers = [];
     var currentClickListener = null; 
 
+    function fetchEquipmentAndBuildingsForSchool(schoolId) {
+        // Fetch equipment
+        fetch(`/enerprize-api/get-equipment-for-school/${schoolId}/`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Equipment:', data.equipment);
+        })
+        .catch(error => console.error('Error fetching equipment:', error));
+
+        // Fetch buildings
+        fetch(`/enerprize-api/get-buildings-for-school/${schoolId}/`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Buildings:', data.buildings);
+        })
+        .catch(error => console.error('Error fetching buildings:', error));
+    }
+
     function initMap() {
         const district_southwest_lat = parseFloat("{{southwest_lat}}");
         const district_southwest_lng = parseFloat("{{southwest_lng}}");
@@ -223,12 +241,26 @@
                 // Store the marker in the global object with a unique key
                 school_markers[school.name] = marker;
                 // Define the content of the InfoWindow
-                var infoWindowContent = '<div><strong>' + school.name + '</strong><br>' +
-                                        '<a href="#" onclick="showSchoolDetails(\'' + school.name + '\', ' + school.id + ');return false;">Show more information</a></div>';
+                var infoWindowContent = `
+                    <div>
+                        <strong>${school.name}</strong><br>
+                        <a href="#" id="show-more-${school.id}">Show more information</a><br>
+                        <a href="#" class="add-locations" data-school-id="${school.id}">Add equipment or building locations</a>
+                    </div>
+                `;
 
                 google.maps.event.addListener(marker, 'click', function() {
                     infoWindow.setContent(infoWindowContent);
                     infoWindow.open(map, marker);
+                });
+
+                google.maps.event.addListener(infoWindow, 'domready', () => {
+                    document.querySelectorAll('.fetch-data').forEach(element => {
+                        element.addEventListener('click', function() {
+                            const schoolId = this.getAttribute('data-school-id');
+                            fetchEquipmentAndBuildingsForSchool(schoolId);
+                        });
+                    });
                 });
             }, delay);
         }
