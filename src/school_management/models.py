@@ -189,6 +189,7 @@ class PerformanceMetrics(models.Model):
     
     scope1_lbs_co2e_from_lbs_natural_gas = models.DecimalField(max_digits = 20, decimal_places = 2, default=0.00) # input is lbs_natural_gas_from_therms, then this value is converted to lbs CO2e (multiply by 25)
     scope2_lbs_co2e_from_kwh_elec_camx_grid = models.DecimalField(max_digits = 20, decimal_places = 2, default=0.00) # first convert kwh to mwh (divid by 1000), then convert mwh to lbs co2e (multiply by 531.7)
+    total_scope1_and_2_lbs_co2e = models.DecimalField(max_digits = 20, decimal_places = 2, default=0.00) # sum of scope1_lbs_co2e_from_lbs_natural_gas and scope2_lbs_co2e_from_kwh_elec_camx_grid
 
     cui_scope1_lbs_co2e_per_sqft_from_natural_gas_use = models.DecimalField(max_digits = 20, decimal_places = 2, default=0.00) # sourced from scope1_lbs_co2e_from_lbs_natural_gas and school area 
     cui_scope2_lbs_co2e_per_sqft_from_elec_use = models.DecimalField(max_digits = 20, decimal_places = 2, default=0.00) # sourced from scope2_lbs_co2e_from_kwh_elec_camx_grid and school area
