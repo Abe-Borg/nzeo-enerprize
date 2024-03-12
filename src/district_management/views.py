@@ -27,7 +27,7 @@ def district_admin_home(request):
     district_schools_list = School.objects.filter(school_district=assigned_district)
     district_schools_information = [
         {
-            'schol_id': school.id,
+            'school_id': school.id,
             'name': school.school_name,
             'lat': float(school.latitude),
             'lng': float(school.longitude),

@@ -100,3 +100,17 @@ def update_coordinates(request):
             return JsonResponse({'status': 'error', 'message': str(e)})
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+    
+def get_equipment_for_school(request, school_id):
+    equipment_list = list(Equipment.objects.filter(equipment_school_id=school_id)
+                          .values('id', 'equipment_tag', 'equipment_type', 'equipment_install_date', 
+                                  'equipment_gas_btuh_demand', 'equipment_elec_kw_demand')[:50]
+                        )
+    return JsonResponse({'equipment': equipment_list})
+
+def get_buildings_for_school(request, school_id):
+    building_list = list(Building.objects.filter(building_school_id=school_id)
+                          .values('id', 'building_name', 'building_area_sqft', 'building_type', 'building_age')[:50]
+                        )
+    return JsonResponse({'buildings': building_list})
+
