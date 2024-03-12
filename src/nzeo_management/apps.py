@@ -7,5 +7,5 @@ class NzeoManagementConfig(AppConfig):
     name = 'nzeo_management'
 
     def ready(self):
-        admin.site.site_header = "NZEO-Enerprize"
-        admin.site.site_title = "NZEO-Enerprize"
+        admin.site.site_header = "NZEO-Climapp"
+        admin.site.site_title = "NZEO-Climapp"
