@@ -9,7 +9,7 @@ from school_management.models import School
 
 
 def geolocate_schools():
-    gmaps = googlemaps.Client(key='AIzaSyANW4JtLihHDKEiBkkknOHOn6CCX-WwthA')
+    gmaps = googlemaps.Client(key='')
     schools = School.objects.all()
     
     for school in schools:
