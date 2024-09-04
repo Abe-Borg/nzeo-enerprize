@@ -21,7 +21,7 @@ def district_admin_home(request):
         'northeast_lng': district_info.district_bb_northeast_lng,
         'district_name': district_info.district_name.upper(),
         'map_zoom_level': 12,
-        'API_KEY': 'AIzaSyANW4JtLihHDKEiBkkknOHOn6CCX-WwthA'
+        'API_KEY': 
     }
     
     district_schools_list = School.objects.filter(school_district=assigned_district)
